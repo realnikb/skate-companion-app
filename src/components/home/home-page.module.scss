@@ -354,7 +354,8 @@ $line: rgba(255, 255, 255, 0.16);
 .sessionCommandHeader svg { width: .9rem; color: #ad68ff; }
 .sessionCommandHeader strong { font-size: .61rem; letter-spacing: .06em; text-transform: uppercase; }
 .sessionCommandHeader small { color: rgba(255,255,255,.35); font-size: .52rem; }
-.sessionCommand { @include resetButton; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .4rem; width: calc(100% - 1rem); margin: 0 .5rem .5rem; padding: .3rem .45rem .3rem .3rem; border: 1px solid rgba(255,255,255,.12); border-radius: .7rem; background: #ededed; }
+.sessionCommand { @include resetButton; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .4rem; width: calc(100% - 1rem); margin: 0 .5rem .5rem; padding: .3rem .45rem .3rem .3rem; overflow: hidden; border: 1px solid rgba(255,255,255,.12); border-radius: .7rem; background: #111419; text-align: left; }
+.sessionCommandImage { background: #ededed; }
 .sessionCommandImage { position: relative; display: block; overflow: hidden; min-width: 0; aspect-ratio: 5.2; max-height: 80px;border-radius: .45rem; }
 .sessionCommandImage img { object-fit: contain; transform: scale(1.06); transform-origin: 50% 58%; position:absolute; top: -10px; }
 .sessionCommand > svg { width: .85rem; color: #6d2fb7; }

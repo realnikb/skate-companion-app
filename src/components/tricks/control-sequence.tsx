@@ -10,8 +10,8 @@ function groupAlternatives(inputs: NormalizedControlInput[]) {
     }, []);
 }
 
-export function ControlSequence({ variants, platform }: { variants: ControlVariant[]; platform: ControllerPlatform }) {
-    return <div className={styles.controlVariants}>{variants.map((variant, variantIndex) => <div className={styles.controlVariant} key={variantIndex}>
+export function ControlSequence({ variants, platform, compact = false }: { variants: ControlVariant[]; platform: ControllerPlatform; compact?: boolean }) {
+    return <div className={`${styles.controlVariants} ${compact ? styles.compactControlVariants : ""}`}>{variants.map((variant, variantIndex) => <div className={styles.controlVariant} key={variantIndex}>
         {variant.context && <strong className={styles.controlContext}>{variant.context}</strong>}
         <div className={styles.controlStrip}>{variant.steps.map((step, stepIndex) => <div className={styles.sequencePart} key={stepIndex}>
             {stepIndex > 0 && <span className={styles.thenLabel}>Then</span>}
@@ -19,7 +19,7 @@ export function ControlSequence({ variants, platform }: { variants: ControlVaria
                 {groupIndex > 0 && <span className={styles.andLabel}>And</span>}
                 <div className={styles.alternativeGroup}>{group.map((input, inputIndex) => <div className={styles.controlChord} key={inputIndex}>
                     {inputIndex > 0 && <span className={styles.orLabel}>Or</span>}
-                    <ControllerInput input={input} platform={platform} />
+                    <ControllerInput input={input} platform={platform} compact={compact} />
                 </div>)}</div>
             </div>)}</div>
         </div>)}</div>

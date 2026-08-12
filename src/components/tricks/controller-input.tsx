@@ -32,8 +32,8 @@ function StickMovement({ input }: { input: Extract<NormalizedControlInput, { typ
     </svg>;
 }
 
-export function ControllerInput({ input, platform }: { input: NormalizedControlInput; platform: ControllerPlatform }) {
-    if (input.type === "stick") return <div className={`${styles.input} ${styles.stickInput}`}><StickMovement input={input} /><span>{input.stick} stick<small>{input.action.replaceAll("-", " ")}</small></span></div>;
+export function ControllerInput({ input, platform, compact = false }: { input: NormalizedControlInput; platform: ControllerPlatform; compact?: boolean }) {
+    if (input.type === "stick") return <div className={`${styles.input} ${styles.stickInput} ${compact ? styles.compact : ""}`}><StickMovement input={input} /><span>{input.stick} stick<small>{input.action.replaceAll("-", " ")}</small></span></div>;
     const item = presentation(input, platform);
-    return <div className={styles.input}><Image className={styles.icon} src={item.icon} alt="" width={64} height={64} unoptimized /><span>{item.label}<small>{input.action}</small></span></div>;
+    return <div className={`${styles.input} ${compact ? styles.compact : ""}`}><Image className={styles.icon} src={item.icon} alt="" width={64} height={64} unoptimized /><span>{item.label}<small>{input.action}</small></span></div>;
 }

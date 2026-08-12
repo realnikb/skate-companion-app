@@ -39,6 +39,17 @@ async function sendLink(_state: SignInState, formData: FormData, shouldCreateUse
     });
 
     if (error) {
+        console.error("Supabase magic-link send failed", {
+            code: error.code,
+            status: error.status,
+            message: error.message,
+            origin,
+        });
+
+        if (error.status === 429 || error.code === "over_email_send_rate_limit") {
+            return { status: "error", message: "Too many sign-in emails were requested. Please wait a few minutes and try again." };
+        }
+
         return { status: "error", message: "We couldn't send the email. Please wait a moment and try again." };
     }
 

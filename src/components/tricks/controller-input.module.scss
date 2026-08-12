@@ -44,3 +44,10 @@
 .stickDisc { fill: none; stroke: #fff; stroke-width: 3; }
 .stickInput { grid-template-columns: 3.65rem minmax(0, 1fr); min-height: 5rem; padding: .65rem .8rem; }
 .stickInput .icon { width: 3.65rem; height: 3.65rem; }
+
+.compact {
+    grid-template-columns: 2.7rem minmax(0, 1fr);
+    min-height: 4rem;
+    padding: .5rem .65rem;
+}
+.compact .icon { width: 2.7rem; height: 2.7rem; }

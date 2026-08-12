@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Skate Companion",
+  title: "Skate Companion App - The Unofficial Resource For Skate",
   description: "Tricks, tutorials, archives, and news for your next session.",
 };
 

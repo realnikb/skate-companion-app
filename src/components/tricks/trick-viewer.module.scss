@@ -44,6 +44,10 @@ $line: rgba(255, 255, 255, .1);
 .controlsCard>p { justify-self: center; max-width: 52rem; text-align: center; }
 .controlStrip { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; gap: .8rem; padding: 1.3rem; border: 1px solid color-mix(in srgb,var(--category-accent) 22%,rgba(255,255,255,.07)); border-radius: 1rem; background: #111419; }
 .controlVariants { display: grid; gap: .7rem; }
+.compactControlVariants { width: 100%; }
+.compactControlVariants .controlStrip { justify-content: flex-start; gap: .5rem; padding: .65rem; border: 0; background: transparent; }
+.compactControlVariants .sequencePart, .compactControlVariants .controlStep, .compactControlVariants .controlRequirement, .compactControlVariants .alternativeGroup, .compactControlVariants .controlChord { gap: .35rem; }
+.compactControlVariants .thenLabel, .compactControlVariants .andLabel, .compactControlVariants .orLabel { min-width: auto; padding: 0 .4rem; }
 .controlVariant { display: grid; justify-items: center; gap: .6rem; }
 .controlContext { color: var(--category-accent); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
 .sequencePart, .controlStep, .controlRequirement, .alternativeGroup, .controlChord { display: flex; align-items: stretch; gap: .55rem; min-width: 0; }

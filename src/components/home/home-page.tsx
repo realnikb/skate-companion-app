@@ -33,6 +33,10 @@ import { useFavouriteTrickSlugs } from "@/hooks/use-favourite-tricks";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { matchesTrickSearch, parseTrickLine } from "@/lib/tricks/search";
 import { getCategoryTheme } from "@/lib/tricks/category-theme";
+import { controlsForStance, hasControls } from "@/lib/tricks/controls";
+import { useControllerPreference } from "@/hooks/use-controller-preference";
+import { useStancePreference } from "@/hooks/use-stance-preference";
+import { ControlSequence } from "@/components/tricks/control-sequence";
 import styles from "./home-page.module.scss";
 
 type HomePageProps = {
@@ -57,6 +61,8 @@ export function HomePage({ tricks, categories, configError, chosenName }: HomePa
     const { slugs: sessionLineSlugs, save: saveSessionLine } = useSessionLine(tricks);
     const trickHistory = useTrickHistory(tricks);
     const favouriteTrickSlugs = useFavouriteTrickSlugs();
+    const { platform: controllerPlatform } = useControllerPreference();
+    const { stance } = useStancePreference();
     const sessionLine = sessionLineSlugs
         .map((slug) => tricks.find((trick) => trick.slug === slug))
         .filter((trick): trick is Trick => Boolean(trick));
@@ -240,7 +246,7 @@ export function HomePage({ tricks, categories, configError, chosenName }: HomePa
                 ) : (
                     <div className={styles.sessionLine}>
                         {sessionLine.map((trick, index) => (
-                            <article className={styles.sessionTrick} key={trick.slug}>
+                            <article className={styles.sessionTrick} key={trick.slug} style={getCategoryTheme(categories.find((category) => category.slug === trick.category) ?? trick.category)}>
                                 <div className={styles.sessionTrickHeader}>
                                     <span className={styles.sessionIndex}>0{index + 1}</span>
                                     <div><small>{trick.context ?? trick.category}</small><h3>{trick.name}</h3></div>
@@ -265,18 +271,19 @@ export function HomePage({ tricks, categories, configError, chosenName }: HomePa
                                     <small>Execute in order</small>
                                 </div>
                                 <button className={styles.sessionCommand} onClick={() => openLearning(trick.slug)} aria-label={`View full controls for ${trick.name}`}>
-                                    <div className={styles.sessionCommandImage}>
-                                        <Image
-                                            src={trick.controlsImageUrl}
-                                            alt={`${trick.name} controller inputs`}
-                                            fill
-                                            sizes="(max-width: 800px) 100vw, 33vw"
-                                            style={{
-                                                objectFit: "cover",
-                                                transform: "translateY(-15px)",
-                                            }}
-                                        />
-                                    </div>
+                                    {hasControls(trick.controls) ? (
+                                        <ControlSequence variants={controlsForStance(trick.controls, stance)} platform={controllerPlatform} compact />
+                                    ) : (
+                                        <div className={styles.sessionCommandImage}>
+                                            <Image
+                                                src={trick.controlsImageUrl}
+                                                alt={`${trick.name} controller inputs`}
+                                                fill
+                                                sizes="(max-width: 800px) 100vw, 33vw"
+                                                style={{ objectFit: "cover", transform: "translateY(-15px)" }}
+                                            />
+                                        </div>
+                                    )}
                                     <ChevronRight />
                                 </button>
                             </article>
