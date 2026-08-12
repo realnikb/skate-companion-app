@@ -21,13 +21,15 @@ type TrickViewerProps = {
     categories: TrickCategory[];
     controllerPlatform: ControllerPlatform;
     stance: SkaterStance;
+    onControllerPlatformChange: (platform: ControllerPlatform) => void;
+    onStanceChange: (stance: SkaterStance) => void;
     previousTrick?: Trick;
     nextTrick?: Trick;
 };
 
 const viewedThisSession = new Set<string>();
 
-export function TrickViewer({ trick, tricks, category, categories, controllerPlatform, stance, previousTrick, nextTrick }: TrickViewerProps) {
+export function TrickViewer({ trick, tricks, category, categories, controllerPlatform, stance, onControllerPlatformChange, onStanceChange, previousTrick, nextTrick }: TrickViewerProps) {
     const favouriteSlugs = useFavouriteTrickSlugs();
     const [metricAdjustments, setMetricAdjustments] = useState<Record<string, { views: number; favourites: number }>>({});
 
@@ -89,7 +91,7 @@ export function TrickViewer({ trick, tricks, category, categories, controllerPla
             favouriteRank={getRank(rankedTricks, trick.id, "favouriteCount")}
             currentMetrics={currentMetrics}
         />
-        <TrickViewerContent trick={trick} category={category} controllerPlatform={controllerPlatform} stance={stance} />
+        <TrickViewerContent trick={trick} category={category} controllerPlatform={controllerPlatform} stance={stance} onControllerPlatformChange={onControllerPlatformChange} onStanceChange={onStanceChange} />
         <TrickViewerNavigation previousTrick={previousTrick} nextTrick={nextTrick} />
         <RelatedTricks relatedTricks={findRelatedTricks(rankedTricks, trick).map(({ trick: related }) => related)} categories={categories} />
     </article>;

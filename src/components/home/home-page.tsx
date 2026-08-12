@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
     ArrowDown,
@@ -38,15 +39,16 @@ type HomePageProps = {
     tricks: Trick[];
     categories: TrickCategory[];
     configError?: string;
+    chosenName?: string;
 };
 
 const archiveSeasons = [
-    { year: "2026", label: "The Come Up", detail: "14 stories" },
-    { year: "2025", label: "New Ground", detail: "28 stories" },
-    { year: "2024", label: "First Push", detail: "19 stories" },
+    { year: "2026", label: "Season 4", detail: "X Games Arrives", image: "/images/home/seasons/season-4.png", href: "/seasons/season-4" },
+    { year: "2025", label: "Season 3", detail: "The Isle of Grom", image: "/images/home/seasons/season-3.png", href: "/seasons/season-3" },
+    { year: "2024", label: "Season 2", detail: "Back to the 80s", image: "/images/home/seasons/season-2.png", href: "/seasons/season-2" },
 ];
 
-export function HomePage({ tricks, categories, configError }: HomePageProps) {
+export function HomePage({ tricks, categories, configError, chosenName }: HomePageProps) {
     const router = useRouter();
     const [homeSearchQuery, setHomeSearchQuery] = useState("");
     const [isHomeSearchOpen, setIsHomeSearchOpen] = useState(false);
@@ -130,8 +132,8 @@ export function HomePage({ tricks, categories, configError }: HomePageProps) {
             {configError && <section className={styles.configError} role="alert"><p className={styles.kicker}>Configuration</p><h2>Supabase environment missing</h2><p>{configError}</p></section>}
             <section className={styles.hero}>
                 <div className={styles.heroCopy}>
-                    <p>Welcome back,</p>
-                    <h1>Kyler</h1>
+                    <p>{chosenName ? "Welcome back," : "Your Skate companion"}</p>
+                    <h1>{chosenName ?? "Master your next trick."}</h1>
                     <h2>What are we skating today?</h2>
                     <div className={styles.heroSearchArea}>
                         <form
@@ -364,23 +366,37 @@ export function HomePage({ tricks, categories, configError }: HomePageProps) {
             <section className={styles.splitSection}>
                 <div className={styles.tutorialPanel} id="tutorials">
                     <div className={styles.sectionHeading}>
-                        <div><span>02</span><h2>Tutorials</h2></div>
+                        <div><span>02</span><h2>Tutorials</h2><small className={styles.comingSoonBadge}>Coming soon</small></div>
                     </div>
-                    <button className={styles.tutorialFeature} onClick={() => openLearning("kickflip")}>
-                        <span className={styles.tutorialPlaceholder}><ImageIcon /><small>Photo placeholder</small></span>
-                        <span className={styles.tutorialCopy}><small>New / Fundamentals</small><strong>Kickflips:<br />from flick to catch</strong><em>6 min watch <Play size={13} fill="currentColor" /></em></span>
-                    </button>
+                    <div className={styles.tutorialFeature}>
+                        <Image
+                            className={styles.tutorialImage}
+                            src="/images/home/tutorials-coming-soon.png"
+                            alt="Skater grinding a handrail in EA Skate"
+                            fill
+                            sizes="(max-width: 800px) 100vw, 58vw"
+                        />
+                        <span className={styles.tutorialShade} aria-hidden="true" />
+                        <span className={styles.tutorialCopy}>
+                            <small>Guides are on the way</small>
+                            <strong>Stuck on a trick?<br />We&apos;ve got you.</strong>
+                            <span className={styles.tutorialPrompts}>
+                                <span>Struggling with spins? Learn how to prewind.</span>
+                                <span>Can&apos;t quite get a difficult trick? We&apos;ll show you how.</span>
+                            </span>
+                        </span>
+                    </div>
                 </div>
                 <div className={styles.recentPanel}>
                     <div className={styles.sectionHeading}>
                         <div><span>03</span><h2>Recently viewed</h2></div>
                     </div>
-                    {["Kickflip", "BS Powerslide", "360 Flip"].map((name, index) => {
+                    {["Prewinds", "Landing your first 1080", "Mastering hardflps", "Using The Video/Photo Editor"].map((name, index) => {
                         const trick = tricks.find((item) => item.name === name);
                         return (
-                            <button key={name} className={styles.recentItem} onClick={() => openLearning(trick?.slug)}>
+                            <button key={name} className={styles.recentItem} onClick={() => trick && openLearning(trick.slug)}>
                                 <span className={styles.recentNumber}>0{index + 1}</span>
-                                <span><strong>{name}</strong><small>{trick?.context ?? "Flatground"} · {index + 2} min</small></span>
+                                <span><strong>{name}</strong></span>
                                 <span className={styles.progress}><i style={{ width: `${78 - index * 21}%` }} /></span>
                                 <ChevronRight />
                             </button>
@@ -396,18 +412,34 @@ export function HomePage({ tricks, categories, configError }: HomePageProps) {
                 </div>
                 <div className={styles.archiveGrid}>
                     {archiveSeasons.map((season) => (
-                        <button key={season.year}>
-                            <small>{season.year}</small>
-                            <strong>{season.label}</strong>
-                            <span>{season.detail}<ArrowUpRight /></span>
-                        </button>
+                        <Link key={season.year} href={season.href}>
+                            <Image
+                                src={season.image}
+                                alt=""
+                                fill
+                                sizes="(max-width: 800px) 100vw, 33vw"
+                            />
+                            <span className={styles.archiveShade} aria-hidden="true" />
+                            <span className={styles.archiveCopy}>
+                                <small>{season.year}</small>
+                                <strong>{season.label}</strong>
+                                <span>{season.detail}<ArrowUpRight /></span>
+                            </span>
+                        </Link>
                     ))}
                 </div>
             </section>
 
             <section className={styles.newsSection} id="news">
-                <div className={styles.newsLead}><span>Update 1.7</span><h2>A new city is<br />on the horizon.</h2><p>Fresh spots, new challenges, and more ways to leave your mark. Catch up on everything coming to the game.</p><button>Read the dispatch <ArrowUpRight /></button></div>
-                <div className={styles.newsImage}><ImageIcon /><span>News image placeholder</span></div>
+                <div className={styles.newsLead}>
+                    <span>August 11, 2026</span>
+                    <h2>The Weekly<br />Grind.</h2>
+                    <p>Block Parties returns for another weekend, X Games San Van rolls into week four, and the team shares what it is fixing next.</p>
+                    <Link href="/news/the-weekly-grind-aug-11-2026">Read the story <ArrowUpRight /></Link>
+                </div>
+                <Link className={styles.newsImage} href="/news/the-weekly-grind-aug-11-2026" aria-label="Read The Weekly Grind for August 11, 2026">
+                    <Image src="/images/home/weekly-grind-2026-08-11.png" alt="A skater grinding a rail in San Van beneath The Weekly Grind title" fill sizes="(max-width: 800px) 100vw, 50vw" />
+                </Link>
             </section>
 
             <Dialog open={isTrickPickerOpen} onOpenChange={setIsTrickPickerOpen}>
