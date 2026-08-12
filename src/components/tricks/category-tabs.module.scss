@@ -1,0 +1,61 @@
+.tabs {
+    display: flex;
+    gap: 0.55rem;
+    margin: 0 -1rem 1rem;
+    padding: 0 1rem 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+}
+
+.tab {
+    flex: 0 0 auto;
+    min-height: 3rem;
+    padding: 0.7rem 1rem;
+    border: 2px solid color-mix(in srgb, var(--border) 75%, transparent);
+    background: var(--panel, var(--card, #f4f0e7));
+    color: var(--foreground);
+    font-size: 0.78rem;
+    font-weight: 950;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    transition:
+        background-color 160ms ease,
+        border-color 160ms ease,
+        color 160ms ease,
+        transform 160ms ease;
+
+    &:hover {
+        border-color: var(--category-accent, var(--primary, #168cf4));
+        transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+        outline: 3px solid var(--primary, #168cf4);
+        outline-offset: 3px;
+    }
+}
+
+.selectedTab {
+    composes: tab;
+    border-color: var(--category-accent, #168cf4);
+    background: var(--category-gradient, var(--primary, #168cf4));
+    color: var(--primary-foreground, #ffffff);
+    box-shadow: 0.22rem 0.22rem 0 #073b78;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tab {
+        transition: none;
+
+        &:hover {
+            transform: none;
+        }
+    }
+}
+
+@media (min-width: 860px) {
+    .tabs {
+        margin-inline: 0;
+        padding-inline: 0;
+    }
+}

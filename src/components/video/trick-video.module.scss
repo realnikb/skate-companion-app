@@ -1,0 +1,29 @@
+.videoFrame {
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+  background: rgba(15, 18, 22, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.4rem;
+  box-shadow: 0 1.5rem 4rem rgba(18, 27, 36, 0.22);
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+}
+
+.label {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  padding: 0.4rem 0.7rem;
+  background: rgba(0, 0, 0, 0.72);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
