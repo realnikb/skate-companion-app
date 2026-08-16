@@ -51,16 +51,16 @@ const labels: Record<Category, string> = { popular: "Popular", "city-echo": "Cit
 const sanVanBounds: [[number, number], [number, number]] = [[-135, 0], [0, 240]];
 export type MapPresentation = { id:string; name:string; assetRoot:string; tileUrl:string; minZoom:number; maxZoom:number; bounds:[[number,number],[number,number]]; districts:Array<{name:string;icon:string;x:number;y:number;accent:string;points:[number,number][]}> };
 const fallbackDistricts = [
-    { name: "Gullcrest Village", icon: "/maps/san-van/icons/gullcrest_village.png", x: 31, y: 35, accent: "#c79f02" },
-    { name: "Hedgemont", icon: "/maps/san-van/icons/hedgemont.png", x: 63, y: 30, accent: "#9930c1" },
-    { name: "Market Mile", icon: "/maps/san-van/icons/market_mile.png", x: 35, y: 70, accent: "#2f6dc2" },
-    { name: "Brickswich", icon: "/maps/san-van/icons/brickswich.png", x: 68, y: 72, accent: "#c45157" },
+    { name: "Gullcrest Village", icon: "/maps/san-van/icons/gullcrest_village.png", x: 31, y: 35, accent: "#E6B735" },
+    { name: "Hedgemont", icon: "/maps/san-van/icons/hedgemont.png", x: 63, y: 30, accent: "#D52AAA" },
+    { name: "Market Mile", icon: "/maps/san-van/icons/market_mile.png", x: 35, y: 70, accent: "#299FC0" },
+    { name: "Brickswich", icon: "/maps/san-van/icons/brickswich.png", x: 68, y: 72, accent: "#E95055" },
 ];
 const districtBoundaries = [
-    { name: "Gullcrest Village", accent: "#d3a915", points: [[28, 8], [47, 3], [49, 42], [40, 43], [43, 58], [33, 61], [25, 50], [13, 54], [20, 24]] },
-    { name: "Hedgemont", accent: "#b238d0", points: [[48, 3], [70, 5], [78, 17], [81, 53], [52, 48], [49, 42]] },
-    { name: "Market Mile", accent: "#3881d9", points: [[13, 54], [25, 50], [33, 61], [43, 58], [51, 49], [52, 94], [42, 97], [28, 91], [19, 74]] },
-    { name: "Brickswich", accent: "#d2585e", points: [[51, 49], [81, 53], [82, 70], [76, 80], [65, 89], [52, 94]] },
+    { name: "Gullcrest Village", accent: "#E6B735", points: [[49.292981,23.084407],[49.588756,35.981683],[46.96955,37.111581],[44.94399,42.196211],[44.082085,53.699101],[42.491883,51.595031],[40.037603,60.221102],[35.025859,57.739629],[30.939849,52.849787],[26.641327,42.496298],[23.174508,32.973544],[22.116031,29.328506],[24.787982,23.683067],[25.732292,23.652891],[26.414512,24.447809],[28.488503,19.621652],[32.480952,11.455217],[36.525736,4.782538],[41.461556,.721224],[49.292981,23.084407]] },
+    { name: "Hedgemont", accent: "#D52AAA", points: [[49.261848,22.923834],[49.579319,35.837207],[47.007723,36.937795],[44.975847,41.92705],[44.183357,49.58622],[44.061454,53.666444],[49.388851,60.636758],[57.890566,61.029204],[60.261264,60.897235],[65.917982,60.629372],[77.994001,62.955089],[83.109196,64.049503],[82.935231,60.209432],[82.808022,57.970305],[79.047428,40.135313],[71.40597,11.057216],[69.326334,6.450556],[62.612845,-.412093],[59.881474,-2.060032],[56.278909,-2.432884],[53.392496,-2.383956],[51.929597,-2.186225],[49.261848,22.923834]] },
+    { name: "Market Mile", accent: "#299FC0", points: [[26.641327,42.378133],[30.936316,52.658519],[35.077913,57.621464],[40.037603,60.102936],[42.491883,51.476865],[43.63387,53.014183],[49.344861,60.454735],[57.334932,60.899168],[57.859669,75.452201],[58.648558,97.334371],[50.135519,98.420606],[36.408213,90.784718],[24.078552,74.417922],[20.145057,66.34477],[18.176383,61.214761],[17.365196,56.53983],[17.390994,50.522542],[19.433095,40.887305],[22.280859,34.113655],[21.848261,32.486083],[21.904097,29.831949],[22.133105,29.307965],[26.641327,42.378133]] },
+    { name: "Brickswich", accent: "#E95055", points: [[58.571099,97.380039],[59.412172,97.288905],[64.423301,92.453934],[70.3879,88.527186],[74.757754,89.282307],[79.313075,84.685744],[82.634419,77.379182],[83.351334,70.094385],[83.099194,63.969159],[77.931186,62.692491],[65.937578,60.38381],[63.81024,60.569914],[58.571099,97.380039]] },
 ] as const;
 
 export function SpotsMap({presentation}:{presentation?:MapPresentation}) {
