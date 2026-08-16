@@ -168,9 +168,10 @@ export async function updateTrick(_state: StudioActionState, formData: FormData)
         sort_order: numberValue(formData, "sort_order"),
         is_published: value(formData, "publication_status") === "published",
         last_edited_by: user.email,
-    }).eq("id", id).select("updated_at,last_edited_by").single();
+    }).eq("id", id).select("updated_at,last_edited_by").maybeSingle();
 
     if (error) return { status: "error", message: error.message };
+    if (!savedTrick) return { status: "error", message: "The trick could not be updated. Refresh the page, sign in again, and confirm your account still has Studio access." };
     revalidatePath("/studio");
     revalidatePath("/studio/tricks");
     revalidatePath(`/studio/tricks/${id}`);

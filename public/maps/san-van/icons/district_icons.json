@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "coordinate_usage": "Leaflet marker/icon assets; positions not yet assigned",
+  "label_rendering": "District names are localized text rendered by UI, not baked into these textures",
+  "districts": [
+    {
+      "slug": "gullcrest-village",
+      "name": "Gullcrest Village",
+      "internal_id": "Historic",
+      "crew": "SVLocs",
+      "accent": "#c79f02",
+      "icon": "gullcrest_village.png",
+      "source_asset": "ui/textures/icons/generic/neighborhood/img_icon_historic_colored_128_128_128"
+    },
+    {
+      "slug": "hedgemont",
+      "name": "Hedgemont",
+      "internal_id": "Entertainment",
+      "crew": "DaKs",
+      "accent": "#9930c1",
+      "icon": "hedgemont.png",
+      "source_asset": "ui/textures/icons/generic/neighborhood/img_icon_entertainment_colored_128_128_128"
+    },
+    {
+      "slug": "market-mile",
+      "name": "Market Mile",
+      "internal_id": "Financial",
+      "crew": "DLC",
+      "accent": "#2f6dc2",
+      "icon": "market_mile.png",
+      "source_asset": "ui/textures/icons/generic/neighborhood/img_icon_financial_colored_128_128_128"
+    },
+    {
+      "slug": "brickswich",
+      "name": "Brickswich",
+      "internal_id": "Stadium",
+      "crew": null,
+      "accent": "#c45157",
+      "icon": "brickswich.png",
+      "source_asset": "ui/textures/icons/generic/neighborhood/img_icon_stadium_colored_128_128_128"
+    }
+  ]
+}

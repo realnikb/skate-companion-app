@@ -25,6 +25,7 @@ export function SiteHeader({ tricks, isAuthenticated }: { tricks: Trick[]; isAut
     const results = useMemo(() => query.trim() ? tricks.filter(isSessionTrick).filter((trick) => matchesTrickSearch(trick, query)).slice(0, 6) : [], [query, tricks]);
     const lineSearch = useMemo(() => parseTrickLine(query, tricks.filter(isSessionTrick)), [query, tricks]);
     const isLearning = pathname.startsWith("/tricks");
+    const isSpots = pathname.startsWith("/spots");
 
     const buildLine = () => {
         if (!lineSearch.isComplete) return;
@@ -39,6 +40,7 @@ export function SiteHeader({ tricks, isAuthenticated }: { tricks: Trick[]; isAut
             <nav className={styles.navigation} aria-label="Primary navigation">
                 <Link className={!isLearning && pathname === "/" ? styles.active : ""} href="/">Home</Link>
                 <Link className={isLearning ? styles.active : ""} href="/tricks">Learning</Link>
+                <Link className={isSpots ? styles.active : ""} href="/spots">Spots</Link>
                 <Link href="/#news">News</Link>
             </nav>
             <div className={styles.actions}>

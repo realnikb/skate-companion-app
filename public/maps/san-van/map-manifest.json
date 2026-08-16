@@ -1,0 +1,76 @@
+{
+  "id": "san-van-downtown-district",
+  "name": "San Vansterdam",
+  "version": 1,
+  "crs": "L.CRS.Simple",
+  "tile_format": "webp",
+  "tile_url": "tiles/{z}/{x}/{y}.webp",
+  "tile_size": 256,
+  "min_zoom": 0,
+  "max_zoom": 5,
+  "max_native_zoom": 5,
+  "no_wrap": true,
+  "native_pixels": {
+    "width": 7680,
+    "height": 4320
+  },
+  "leaflet_bounds": [
+    [
+      -135.0,
+      0
+    ],
+    [
+      0,
+      240.0
+    ]
+  ],
+  "coordinate_conventions": {
+    "leaflet": "[lat, lng], origin [0,0] at top-left; latitude becomes negative downward",
+    "source_pixel": "[x, y], origin at top-left",
+    "pixel_to_leaflet": "[-pixelY / 32, pixelX / 32]",
+    "leaflet_to_pixel": "[lng * 32, -lat * 32]"
+  },
+  "levels": {
+    "0": {
+      "width": 240,
+      "height": 135,
+      "columns": 1,
+      "rows": 1
+    },
+    "1": {
+      "width": 480,
+      "height": 270,
+      "columns": 2,
+      "rows": 2
+    },
+    "2": {
+      "width": 960,
+      "height": 540,
+      "columns": 4,
+      "rows": 3
+    },
+    "3": {
+      "width": 1920,
+      "height": 1080,
+      "columns": 8,
+      "rows": 5
+    },
+    "4": {
+      "width": 3840,
+      "height": 2160,
+      "columns": 15,
+      "rows": 9
+    },
+    "5": {
+      "width": 7680,
+      "height": 4320,
+      "columns": 30,
+      "rows": 17
+    }
+  },
+  "layers": {
+    "district_icons": "icons/district_icons.json",
+    "district_boundaries": "data/district_boundaries.geojson",
+    "points_of_interest": "data/points_of_interest.geojson"
+  }
+}

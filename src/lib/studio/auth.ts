@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function requireStudioUser() {
     const supabase = await createClient();
+
     const { data: claimsData } = await supabase.auth.getClaims();
 
     if (!claimsData?.claims) redirect("/account/sign-in?next=/studio");

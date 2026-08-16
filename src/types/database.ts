@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
     public: {
         Tables: {
+            skate_maps: {
+                Row: { id:string; slug:string; name:string; description:string|null; asset_root:string; tile_url:string; tile_size:number; min_zoom:number; max_zoom:number; bounds:Json; is_published:boolean; created_at:string; updated_at:string };
+                Insert: { id?:string; slug:string; name:string; description?:string|null; asset_root:string; tile_url?:string; tile_size?:number; min_zoom?:number; max_zoom?:number; bounds?:Json; is_published?:boolean; created_at?:string; updated_at?:string };
+                Update: { id?:string; slug?:string; name?:string; description?:string|null; asset_root?:string; tile_url?:string; tile_size?:number; min_zoom?:number; max_zoom?:number; bounds?:Json; is_published?:boolean; created_at?:string; updated_at?:string };
+                Relationships: [];
+            };
+            map_districts: {
+                Row: { id:string; map_id:string; slug:string; name:string; colour:string; icon_path:string|null; marker_position:Json|null; polygon:Json; sort_order:number; created_at:string; updated_at:string };
+                Insert: { id?:string; map_id:string; slug:string; name:string; colour?:string; icon_path?:string|null; marker_position?:Json|null; polygon?:Json; sort_order?:number; created_at?:string; updated_at?:string };
+                Update: { id?:string; map_id?:string; slug?:string; name?:string; colour?:string; icon_path?:string|null; marker_position?:Json|null; polygon?:Json; sort_order?:number; created_at?:string; updated_at?:string };
+                Relationships: [];
+            };
+            map_spots: {
+                Row: { id:string; map_id:string; district_id:string|null; created_by:string|null; slug:string; name:string; description:string; category:string; position:Json; is_published:boolean; created_at:string; updated_at:string };
+                Insert: { id?:string; map_id:string; district_id?:string|null; created_by?:string|null; slug:string; name:string; description?:string; category?:string; position:Json; is_published?:boolean; created_at?:string; updated_at?:string };
+                Update: { id?:string; map_id?:string; district_id?:string|null; created_by?:string|null; slug?:string; name?:string; description?:string; category?:string; position?:Json; is_published?:boolean; created_at?:string; updated_at?:string };
+                Relationships: [];
+            };
             stick_paths: {
                 Row: { id: string; slug: string; name: string; points: Json; created_at: string; updated_at: string };
                 Insert: { id?: string; slug: string; name: string; points?: Json; created_at?: string; updated_at?: string };
