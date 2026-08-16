@@ -9,17 +9,17 @@ import { recruitmentLabels } from "@/lib/crews/crews";
 import { getCrew } from "@/lib/crews/get-crews";
 import styles from "./crew.module.scss";
 
-export async function generateMetadata({ params }: PageProps<"/crews/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/social/[slug]">): Promise<Metadata> {
     const crew = await getCrew((await params).slug);
     return crew ? { title: `${crew.name} | Crews`, description: crew.description } : {};
 }
 
-export default async function CrewPage({ params }: PageProps<"/crews/[slug]">) {
+export default async function CrewPage({ params }: PageProps<"/social/[slug]">) {
     const crew = await getCrew((await params).slug);
     if (!crew) notFound();
     return <main className={styles.page} style={{ "--crew-accent": crew.accent } as React.CSSProperties}>
         <section className={styles.hero}>
-            <Link className={styles.back} href="/crews"><ArrowLeft /> All crews</Link>
+            <Link className={styles.back} href="/social"><ArrowLeft /> All crews</Link>
             <div className={styles.glow} />
             <div className={styles.identity}><CrewLogo initials={crew.initials} accent={crew.accent} imageUrl={crew.logoUrl} /><div><span className={styles.status} data-status={crew.recruitment}><i />{recruitmentLabels[crew.recruitment]}</span><h1>{crew.name}</h1><p>{crew.tagline}</p></div></div>
             <div className={styles.actions}>{crew.recruitment === "recruiting" ? <Link href="/account/sign-in">Apply to crew <ArrowUpRight /></Link> : crew.recruitment === "closed" ? <button><Bell /> Notify me when recruiting</button> : <button><Bell /> Follow crew</button>}</div>

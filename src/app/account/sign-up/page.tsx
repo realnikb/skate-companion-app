@@ -14,7 +14,9 @@ export const metadata: Metadata = {
     robots: { index: false, follow: false },
 };
 
-export default async function SignUpPage() {
+export default async function SignUpPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
+    const { next: requestedNext } = await searchParams;
+    const next = requestedNext?.startsWith("/") && !requestedNext.startsWith("//") ? requestedNext : "/account";
     const supabase = await createClient();
     const { data } = await supabase.auth.getClaims();
     if (data?.claims) redirect("/account");
@@ -26,7 +28,7 @@ export default async function SignUpPage() {
                 <div className={styles.freeBadge}>Free account · No password</div>
                 <h1>Save every trick. Keep every line.</h1>
                 <p className={styles.intro}>Create your free account and keep your skating setup synced wherever you play.</p>
-                <SignInForm mode="sign-up" />
+                <SignInForm mode="sign-up" nextPath={next} />
                 <p className={styles.switchAuth}>Already have an account? <Link href="/account/sign-in">Sign in</Link></p>
                 <div className={styles.trust}><LockKeyhole /><span>Secure, passwordless sign-up. We’ll only email you to access your account.</span></div>
             </section>
