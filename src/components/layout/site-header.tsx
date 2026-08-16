@@ -26,6 +26,7 @@ export function SiteHeader({ tricks, isAuthenticated }: { tricks: Trick[]; isAut
     const lineSearch = useMemo(() => parseTrickLine(query, tricks.filter(isSessionTrick)), [query, tricks]);
     const isLearning = pathname.startsWith("/tricks");
     const isSpots = pathname.startsWith("/spots");
+    const isCrews = pathname.startsWith("/crews");
 
     const buildLine = () => {
         if (!lineSearch.isComplete) return;
@@ -41,6 +42,7 @@ export function SiteHeader({ tricks, isAuthenticated }: { tricks: Trick[]; isAut
                 <Link className={!isLearning && pathname === "/" ? styles.active : ""} href="/">Home</Link>
                 <Link className={isLearning ? styles.active : ""} href="/tricks">Learning</Link>
                 <Link className={isSpots ? styles.active : ""} href="/spots">Spots</Link>
+                <Link className={isCrews ? styles.active : ""} href="/crews">Crews</Link>
                 <Link href="/#news">News</Link>
             </nav>
             <div className={styles.actions}>

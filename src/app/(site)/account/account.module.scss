@@ -5,10 +5,11 @@
 .page header p { margin: 0; color: rgba(255,255,255,.48); font-size: .78rem; }
 .page header button { display: flex; align-items: center; gap: .45rem; padding: .75rem 1rem; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; background: transparent; color: rgba(255,255,255,.7); font-size: .7rem; font-weight: 750; }
 .page header button svg { width: 1rem; }
-.grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; padding-top: 2rem; }
+.grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; padding-top: 2rem; }
 .grid article { display: flex; min-height: 18rem; flex-direction: column; align-items: flex-start; padding: 1.5rem; border: 1px solid rgba(255,255,255,.12); border-radius: 1rem; background: rgba(255,255,255,.035); }
 .grid article > svg { width: 1.35rem; margin-bottom: 2.5rem; color: #8a6dff; }
 .grid h2 { margin: .75rem 0 .5rem; font-size: 1.35rem; letter-spacing: -.035em; }
 .grid p { margin: 0; color: rgba(255,255,255,.45); font-size: .73rem; line-height: 1.6; }
 .grid a, .grid small { margin-top: auto; color: #a98cff; font-size: .68rem; font-weight: 800; }
+.grid .crewCard { border-color: rgba(121,87,255,.35); background: radial-gradient(circle at 90% 10%,rgba(121,87,255,.18),transparent 40%),rgba(255,255,255,.035); }
 @media(max-width:760px){.page>header{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.grid article{min-height:15rem}}

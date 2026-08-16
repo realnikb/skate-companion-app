@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Bookmark, Footprints, LogOut, Route } from "lucide-react";
+import { Bookmark, Footprints, LogOut, Route, Users } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "./actions";
@@ -22,6 +22,7 @@ export default async function AccountPage() {
                 <form action={signOut}><button type="submit"><LogOut /> Sign out</button></form>
             </header>
             <section className={styles.grid}>
+                <article className={styles.crewCard}><Users /><span>Crews</span><h2>Your crew identity</h2><p>Crews you own, manage and skate with will be verified and shown here.</p><Link href="/crews">Explore crews</Link></article>
                 <article><Footprints /><span>Preferences</span><h2>Your skating setup</h2><p>Stance and controller syncing is coming next.</p><Link href="/">Edit guest preferences</Link></article>
                 <article><Bookmark /><span>Library</span><h2>Favourite tricks</h2><p>Your saved trick library will live here.</p><small>Coming soon</small></article>
                 <article><Route /><span>Sessions</span><h2>Saved lines</h2><p>Build and sync your favourite lines across devices.</p><small>Coming soon</small></article>

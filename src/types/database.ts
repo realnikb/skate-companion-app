@@ -9,6 +9,19 @@ export type Json =
 export type Database = {
     public: {
         Tables: {
+            profiles: {
+                Row:{id:string;handle:string;display_name:string;avatar_path:string|null;bio:string|null;created_at:string;updated_at:string};
+                Insert:{id:string;handle:string;display_name:string;avatar_path?:string|null;bio?:string|null;created_at?:string;updated_at?:string};
+                Update:{id?:string;handle?:string;display_name?:string;avatar_path?:string|null;bio?:string|null;created_at?:string;updated_at?:string};Relationships:[];
+            };
+            crews: {
+                Row:{id:string;owner_id:string;slug:string;name:string;tagline:string|null;description:string|null;logo_path:string;banner_path:string|null;location:string|null;platform:string|null;styles:string[];recruitment_status:"recruiting"|"invite-only"|"closed";recruitment_details:string|null;is_published:boolean;created_at:string;updated_at:string};
+                Insert:{id?:string;owner_id:string;slug:string;name:string;tagline?:string|null;description?:string|null;logo_path:string;banner_path?:string|null;location?:string|null;platform?:string|null;styles?:string[];recruitment_status?:"recruiting"|"invite-only"|"closed";recruitment_details?:string|null;is_published?:boolean;created_at?:string;updated_at?:string};
+                Update:{id?:string;owner_id?:string;slug?:string;name?:string;tagline?:string|null;description?:string|null;logo_path?:string;banner_path?:string|null;location?:string|null;platform?:string|null;styles?:string[];recruitment_status?:"recruiting"|"invite-only"|"closed";recruitment_details?:string|null;is_published?:boolean;created_at?:string;updated_at?:string};Relationships:[];
+            };
+            crew_members:{Row:{crew_id:string;user_id:string;role:"owner"|"co-owner"|"captain"|"recruiter"|"filmer"|"member"|"prospect";joined_at:string};Insert:{crew_id:string;user_id:string;role?:"owner"|"co-owner"|"captain"|"recruiter"|"filmer"|"member"|"prospect";joined_at?:string};Update:{crew_id?:string;user_id?:string;role?:"owner"|"co-owner"|"captain"|"recruiter"|"filmer"|"member"|"prospect";joined_at?:string};Relationships:[]};
+            crew_links:{Row:{id:string;crew_id:string;platform:string;url:string;sort_order:number};Insert:{id?:string;crew_id:string;platform:string;url:string;sort_order?:number};Update:{id?:string;crew_id?:string;platform?:string;url?:string;sort_order?:number};Relationships:[]};
+            crew_videos:{Row:{id:string;crew_id:string;created_by:string|null;title:string;description:string|null;video_url:string;thumbnail_path:string|null;video_type:string;is_published:boolean;published_at:string;created_at:string};Insert:{id?:string;crew_id:string;created_by?:string|null;title:string;description?:string|null;video_url:string;thumbnail_path?:string|null;video_type?:string;is_published?:boolean;published_at?:string;created_at?:string};Update:{id?:string;crew_id?:string;created_by?:string|null;title?:string;description?:string|null;video_url?:string;thumbnail_path?:string|null;video_type?:string;is_published?:boolean;published_at?:string;created_at?:string};Relationships:[]};
             skate_maps: {
                 Row: { id:string; slug:string; name:string; description:string|null; asset_root:string; tile_url:string; tile_size:number; min_zoom:number; max_zoom:number; bounds:Json; is_published:boolean; created_at:string; updated_at:string };
                 Insert: { id?:string; slug:string; name:string; description?:string|null; asset_root:string; tile_url?:string; tile_size?:number; min_zoom?:number; max_zoom?:number; bounds?:Json; is_published?:boolean; created_at?:string; updated_at?:string };
