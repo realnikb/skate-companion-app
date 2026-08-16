@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, FolderTree, Gamepad2, LayoutDashboard, Map, Shapes, UserRound } from "lucide-react";
+import { ArrowUpRight, FolderTree, Gamepad2, LayoutDashboard, Map, MapPin, Shapes, UserRound } from "lucide-react";
 
 import { requireStudioUser } from "@/lib/studio/auth";
 import styles from "./studio.module.scss";
@@ -23,6 +23,7 @@ export default async function StudioLayout({ children }: Readonly<{ children: Re
                     <Link href="/studio/stick-paths"><Gamepad2 />Stick paths</Link>
                     <Link href="/studio/categories"><FolderTree />Categories</Link>
                     <Link href="/studio/maps"><Map />Maps</Link>
+                    <Link href="/studio/spots"><MapPin />Spots</Link>
                 </nav>
                 <div className={styles.sidebarFoot}>
                     <Link href="/" target="_blank">View site <ArrowUpRight /></Link>

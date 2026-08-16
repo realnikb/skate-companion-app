@@ -27,6 +27,22 @@ export type Database = {
                 Update: { id?:string; map_id?:string; district_id?:string|null; created_by?:string|null; slug?:string; name?:string; description?:string; category?:string; position?:Json; is_published?:boolean; created_at?:string; updated_at?:string };
                 Relationships: [];
             };
+            spot_reviews: {
+                Row: { id:string; spot_id:string; user_id:string; rating:number; body:string|null; created_at:string; updated_at:string };
+                Insert: { id?:string; spot_id:string; user_id:string; rating:number; body?:string|null; created_at?:string; updated_at?:string };
+                Update: { id?:string; spot_id?:string; user_id?:string; rating?:number; body?:string|null; created_at?:string; updated_at?:string };
+                Relationships: [];
+            };
+            spot_media: {
+                Row:{id:string;spot_id:string;created_by:string|null;storage_path:string;media_type:string;caption:string|null;is_cover:boolean;is_published:boolean;created_at:string;updated_at:string};
+                Insert:{id?:string;spot_id:string;created_by?:string|null;storage_path:string;media_type:string;caption?:string|null;is_cover?:boolean;is_published?:boolean;created_at?:string;updated_at?:string};
+                Update:{id?:string;spot_id?:string;created_by?:string|null;storage_path?:string;media_type?:string;caption?:string|null;is_cover?:boolean;is_published?:boolean;created_at?:string;updated_at?:string};Relationships:[];
+            };
+            spot_comments: {
+                Row:{id:string;spot_id:string;user_id:string|null;body:string;is_published:boolean;created_at:string;updated_at:string};
+                Insert:{id?:string;spot_id:string;user_id?:string|null;body:string;is_published?:boolean;created_at?:string;updated_at?:string};
+                Update:{id?:string;spot_id?:string;user_id?:string|null;body?:string;is_published?:boolean;created_at?:string;updated_at?:string};Relationships:[];
+            };
             stick_paths: {
                 Row: { id: string; slug: string; name: string; points: Json; created_at: string; updated_at: string };
                 Insert: { id?: string; slug: string; name: string; points?: Json; created_at?: string; updated_at?: string };

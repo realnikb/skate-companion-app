@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -5,7 +6,7 @@ import Script from "next/script";
 import { Bookmark, ChevronDown, Clock3, Heart, LocateFixed, MapPin, Maximize2, MessageCircle, Minimize2, Plus, Search, Share2, Star, Users, X, ZoomIn, ZoomOut } from "lucide-react";
 
 import { AccountBenefitsPrompt } from "@/components/account/account-benefits-prompt";
-import { createCommunitySpot } from "@/app/(site)/spots/actions";
+import { addSpotComment, createCommunitySpot, rateSpot, uploadSpotMedia } from "@/app/(site)/spots/actions";
 import styles from "./spots-map.module.scss";
 
 type Category = "popular" | "city-echo" | "community";
@@ -25,7 +26,7 @@ type LeafletApi = {
 };
 
 declare global { interface Window { L?: LeafletApi } }
-type Spot = {
+export type Spot = {
     id: string;
     name: string;
     district: string;
@@ -40,9 +41,12 @@ type Spot = {
     quote: string;
     author: string;
     palette: string;
+    persisted?: boolean;
+    media?:Array<{id:string;url:string;type:"image"|"video";caption:string|null}>;
+    comments?:Array<{id:string;body:string;createdAt:string}>;
 };
 
-const spots: Spot[] = [
+const fallbackSpots: Spot[] = [
     { id: "stalefish", name: "Stalefish Backlot", district: "Hedgemont", category: "popular", x: 39, y: 43, rating: 4.9, ratings: 128, favourites: 342, description: "A compact little playground tucked behind Stalefish Bevvie Co. Curbs, banks and a perfect loading dock make it an easy place to lose an afternoon.", tags: ["Street", "Curbs", "DIY lines"], quote: "The flow here is ridiculous. Every little wall becomes part of the line.", author: "KickflipKarl", palette: "orange" },
     { id: "waterfront", name: "Brickswich Banks", district: "Brickswich", category: "city-echo", x: 68, y: 35, rating: 4.7, ratings: 86, favourites: 219, description: "Long brick banks and clean ledges beside the waterfront. A San Vansterdam landmark with more than a little real-world DNA.", tags: ["Banks", "Ledges", "Real-World Inspired"], quote: "Best place on the map for long, unbroken lines.", author: "MinaGrinds", palette: "blue" },
     { id: "underpass", name: "The Overpass", district: "Market Mile", category: "community", x: 54, y: 67, rating: 4.5, ratings: 47, favourites: 111, description: "A community find beneath the freeway. Rough ground, endless pillars and a few surprisingly technical gaps.", tags: ["Gaps", "Technical", "Community"], quote: "Bring speed and a little imagination. It rewards both.", author: "rollaway", palette: "violet" },
@@ -52,7 +56,7 @@ const spots: Spot[] = [
 
 const labels: Record<Category, string> = { popular: "Popular", "city-echo": "Real-World Inspired", community: "Community finds" };
 const sanVanBounds: [[number, number], [number, number]] = [[-135, 0], [0, 240]];
-export type MapPresentation = { id:string; name:string; assetRoot:string; tileUrl:string; minZoom:number; maxZoom:number; bounds:[[number,number],[number,number]]; districts:Array<{name:string;icon:string;x:number;y:number;accent:string;points:[number,number][]}> };
+export type MapPresentation = { id:string; name:string; assetRoot:string; tileUrl:string; minZoom:number; maxZoom:number; bounds:[[number,number],[number,number]]; districts:Array<{name:string;icon:string;x:number;y:number;accent:string;points:[number,number][]}>; spots?:Spot[] };
 const fallbackDistricts = [
     { name: "Gullcrest Village", icon: "/maps/san-van/icons/gullcrest_village.png", x: 31, y: 35, accent: "#E6B735" },
     { name: "Hedgemont", icon: "/maps/san-van/icons/hedgemont.png", x: 63, y: 30, accent: "#D52AAA" },
@@ -68,12 +72,15 @@ const districtBoundaries = [
 
 export function SpotsMap({presentation,isAuthenticated=false}:{presentation?:MapPresentation;isAuthenticated?:boolean}) {
     const mapDistricts=presentation?.districts??fallbackDistricts.map(d=>({...d,points:(districtBoundaries.find(b=>b.name===d.name)?.points??[]).map(([x,y])=>[x,y] as [number,number])}));
+    const spots=presentation?.spots??fallbackSpots;
     const coordinateBounds=presentation?.bounds??sanVanBounds;
     const [activeId, setActiveId] = useState("stalefish");
     const [filter, setFilter] = useState<Category | "all">("all");
     const [query, setQuery] = useState("");
     const [saved, setSaved] = useState<string[]>(["stalefish"]);
     const [rating, setRating] = useState(0);
+    const [ratingGate,setRatingGate]=useState(false);
+    const [contributeGate,setContributeGate]=useState(false);
     const [addMode, setAddMode] = useState(false);
     const [isFullscreen,setIsFullscreen]=useState(false);
     const [pendingPosition,setPendingPosition]=useState<[number,number]|null>(null);
@@ -88,7 +95,7 @@ export function SpotsMap({presentation,isAuthenticated=false}:{presentation?:Map
     const pendingMarker=useRef<LeafletMarker|null>(null);
     const active = spots.find((spot) => spot.id === activeId) ?? null;
 
-    const visible = useMemo(() => spots.filter((spot) => (filter === "all" || spot.category === filter) && `${spot.name} ${spot.district}`.toLowerCase().includes(query.toLowerCase())), [filter, query]);
+    const visible = useMemo(() => spots.filter((spot) => (filter === "all" || spot.category === filter) && `${spot.name} ${spot.district}`.toLowerCase().includes(query.toLowerCase())), [filter, query, spots]);
 
     useEffect(() => {
         const stored = localStorage.getItem("skate-companion-favourite-spots");
@@ -164,6 +171,7 @@ export function SpotsMap({presentation,isAuthenticated=false}:{presentation?:Map
         setSaved(next);
         localStorage.setItem("skate-companion-favourite-spots", JSON.stringify(next));
     };
+    const submitRating=async(value:number)=>{if(!isAuthenticated){setRatingGate(true);return}if(!active?.persisted)return;setRating(value);await rateSpot(active.id,value)};
 
     return (
         <main className={styles.page}>
@@ -197,21 +205,24 @@ export function SpotsMap({presentation,isAuthenticated=false}:{presentation?:Map
                 </div>
 
                 {active && <aside className={styles.drawer} aria-label={`${active.name} details`}>
-                    <div className={`${styles.photo} ${styles[active.palette]}`}><div className={styles.photoNoise} /><span>{active.district}</span><button aria-label="Close spot details" onClick={() => setActiveId("")}><X /></button><div className={styles.photoCaption}>Community photo <small>by {active.author}</small></div></div>
+                    {active.media?.[0]?<div className={styles.mediaHero}>{active.media[0].type==="video"?<video controls preload="metadata" src={active.media[0].url}/>:<img src={active.media[0].url} alt={active.media[0].caption??active.name}/>}<span>{active.district}</span><button aria-label="Close spot details" onClick={() => setActiveId("")}><X /></button></div>:<div className={`${styles.photo} ${styles[active.palette]}`}><div className={styles.photoNoise} /><span>{active.district}</span><button aria-label="Close spot details" onClick={() => setActiveId("")}><X /></button><div className={styles.photoCaption}>No community media yet</div></div>}
                     <div className={styles.drawerBody}>
                         <div className={styles.spotMeta}><span>{labels[active.category]}</span><span>•</span><span>{active.district}</span></div>
                         <h2>{active.name}</h2>
                         <div className={styles.stats}><strong><Star /> {active.rating}</strong><span>{active.ratings} ratings</span><span><Heart /> {active.favourites} favourites</span></div>
                         <div className={styles.tags}>{active.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                         <p className={styles.description}>{active.description}</p>
+                        {Boolean(active.media?.length)&&<section className={styles.mediaGrid}>{active.media!.slice(1).map(item=><figure key={item.id}>{item.type==="video"?<video controls preload="metadata" src={item.url}/>:<img src={item.url} alt={item.caption??`${active.name} community upload`}/>} {item.caption&&<figcaption>{item.caption}</figcaption>}</figure>)}</section>}
                         <div className={styles.actions}><button className={saved.includes(active.id) ? styles.saved : ""} onClick={() => toggleSaved(active.id)}><Bookmark />{saved.includes(active.id) ? "Saved" : "Favourite"}</button><button><Share2 /> Share</button></div>
-                        <section className={styles.rate}><div><strong>Rate this spot</strong><span>{rating ? `You gave it ${rating} stars` : "How was your session?"}</span></div><div>{[1,2,3,4,5].map((value) => <button key={value} aria-label={`Rate ${value} stars`} onClick={() => setRating(value)} className={value <= rating ? styles.rated : ""}><Star /></button>)}</div></section>
-                        <section className={styles.discussion}><header><strong><MessageCircle /> Spot talk</strong><button>View all 18</button></header><blockquote>“{active.quote}”<footer><span>{active.author.slice(0, 1).toUpperCase()}</span><div><strong>@{active.author}</strong><small><Clock3 /> 2h ago</small></div></footer></blockquote><button className={styles.reply}>Join the discussion</button></section>
+                        <section className={styles.rate}><div><strong>Rate this spot</strong><span>{rating ? `You gave it ${rating} stars` : isAuthenticated?"How was your session?":"Sign in to leave a rating"}</span></div><div>{[1,2,3,4,5].map((value) => <button key={value} aria-label={`Rate ${value} stars`} onClick={() => submitRating(value)} className={value <= rating ? styles.rated : ""}><Star /></button>)}</div></section>
+                        <section className={styles.discussion}><header><strong><MessageCircle /> Spot talk</strong><span>{active.comments?.length??0} comments</span></header>{active.comments?.length?active.comments.map(comment=><blockquote key={comment.id}>“{comment.body}”<footer><span>S</span><div><strong>Community skater</strong><small><Clock3 /> {new Date(comment.createdAt).toLocaleDateString()}</small></div></footer></blockquote>):<p className={styles.emptyTalk}>No comments yet. Start the spot talk.</p>}{active.persisted&&(isAuthenticated?<><form action={addSpotComment} className={styles.commentForm}><input type="hidden" name="spot_id" value={active.id}/><textarea name="body" required maxLength={2000} placeholder="Share a line, tip or session update…"/><button type="submit">Post comment</button></form><form action={uploadSpotMedia} className={styles.uploadForm}><input type="hidden" name="spot_id" value={active.id}/><label>Add a photo or video<input type="file" name="media" required accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"/></label><input name="caption" maxLength={240} placeholder="Optional caption"/><button type="submit">Submit media for review</button></form></>:<button className={styles.reply} onClick={()=>setContributeGate(true)}>Sign in to contribute</button>)}</section>
                     </div>
                 </aside>}
             </section>
 
             {addMode&&!isAuthenticated&&<div className={styles.modalBackdrop} onMouseDown={cancelAdd}><section className={styles.modal} onMouseDown={event=>event.stopPropagation()}><button className={styles.modalClose} onClick={cancelAdd}><X/></button><AccountBenefitsPrompt title="Sign in to add a spot." description="Community pins belong to players, so you’ll need a free account before sharing one."/></section></div>}
+            {ratingGate&&<div className={styles.modalBackdrop} onMouseDown={()=>setRatingGate(false)}><section className={styles.modal} onMouseDown={event=>event.stopPropagation()}><button className={styles.modalClose} onClick={()=>setRatingGate(false)}><X/></button><AccountBenefitsPrompt title="Sign in to review spots." description="Ratings come from identifiable community accounts so every player gets one fair vote per spot."/></section></div>}
+            {contributeGate&&<div className={styles.modalBackdrop} onMouseDown={()=>setContributeGate(false)}><section className={styles.modal} onMouseDown={event=>event.stopPropagation()}><button className={styles.modalClose} onClick={()=>setContributeGate(false)}><X/></button><AccountBenefitsPrompt title="Sign in to join spot talk." description="Create a free account to add comments, photos and session videos to this spot."/></section></div>}
             {addMode&&isAuthenticated&&pendingPosition&&<div className={styles.modalBackdrop}><form action={createCommunitySpot} className={styles.modal} onSubmit={()=>cancelAdd()}><button type="button" className={styles.modalClose} onClick={cancelAdd}><X/></button><span className={styles.eyebrow}><Users/> New community spot</span><h2>Tell us about it.</h2><p>Your pin is set at {pendingPosition[0].toFixed(1)}, {pendingPosition[1].toFixed(1)}. Only Studio editors can create Real-World Inspired spots.</p><input type="hidden" name="map_id" value={presentation?.id??"00000000-0000-4000-8000-000000000001"}/><input type="hidden" name="position" value={JSON.stringify(pendingPosition)}/><label>Spot name<input name="name" autoFocus required placeholder="e.g. The library ledges"/></label><label>What makes it worth a session?<textarea name="description" required placeholder="Describe the obstacles, flow and best lines…"/></label><button className={styles.submitButton} type="submit"><Plus/>Submit community spot</button></form></div>}
         </main>
     );
