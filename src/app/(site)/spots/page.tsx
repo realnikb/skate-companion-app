@@ -14,6 +14,7 @@ const polygon=(value:Json):[number,number][]=>Array.isArray(value)?value.filter(
 
 export default async function SpotsPage() {
     let presentation:MapPresentation|undefined;
-    try{const supabase=await createClient();const {data:map}=await supabase.from("skate_maps").select("*").eq("is_published",true).order("created_at").limit(1).maybeSingle();if(map){const {data:districts}=await supabase.from("map_districts").select("*").eq("map_id",map.id).order("sort_order");presentation={id:map.id,name:map.name,assetRoot:map.asset_root,tileUrl:map.tile_url,minZoom:map.min_zoom,maxZoom:map.max_zoom,bounds:map.bounds as [[number,number],[number,number]],districts:(districts??[]).map(d=>{const [x,y]=pair(d.marker_position);return{name:d.name,icon:d.icon_path??"",x,y,accent:d.colour,points:polygon(d.polygon)}})}}}catch{/* Static San Van fallback remains available before migration is applied. */}
-    return <SpotsMap presentation={presentation}/>;
+    let isAuthenticated=false;
+    try{const supabase=await createClient();const [{data:map},{data:auth}]=await Promise.all([supabase.from("skate_maps").select("*").eq("is_published",true).order("created_at").limit(1).maybeSingle(),supabase.auth.getClaims()]);isAuthenticated=Boolean(auth?.claims);if(map){const {data:districts}=await supabase.from("map_districts").select("*").eq("map_id",map.id).order("sort_order");presentation={id:map.id,name:map.name,assetRoot:map.asset_root,tileUrl:map.tile_url,minZoom:map.min_zoom,maxZoom:map.max_zoom,bounds:map.bounds as [[number,number],[number,number]],districts:(districts??[]).map(d=>{const [x,y]=pair(d.marker_position);return{name:d.name,icon:d.icon_path??"",x,y,accent:d.colour,points:polygon(d.polygon)}})}}}catch{/* Static San Van fallback remains available before migration is applied. */}
+    return <SpotsMap presentation={presentation} isAuthenticated={isAuthenticated}/>;
 }
