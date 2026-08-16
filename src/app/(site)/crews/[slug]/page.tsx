@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Bell, ExternalLink, MapPin, Play, Users } from "lucide-react";
 
 import { CrewLogo } from "@/components/crews/crew-logo";
+import { DiscordCommunity } from "@/components/crews/discord-community";
 import { crews, getCrew, recruitmentLabels } from "@/lib/crews/crews";
 import styles from "./crew.module.scss";
 
@@ -35,6 +36,7 @@ export default async function CrewPage({ params }: PageProps<"/crews/[slug]">) {
                 <section id="about"><span>About the crew</span><p>{crew.description}</p><dl><div><dt><Users /> Crew size</dt><dd>{crew.memberCount} skaters</dd></div><div><dt><MapPin /> Based in</dt><dd>{crew.location}</dd></div></dl></section>
                 <section className={styles.languagePanel}><span>Languages spoken</span><div>{crew.languages.map((language) => <p key={language.code}><i aria-hidden="true">{language.flag}</i><strong>{language.name}</strong><small>{language.code.toUpperCase()}</small></p>)}</div></section>
                 <section className={styles.owner}><span>Run by</span><div><i>{crew.owner.displayName.slice(0,1)}</i><p><strong>{crew.owner.displayName}</strong><small>@{crew.owner.handle} · Crew owner</small></p><ArrowUpRight /></div><small>Ownership is verified by Skate Companion</small></section>
+                {crew.discord && <DiscordCommunity {...crew.discord} />}
                 <section id="links"><span>Find them online</span><div className={styles.links}>{crew.socials.map((social) => <a href={social.href} target="_blank" rel="noreferrer" key={social.label}>{social.label}<ExternalLink /></a>)}</div></section>
                 <section className={styles.recruitment}><span>Recruitment</span><h3>{recruitmentLabels[crew.recruitment]}</h3><p>{crew.recruitment === "recruiting" ? "Looking for active skaters who care about filming, grounded style and a good session." : crew.recruitment === "invite-only" ? "The crew is not accepting applications, but may invite skaters they meet in the community." : "This crew’s roster is currently full. Follow them to hear when entries reopen."}</p></section>
             </aside>

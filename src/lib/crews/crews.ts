@@ -17,6 +17,7 @@ export type Crew = {
     owner: { handle: string; displayName: string };
     members: { handle: string; displayName: string; role: string }[];
     socials: { label: string; href: string }[];
+    discord?: { inviteUrl: string; serverName: string; memberCount?: number; onlineCount?: number };
     videos: { title: string; type: string; duration: string; plays: string; color: string }[];
 };
 
@@ -33,6 +34,7 @@ export const crews: Crew[] = [
             { handle: "juno", displayName: "Juno", role: "Member" },
         ],
         socials: [{ label: "YouTube", href: "https://youtube.com" }, { label: "Discord", href: "https://discord.com" }, { label: "Instagram", href: "https://instagram.com" }],
+        discord: { inviteUrl: "https://discord.com", serverName: "Night Shift Community", memberCount: 2846, onlineCount: 312 },
         videos: [
             { title: "NOCTURNE — Full Crew Tape", type: "Crew tape", duration: "08:42", plays: "18.4k", color: "#435c22" },
             { title: "Last Train Home", type: "Street edit", duration: "03:18", plays: "7.2k", color: "#4e344f" },
@@ -53,6 +55,7 @@ export const crews: Crew[] = [
         style: ["Social", "All skill levels"], languages: [{ code: "en", name: "English", flag: "🌐" }, { code: "de", name: "German", flag: "🇩🇪" }, { code: "pt", name: "Portuguese", flag: "🇧🇷" }], recruitment: "recruiting", memberCount: 31, followerCount: "956", accent: "#79a7ff",
         owner: { handle: "olliepop", displayName: "Olliepop" }, members: [{ handle: "olliepop", displayName: "Olliepop", role: "Owner" }],
         socials: [{ label: "Discord", href: "https://discord.com" }, { label: "Instagram", href: "https://instagram.com" }],
+        discord: { inviteUrl: "https://discord.com", serverName: "Sidewalk Radio", memberCount: 956, onlineCount: 87 },
         videos: [{ title: "Sunday Rollout 06", type: "Session", duration: "05:35", plays: "3.7k", color: "#314961" }],
     },
     {

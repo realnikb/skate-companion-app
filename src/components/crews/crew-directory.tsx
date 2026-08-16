@@ -70,7 +70,7 @@ export function CrewDirectory() {
                     <div className={styles.cardTop}><CrewLogo initials={crew.initials} accent={crew.accent} size="medium" /><span className={styles.status} data-status={crew.recruitment}><i />{recruitmentLabels[crew.recruitment]}</span></div>
                     <div className={styles.cardNumber}>0{index + 1}</div>
                     <div className={styles.cardBody}><h3>{crew.name}</h3><p>{crew.tagline}</p><div className={styles.tags}>{crew.style.map((tag) => <span key={tag}>{tag}</span>)}</div></div>
-                    <div className={styles.languages} aria-label={`Languages spoken: ${crew.languages.map((language) => language.name).join(", ")}`}><small>Languages</small>{crew.languages.map((language) => <span title={language.name} key={language.code}>{language.flag}<i>{language.name}</i></span>)}</div>
+                    <div className={styles.cardSignals}><div className={styles.languages} aria-label={`Languages spoken: ${crew.languages.map((language) => language.name).join(", ")}`}><small>Languages</small>{crew.languages.map((language) => <span title={language.name} key={language.code}>{language.flag}<i>{language.name}</i></span>)}</div>{crew.discord && <span className={styles.discordCount}>Discord · {crew.discord.memberCount?.toLocaleString()} members</span>}</div>
                     <div className={styles.cardFooter}><span><Users /> {crew.memberCount} members</span><span>{crew.location}</span><ArrowUpRight /></div>
                 </Link>)}
             </div>
