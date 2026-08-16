@@ -5,23 +5,23 @@ import { ArrowLeft, ArrowUpRight, Bell, ExternalLink, MapPin, Play, Users } from
 
 import { CrewLogo } from "@/components/crews/crew-logo";
 import { DiscordCommunity } from "@/components/crews/discord-community";
-import { crews, getCrew, recruitmentLabels } from "@/lib/crews/crews";
+import { recruitmentLabels } from "@/lib/crews/crews";
+import { getCrew } from "@/lib/crews/get-crews";
 import styles from "./crew.module.scss";
 
-export function generateStaticParams() { return crews.map(({ slug }) => ({ slug })); }
 export async function generateMetadata({ params }: PageProps<"/crews/[slug]">): Promise<Metadata> {
-    const crew = getCrew((await params).slug);
+    const crew = await getCrew((await params).slug);
     return crew ? { title: `${crew.name} | Crews`, description: crew.description } : {};
 }
 
 export default async function CrewPage({ params }: PageProps<"/crews/[slug]">) {
-    const crew = getCrew((await params).slug);
+    const crew = await getCrew((await params).slug);
     if (!crew) notFound();
     return <main className={styles.page} style={{ "--crew-accent": crew.accent } as React.CSSProperties}>
         <section className={styles.hero}>
             <Link className={styles.back} href="/crews"><ArrowLeft /> All crews</Link>
             <div className={styles.glow} />
-            <div className={styles.identity}><CrewLogo initials={crew.initials} accent={crew.accent} /><div><span className={styles.status} data-status={crew.recruitment}><i />{recruitmentLabels[crew.recruitment]}</span><h1>{crew.name}</h1><p>{crew.tagline}</p></div></div>
+            <div className={styles.identity}><CrewLogo initials={crew.initials} accent={crew.accent} imageUrl={crew.logoUrl} /><div><span className={styles.status} data-status={crew.recruitment}><i />{recruitmentLabels[crew.recruitment]}</span><h1>{crew.name}</h1><p>{crew.tagline}</p></div></div>
             <div className={styles.actions}>{crew.recruitment === "recruiting" ? <Link href="/account/sign-in">Apply to crew <ArrowUpRight /></Link> : crew.recruitment === "closed" ? <button><Bell /> Notify me when recruiting</button> : <button><Bell /> Follow crew</button>}</div>
         </section>
         <nav className={styles.subnav}><a href="#latest">Latest</a><a href="#about">About</a><a href="#roster">Roster</a><a href="#links">Links</a></nav>

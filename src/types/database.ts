@@ -10,9 +10,9 @@ export type Database = {
     public: {
         Tables: {
             profiles: {
-                Row:{id:string;handle:string;display_name:string;avatar_path:string|null;bio:string|null;created_at:string;updated_at:string};
-                Insert:{id:string;handle:string;display_name:string;avatar_path?:string|null;bio?:string|null;created_at?:string;updated_at?:string};
-                Update:{id?:string;handle?:string;display_name?:string;avatar_path?:string|null;bio?:string|null;created_at?:string;updated_at?:string};Relationships:[];
+                Row:{id:string;handle:string;display_name:string;avatar_path:string|null;bio:string|null;preferred_controller:"xbox"|"playstation";stance:"regular"|"goofy";created_at:string;updated_at:string};
+                Insert:{id:string;handle:string;display_name:string;avatar_path?:string|null;bio?:string|null;preferred_controller?:"xbox"|"playstation";stance?:"regular"|"goofy";created_at?:string;updated_at?:string};
+                Update:{id?:string;handle?:string;display_name?:string;avatar_path?:string|null;bio?:string|null;preferred_controller?:"xbox"|"playstation";stance?:"regular"|"goofy";created_at?:string;updated_at?:string};Relationships:[];
             };
             crews: {
                 Row:{id:string;owner_id:string;slug:string;name:string;tagline:string|null;description:string|null;logo_path:string;banner_path:string|null;location:string|null;platform:string|null;styles:string[];languages:string[];recruitment_status:"recruiting"|"invite-only"|"closed";recruitment_details:string|null;is_published:boolean;created_at:string;updated_at:string};
