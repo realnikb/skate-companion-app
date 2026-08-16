@@ -44,3 +44,19 @@
 .featured { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; padding: 0 1rem 1rem; }
 .featured strong { margin-right: .15rem; color: rgba(255,255,255,.35); font-size: .5rem; text-transform: uppercase; }
 .featured a,.featured span { padding: .35rem .5rem; border-radius: 999px; background: rgba(121,87,255,.11); color: #aa95ff; font-size: .52rem; font-weight: 750; }
+
+.composer header { padding: .7rem .8rem; }
+.composer textarea { min-height: 2.55rem; padding: .68rem .8rem; border-radius: 999px; resize: none; }
+.composer[data-dragging="true"] { border-color: #7957ff; box-shadow: 0 0 0 3px rgba(121,87,255,.14); }
+.quickActions { grid-template-columns: repeat(3,1fr); }
+.hiddenMediaInput { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.mediaPreview { position: relative; margin: 0 .8rem .8rem; overflow: hidden; border: 1px solid rgba(255,255,255,.1); border-radius: .75rem; background: #090a0d; }
+.mediaPreview img,.mediaPreview video { display: block; width: 100%; max-height: 32rem; object-fit: contain; }
+.mediaPreview>button { position: absolute; top: .55rem; right: .55rem; display: grid; width: 2rem; height: 2rem; padding: 0; place-items: center; border: 0; border-radius: 50%; background: rgba(7,8,10,.78); color: #fff; backdrop-filter: blur(8px); }
+.mediaPreview>button svg { width: .85rem; }
+.mediaPreview>span { position: absolute; right: .6rem; bottom: .6rem; left: .6rem; overflow: hidden; padding: .45rem .6rem; border-radius: .4rem; background: rgba(7,8,10,.72); color: rgba(255,255,255,.7); font-size: .5rem; text-overflow: ellipsis; white-space: nowrap; backdrop-filter: blur(8px); }
+.dropPrompt { position: absolute; inset: 0; z-index: 30; display: grid; place-content: center; justify-items: center; gap: .5rem; border: 2px dashed #957cff; border-radius: 1rem; background: rgba(18,15,32,.94); color: #fff; pointer-events: none; }
+.dropPrompt svg { width: 1.5rem; color: #a990ff; }
+.dropPrompt strong { font-size: .72rem; }
+.postVideo { display: block; width: 100%; max-height: 42rem; background: #050608; }
+@media(max-width:600px){.quickActions{grid-template-columns:repeat(3,1fr)}.quickActions button:nth-child(2){border-right:1px solid rgba(255,255,255,.07)}.quickActions button:nth-child(-n+2){border-bottom:0}}

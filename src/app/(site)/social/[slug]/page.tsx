@@ -7,6 +7,8 @@ import { CrewLogo } from "@/components/crews/crew-logo";
 import { DiscordCommunity } from "@/components/crews/discord-community";
 import { recruitmentLabels } from "@/lib/crews/crews";
 import { getCrew } from "@/lib/crews/get-crews";
+import { createClient } from "@/lib/supabase/server";
+import { CrewBrandEditor } from "./crew-brand-editor";
 import styles from "./crew.module.scss";
 
 export async function generateMetadata({ params }: PageProps<"/social/[slug]">): Promise<Metadata> {
@@ -17,7 +19,8 @@ export async function generateMetadata({ params }: PageProps<"/social/[slug]">):
 export default async function CrewPage({ params }: PageProps<"/social/[slug]">) {
     const crew = await getCrew((await params).slug);
     if (!crew) notFound();
-    return <main className={styles.page} style={{ "--crew-accent": crew.accent } as React.CSSProperties}>
+    const supabase=await createClient(),{data:auth}=await supabase.auth.getClaims(),userId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null,isOwner=userId===crew.ownerId;
+    return <main className={styles.page} style={{ "--crew-accent": crew.accent, "--crew-banner": crew.bannerUrl?`url("${crew.bannerUrl}")`:"none" } as React.CSSProperties}>
         <section className={styles.hero}>
             <Link className={styles.back} href="/social"><ArrowLeft /> All crews</Link>
             <div className={styles.glow} />
@@ -33,6 +36,7 @@ export default async function CrewPage({ params }: PageProps<"/social/[slug]">) 
                 <div className={styles.roster}>{crew.members.map((member) => <article key={member.handle}><span>{member.displayName.slice(0, 1)}</span><div><strong>{member.displayName}</strong><small>@{member.handle}</small></div><em data-owner={member.role === "Owner"}>{member.role}</em></article>)}</div>
             </section>
             <aside>
+                {isOwner&&<CrewBrandEditor crewId={crew.id} slug={crew.slug} color={crew.accent}/>}
                 <section id="about"><span>About the crew</span><p>{crew.description}</p><dl><div><dt><Users /> Crew size</dt><dd>{crew.memberCount} skaters</dd></div><div><dt><MapPin /> Based in</dt><dd>{crew.location}</dd></div></dl></section>
                 <section className={styles.languagePanel}><span>Languages spoken</span><div>{crew.languages.map((language) => <p key={language.code}><i aria-hidden="true">{language.flag}</i><strong>{language.name}</strong><small>{language.code.toUpperCase()}</small></p>)}</div></section>
                 <section className={styles.owner}><span>Run by</span><div><i>{crew.owner.displayName.slice(0,1)}</i><p><strong>{crew.owner.displayName}</strong><small>@{crew.owner.handle} · Crew owner</small></p><ArrowUpRight /></div><small>Ownership is verified by Skate Companion</small></section>

@@ -10,7 +10,7 @@ import type { ControllerPlatform } from "@/types/trick";
 import { updateProfile, type ProfileState } from "./actions";
 import styles from "./account.module.scss";
 
-type Props={displayName:string;email:string;avatarUrl?:string;controller:ControllerPlatform;stance:SkaterStance};
+type Props={displayName:string;handle:string;email:string;avatarUrl?:string;controller:ControllerPlatform;stance:SkaterStance};
 const initialState:ProfileState={status:"idle"};
 const cropSize=280;
 
@@ -18,6 +18,7 @@ type CropImage={url:string;width:number;height:number;name:string};
 
 export function ProfileEditor(props:Props){
  const [state,action,pending]=useActionState(updateProfile,initialState);
+ const [displayName,setDisplayName]=useState(props.displayName),[handle,setHandle]=useState(props.handle.startsWith("skater_")?props.displayName.replace(/[^A-Za-z0-9_]/g,"").slice(0,24):props.handle);
  const [avatarPreview,setAvatarPreview]=useState(props.avatarUrl),[controller,setController]=useState(props.controller),[stance,setStance]=useState(props.stance);
  const [cropImage,setCropImage]=useState<CropImage>(),[croppedAvatar,setCroppedAvatar]=useState<File>(),[zoom,setZoom]=useState(1),[position,setPosition]=useState({x:0,y:0});
  const drag=useRef<{x:number;y:number;startX:number;startY:number}|undefined>(undefined);
@@ -56,7 +57,7 @@ export function ProfileEditor(props:Props){
   </section>
   <section className={styles.formSection}>
    <div className={styles.sectionHeading}><UserRound/><div><span>Your details</span><h2>Profile</h2></div></div>
-   <div className={styles.fields}><label>Display name<input name="display_name" defaultValue={props.displayName} maxLength={50} autoComplete="nickname" required/></label><label>Email address<input name="email" type="email" defaultValue={props.email} maxLength={254} autoComplete="email" required/><small>Changing this requires confirmation by email.</small></label></div>
+   <div className={styles.fields}><label>Display name<input name="display_name" value={displayName} onChange={event=>setDisplayName(event.target.value)} maxLength={50} autoComplete="nickname" required/></label><label>Profile tag<input name="handle" value={handle} onChange={event=>setHandle(event.target.value.replace(/[^A-Za-z0-9_]/g,""))} minLength={3} maxLength={24} pattern="[A-Za-z0-9_]{3,24}" required/><small>This is how you appear in tags: @{handle||"YourName"}</small></label><label>Email address<input name="email" type="email" defaultValue={props.email} maxLength={254} autoComplete="email" required/><small>Changing this requires confirmation by email.</small></label></div>
   </section>
   <section className={styles.formSection}>
    <div className={styles.sectionHeading}><Gamepad2/><div><span>Your setup</span><h2>Skate preferences</h2></div></div>

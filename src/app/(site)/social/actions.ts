@@ -22,7 +22,7 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
   const mapPositionRaw = value(data, "map_position");
   const taggedUserIds = [...new Set(data.getAll("tagged_user_ids").map(String))];
   const taggedCrewIds = [...new Set(data.getAll("tagged_crew_ids").map(String))];
-  const image = data.get("image");
+  const media = data.get("media") ?? data.get("image");
 
   if (!body || body.length > 2000) return { status: "error", message: "Write something up to 2,000 characters." };
   if (externalVideo && !externalVideo.startsWith("https://")) return { status: "error", message: "Video links must use HTTPS." };
@@ -43,16 +43,21 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
   }
 
   let imagePath: string | null = null;
-  if (image instanceof File && image.size) {
-    if (!["image/jpeg", "image/png", "image/webp", "image/gif"].includes(image.type) || image.size > 10 * 1024 * 1024) return { status: "error", message: "Use a JPG, PNG, WebP or GIF up to 10 MB." };
-    const extension = image.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || "webp";
+  let mediaType: "image" | "video" | null = null;
+  if (media instanceof File && media.size) {
+    const imageTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    const videoTypes = ["video/mp4", "video/webm", "video/quicktime"];
+    mediaType = imageTypes.includes(media.type) ? "image" : videoTypes.includes(media.type) ? "video" : null;
+    const limit = mediaType === "video" ? 100 * 1024 * 1024 : 10 * 1024 * 1024;
+    if (!mediaType || media.size > limit) return { status: "error", message: "Use a JPG, PNG, WebP or GIF up to 10 MB, or an MP4, WebM or MOV up to 100 MB." };
+    const extension = media.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") || (mediaType === "video" ? "mp4" : "webp");
     imagePath = `${userId}/${crypto.randomUUID()}.${extension}`;
-    const uploaded = await supabase.storage.from("social-media").upload(imagePath, image, { contentType: image.type, cacheControl: "31536000", upsert: false });
+    const uploaded = await supabase.storage.from("social-media").upload(imagePath, media, { contentType: media.type, cacheControl: "31536000", upsert: false });
     if (uploaded.error) return { status: "error", message: uploaded.error.message };
   }
 
   const crewId = identity.startsWith("crew:") ? identity.slice(5) : null;
-  const inserted = await supabase.from("social_posts").insert({ author_id: userId, crew_id: crewId, body, post_type: postType, image_path: imagePath, external_video_url: externalVideo, location, session_at: sessionRaw ? new Date(sessionRaw).toISOString() : null, map_id: mapId, map_position: mapPosition, is_published: true }).select("id").single();
+  const inserted = await supabase.from("social_posts").insert({ author_id: userId, crew_id: crewId, body, post_type: mediaType === "video" ? "video" : postType, image_path: imagePath, media_type: mediaType, external_video_url: externalVideo, location, session_at: sessionRaw ? new Date(sessionRaw).toISOString() : null, map_id: mapId, map_position: mapPosition, is_published: true }).select("id").single();
   if (inserted.error) {
     if (imagePath) await supabase.storage.from("social-media").remove([imagePath]);
     return { status: "error", message: inserted.error.message };
