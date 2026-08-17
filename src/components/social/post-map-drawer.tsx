@@ -1,9 +1,29 @@
 "use client";
+
 import Script from "next/script";
 import { useEffect,useRef,useState } from "react";
 import { MapPin,X } from "lucide-react";
 import { Drawer,DrawerClose,DrawerContent,DrawerDescription,DrawerHeader,DrawerTitle,DrawerTrigger } from "@/components/ui/drawer";
 import type { SocialPost } from "@/lib/social/get-posts";
 import styles from "./social.module.scss";
-type MapApi={remove:()=>void;fitBounds:(bounds:object,options?:object)=>void;setView:(point:[number,number],zoom:number)=>void;invalidateSize:()=>void};type Leaflet={CRS:{Simple:object};map:(node:HTMLDivElement,options:object)=>MapApi;latLngBounds:(bounds:[[number,number],[number,number]])=>object;tileLayer:(url:string,options:object)=>{addTo:(map:MapApi)=>void};divIcon:(options:object)=>object;marker:(point:[number,number],options:object)=>{addTo:(map:MapApi)=>unknown}};
-export function PostMapDrawer({pin}:{pin:NonNullable<SocialPost["mapPin"]>}){const [open,setOpen]=useState(false),[ready,setReady]=useState(false),node=useRef<HTMLDivElement>(null);useEffect(()=>{if(!open||!ready||!node.current)return;const L=(window as unknown as {L?:Leaflet}).L;if(!L)return;const bounds=L.latLngBounds(pin.bounds),map=L.map(node.current,{crs:L.CRS.Simple,zoomControl:true,attributionControl:false,minZoom:pin.minZoom,maxZoom:pin.maxZoom,maxBounds:bounds,maxBoundsViscosity:1});L.tileLayer(`${pin.assetRoot}/${pin.tileUrl}`,{tileSize:256,minZoom:pin.minZoom,maxZoom:pin.maxZoom,maxNativeZoom:pin.maxZoom,noWrap:true,bounds}).addTo(map);const [[minLat,minLng],[maxLat,maxLng]]=pin.bounds,point:[number,number]=[maxLat-(pin.y/100)*(maxLat-minLat),minLng+(pin.x/100)*(maxLng-minLng)];L.marker(point,{icon:L.divIcon({className:"post-map-pin",iconSize:[34,42],iconAnchor:[17,38],html:"<span>●</span>"})}).addTo(map);map.fitBounds(bounds,{animate:false});setTimeout(()=>{map.invalidateSize();map.setView(point,Math.min(pin.maxZoom,2))},100);return()=>map.remove()},[open,ready,pin]);return <Drawer open={open} onOpenChange={setOpen} showSwipeHandle><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/><Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" strategy="afterInteractive" onLoad={()=>setReady(true)}/><DrawerTrigger className={styles.locationButton}><MapPin/>Pinned on {pin.mapName}</DrawerTrigger><DrawerContent className={styles.mapDrawer}><DrawerHeader><div><DrawerTitle>{pin.mapName}</DrawerTitle><DrawerDescription>The exact location pinned to this post.</DrawerDescription></div><DrawerClose aria-label="Close map"><X/></DrawerClose></DrawerHeader><div ref={node} className={styles.postMapCanvas}/></DrawerContent></Drawer>}
+
+type MapApi={remove:()=>void;fitBounds:(bounds:object,options?:object)=>void;setView:(point:[number,number],zoom:number)=>void;invalidateSize:()=>void};
+type Leaflet={CRS:{Simple:object};map:(node:HTMLDivElement,options:object)=>MapApi;latLngBounds:(bounds:[[number,number],[number,number]])=>object;tileLayer:(url:string,options:object)=>{addTo:(map:MapApi)=>void};divIcon:(options:object)=>object;marker:(point:[number,number],options:object)=>{addTo:(map:MapApi)=>unknown}};
+
+export function PostMapDrawer({pin}:{pin:NonNullable<SocialPost["mapPin"]>}){
+  const [open,setOpen]=useState(false),[ready,setReady]=useState(false),node=useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    if(!open||!ready||!node.current)return;
+    const L=(window as unknown as {L?:Leaflet}).L;if(!L)return;
+    const bounds=L.latLngBounds(pin.bounds),map=L.map(node.current,{crs:L.CRS.Simple,zoomControl:true,attributionControl:false,minZoom:pin.minZoom,maxZoom:pin.maxZoom,maxBounds:bounds,maxBoundsViscosity:1});
+    L.tileLayer(`${pin.assetRoot}/${pin.tileUrl}`,{tileSize:256,minZoom:pin.minZoom,maxZoom:pin.maxZoom,maxNativeZoom:pin.maxZoom,noWrap:true,bounds}).addTo(map);
+    const [[minLat,minLng],[maxLat,maxLng]]=pin.bounds,point:[number,number]=[maxLat-(pin.y/100)*(maxLat-minLat),minLng+(pin.x/100)*(maxLng-minLng)];
+    L.marker(point,{icon:L.divIcon({className:"post-map-pin",iconSize:[34,42],iconAnchor:[17,38],html:"<span>●</span>"})}).addTo(map);
+    map.fitBounds(bounds,{animate:false});
+    const resize=()=>{map.invalidateSize();map.setView(point,Math.min(pin.maxZoom,2))};
+    const timers=[window.setTimeout(resize,50),window.setTimeout(resize,500)];
+    const observer=new ResizeObserver(()=>map.invalidateSize());observer.observe(node.current);
+    return()=>{timers.forEach(window.clearTimeout);observer.disconnect();map.remove()};
+  },[open,ready,pin]);
+  return <Drawer open={open} onOpenChange={setOpen} showSwipeHandle><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/><Script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" strategy="afterInteractive" onReady={()=>setReady(true)}/><DrawerTrigger className={styles.locationButton}><MapPin/>Pinned on {pin.mapName}</DrawerTrigger><DrawerContent className={styles.mapDrawer}><DrawerHeader><div><DrawerTitle>{pin.mapName}</DrawerTitle><DrawerDescription>The exact location pinned to this post.</DrawerDescription></div><DrawerClose aria-label="Close map"><X/></DrawerClose></DrawerHeader><div ref={node} className={styles.postMapCanvas}/></DrawerContent></Drawer>;
+}
