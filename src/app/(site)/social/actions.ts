@@ -23,6 +23,10 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
   const taggedUserIds = [...new Set(data.getAll("tagged_user_ids").map(String))];
   const taggedCrewIds = [...new Set(data.getAll("tagged_crew_ids").map(String))];
   const media = data.get("media") ?? data.get("image");
+  const directPath = value(data, "uploaded_media_path") || null;
+  const directType = value(data, "uploaded_media_type") as "image" | "video" | "";
+  const directMime = value(data, "uploaded_media_mime");
+  const directSize = Number(value(data, "uploaded_media_size") || 0);
 
   if (!body || body.length > 2000) return { status: "error", message: "Write something up to 2,000 characters." };
   if (externalVideo && !externalVideo.startsWith("https://")) return { status: "error", message: "Video links must use HTTPS." };
@@ -42,8 +46,16 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
     if (!publishedMap) return { status: "error", message: "That game map is no longer available." };
   }
 
-  let imagePath: string | null = null;
-  let mediaType: "image" | "video" | null = null;
+  let imagePath: string | null = directPath;
+  let mediaType: "image" | "video" | null = directType || null;
+  if (directPath) {
+    const directLimit = directType === "video" ? 100 * 1024 * 1024 : 10 * 1024 * 1024;
+    const directMimes = directType === "video" ? ["video/mp4", "video/webm", "video/quicktime"] : ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!directPath.startsWith(`${userId}/social/`) || !["image", "video"].includes(directType) || !directMimes.includes(directMime) || !Number.isFinite(directSize) || directSize <= 0 || directSize > directLimit) return { status: "error", message: "The uploaded media details are invalid." };
+    const folder = directPath.slice(0, directPath.lastIndexOf("/")), fileName = directPath.slice(directPath.lastIndexOf("/") + 1);
+    const { data: stored } = await supabase.storage.from("social-media").list(folder, { search: fileName, limit: 2 });
+    if (!stored?.some((object) => object.name === fileName)) return { status: "error", message: "We couldn't verify the uploaded media. Please try again." };
+  }
   if (media instanceof File && media.size) {
     const imageTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
     const videoTypes = ["video/mp4", "video/webm", "video/quicktime"];

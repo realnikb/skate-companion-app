@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useActionState, useRef, useState } from "react";
 import { CalendarDays, ImagePlus, MapPin, Send, Users, X } from "lucide-react";
 import { createSocialPost, type PostState } from "@/app/(site)/social/actions";
+import { removeSocialMedia, uploadSocialMedia } from "@/lib/social/upload-media";
 import { PostMapPicker, type PostMapOption } from "./post-map-picker";
 import { PostTagPicker, type PostTagOption } from "./post-tag-picker";
 import styles from "./social.module.scss";
@@ -25,8 +26,27 @@ export function PostComposer({ playerName, ownedCrews = [], maps = [], tagOption
   const [gate, setGate] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [tagPickerKey, setTagPickerKey] = useState(0);
-  const [state, action, pending] = useActionState(async (previous: PostState, data: FormData) => {
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+  const [state, action, pending] = useActionState(async (previous: PostState, data: FormData): Promise<PostState> => {
+    let uploadedPath: string | null = null;
+    try {
+      if (media) {
+        setUploadProgress(0);
+        const uploaded = await uploadSocialMedia(media, setUploadProgress);
+        uploadedPath = uploaded.path;
+        data.delete("media");
+        data.set("uploaded_media_path", uploaded.path);
+        data.set("uploaded_media_type", uploaded.mediaType);
+        data.set("uploaded_media_mime", uploaded.mimeType);
+        data.set("uploaded_media_size", String(uploaded.size));
+      }
+    } catch (error) {
+      setUploadProgress(null);
+      return { status: "error", message: error instanceof Error ? error.message : "The upload failed. Please try again." };
+    }
     const next = await createSocialPost(previous, data);
+    if (next.status === "error" && uploadedPath) await removeSocialMedia(uploadedPath);
+    setUploadProgress(null);
     if (next.status === "success") {
       form.current?.reset(); setExpanded(false); setMode("post"); setMedia(null); setPreview((url) => { if (url) URL.revokeObjectURL(url); return null; }); setShowMap(false); setTagPickerKey((key) => key + 1);
     }
@@ -67,7 +87,8 @@ export function PostComposer({ playerName, ownedCrews = [], maps = [], tagOption
     </>}
     {dragging && <div className={styles.dropPrompt}><ImagePlus /><strong>Drop your photo or video</strong></div>}
     {state.message && <p data-error={state.status === "error"}>{state.message}</p>}
-    {signedIn && expanded && <button className={styles.publish} disabled={pending}><Send />{pending ? "Posting..." : "Post"}</button>}
+    {uploadProgress!==null&&<div className={styles.uploadProgress}><span style={{width:`${uploadProgress}%`}}/><small>Uploading {uploadProgress}%</small></div>}
+    {signedIn && expanded && <button className={styles.publish} disabled={pending}><Send />{uploadProgress!==null?`Uploading ${uploadProgress}%`:pending?"Posting...":"Post"}</button>}
     {gate && <div className={styles.accountGate} role="dialog" aria-modal="true" aria-label="Create an account to post"><button type="button" className={styles.closeGate} onClick={() => setGate(false)} aria-label="Close"><X /></button><span className={styles.gateIcon}><Send /></span><strong>Ready to share it?</strong><p>Create a free account to post photos, videos and updates with the skate community.</p><Link href="/account/sign-up?next=/social">Create free account</Link><Link className={styles.signInLink} href="/account/sign-in?next=/social">I already have an account</Link></div>}
   </form>;
 }
