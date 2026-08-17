@@ -100,12 +100,13 @@ export async function toggleSocialPostLike(postId:string){
   revalidatePath("/social");return {ok:true,liked:!existing};
 }
 
-export async function addSocialPostComment(postId:string,body:string){
+export async function addSocialPostComment(postId:string,body:string,media?:{path:string;type:"image"|"video";mimeType:string;size:number}){
   const supabase=await createClient();const {data:auth}=await supabase.auth.getClaims();const userId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;
   if(!userId)return {ok:false,message:"Sign in to comment."};
   const clean=body.trim();if(!clean||clean.length>2000)return {ok:false,message:"Write a comment up to 2,000 characters."};
-  const {data,error}=await supabase.from("social_post_comments").insert({post_id:postId,user_id:userId,body:clean}).select("id,body,created_at").single();
+  if(media){const limit=media.type==="video"?100*1024*1024:10*1024*1024,allowed=media.type==="video"?["video/mp4","video/webm","video/quicktime"]:["image/jpeg","image/png","image/webp","image/gif"];if(!media.path.startsWith(`${userId}/social/`)||!allowed.includes(media.mimeType)||media.size<=0||media.size>limit)return {ok:false,message:"The reply attachment is invalid."};const folder=media.path.slice(0,media.path.lastIndexOf("/")),fileName=media.path.slice(media.path.lastIndexOf("/")+1),{data:stored}=await supabase.storage.from("social-media").list(folder,{search:fileName,limit:2});if(!stored?.some(object=>object.name===fileName))return {ok:false,message:"We couldn't verify the reply attachment."}}
+  const {data,error}=await supabase.from("social_post_comments").insert({post_id:postId,user_id:userId,body:clean,media_path:media?.path??null,media_type:media?.type??null}).select("id,body,media_path,media_type,created_at").single();
   if(error)return {ok:false,message:error.message};
-  const {data:profile}=await supabase.from("profiles").select("display_name,handle").eq("id",userId).maybeSingle();
-  revalidatePath("/social");return {ok:true,comment:{id:data.id,body:data.body,createdAt:data.created_at,author:{name:profile?.display_name??"Skater",handle:profile?.handle??"skater"}}};
+  const {data:profile}=await supabase.from("profiles").select("display_name,handle,avatar_path").eq("id",userId).maybeSingle();const base=process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/,"");
+  revalidatePath("/social");return {ok:true,comment:{id:data.id,body:data.body,createdAt:data.created_at,media:data.media_path&&data.media_type?{url:`${base}/storage/v1/object/public/social-media/${data.media_path}`,type:data.media_type}:undefined,author:{name:profile?.display_name??"Skater",handle:profile?.handle??"skater",avatarUrl:profile?.avatar_path&&base?`${base}/storage/v1/object/public/profile-media/${profile.avatar_path}`:undefined}}};
 }
