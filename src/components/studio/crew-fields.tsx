@@ -1,7 +1,8 @@
 import styles from "@/app/studio/studio.module.scss";
+import { ImageCropField } from "./image-crop-field";
 
 type Profile = { id: string; handle: string; display_name: string };
-type CrewValue = { id?: string; owner_id?: string; name?: string; slug?: string; tagline?: string | null; description?: string | null; location?: string | null; platform?: string | null; primary_color?: string; styles?: string[]; languages?: string[]; recruitment_status?: string; recruitment_details?: string | null; is_published?: boolean };
+type CrewValue = { id?: string; owner_id?: string | null; name?: string; slug?: string; tagline?: string | null; description?: string | null; location?: string | null; platform?: string | null; primary_color?: string; styles?: string[]; languages?: string[]; recruitment_status?: string; recruitment_details?: string | null; is_published?: boolean };
 
 export function CrewFields({ profiles, crew = {} }: { profiles: Profile[]; crew?: CrewValue }) {
     return <>
@@ -15,12 +16,14 @@ export function CrewFields({ profiles, crew = {} }: { profiles: Profile[]; crew?
             <div className={styles.field}><label htmlFor="recruitment_details">Recruitment details</label><textarea id="recruitment_details" name="recruitment_details" defaultValue={crew.recruitment_details ?? ""} maxLength={1500} /></div>
         </section>
         <aside className={`${styles.panel} ${styles.publishingPanel}`}><h2>Ownership & publishing</h2>
-            <div className={styles.field}><label htmlFor="owner_id">Owner *</label><select id="owner_id" name="owner_id" defaultValue={crew.owner_id ?? ""} required><option value="" disabled>Select a player</option>{profiles.map(profile => <option value={profile.id} key={profile.id}>{profile.display_name} (@{profile.handle})</option>)}</select></div>
+            <div className={styles.field}><label htmlFor="owner_id">Owner</label><select id="owner_id" name="owner_id" defaultValue={crew.owner_id ?? ""}><option value="">Unclaimed — assign later</option>{profiles.map(profile => <option value={profile.id} key={profile.id}>{profile.display_name} (@{profile.handle})</option>)}</select><small>The crew can be created before its owner has an account.</small></div>
             <div className={styles.field}><label htmlFor="primary_color">Primary colour</label><input id="primary_color" name="primary_color" type="color" defaultValue={crew.primary_color ?? "#7957FF"} /></div>
             <div className={styles.field}><label htmlFor="recruitment_status">Recruitment</label><select id="recruitment_status" name="recruitment_status" defaultValue={crew.recruitment_status ?? "closed"}><option value="recruiting">Recruiting now</option><option value="invite-only">Invite only</option><option value="closed">Closed</option></select></div>
             <div className={styles.field}><label htmlFor="is_published">Visibility</label><select id="is_published" name="is_published" defaultValue={String(crew.is_published ?? false)}><option value="false">Draft</option><option value="true">Published</option></select></div>
-            <div className={styles.field}><label htmlFor="logo">{crew.id ? "Replace logo" : "Logo *"}</label><input id="logo" name="logo" type="file" accept="image/jpeg,image/png,image/webp,image/gif" required={!crew.id} /></div>
-            <div className={styles.field}><label htmlFor="banner">{crew.id ? "Replace banner" : "Banner"}</label><input id="banner" name="banner" type="file" accept="image/jpeg,image/png,image/webp,image/gif" /></div>
+            <ImageCropField name="logo" label="Crew logo" defaultUrl={mediaUrl((crew as CrewValue & { logo_path?: string }).logo_path)} required={!crew.id} aspectRatio={1} outputWidth={800} outputHeight={800} />
+            <ImageCropField name="banner" label="Crew banner" defaultUrl={mediaUrl((crew as CrewValue & { banner_path?: string | null }).banner_path)} aspectRatio={16 / 5} outputWidth={1920} outputHeight={600} />
         </aside>
     </>;
 }
+
+function mediaUrl(path?: string | null) { const base = process.env.NEXT_PUBLIC_SUPABASE_URL; return path && base ? `${base.replace(/\/$/, "")}/storage/v1/object/public/crew-media/${path}` : undefined; }

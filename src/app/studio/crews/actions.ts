@@ -13,10 +13,10 @@ function fields(data: FormData) {
     const name = value(data, "name"), slug = value(data, "slug"), ownerId = value(data, "owner_id");
     const primaryColor = value(data, "primary_color").toUpperCase();
     const recruitmentStatus = value(data, "recruitment_status");
-    if (!name || !ownerId || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error("Name, owner and a valid lowercase slug are required.");
+    if (!name || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) throw new Error("Name and a valid lowercase slug are required.");
     if (!/^#[0-9A-F]{6}$/.test(primaryColor)) throw new Error("Choose a valid primary colour.");
     if (!roles.has(recruitmentStatus)) throw new Error("Choose a valid recruitment status.");
-    return { owner_id: ownerId, name, slug, tagline: nullable(data, "tagline"), description: nullable(data, "description"), location: nullable(data, "location"), platform: nullable(data, "platform"), primary_color: primaryColor, styles: value(data, "styles").split(",").map(item => item.trim()).filter(Boolean).slice(0, 8), languages: value(data, "languages").split(",").map(item => item.trim().toLowerCase()).filter(item => /^[a-z]{2}$/.test(item)).slice(0, 12), recruitment_status: recruitmentStatus as "recruiting" | "invite-only" | "closed", recruitment_details: nullable(data, "recruitment_details"), is_published: value(data, "is_published") === "true" };
+    return { owner_id: ownerId || null, name, slug, tagline: nullable(data, "tagline"), description: nullable(data, "description"), location: nullable(data, "location"), platform: nullable(data, "platform"), primary_color: primaryColor, styles: value(data, "styles").split(",").map(item => item.trim()).filter(Boolean).slice(0, 8), languages: value(data, "languages").split(",").map(item => item.trim().toLowerCase()).filter(item => /^[a-z]{2}$/.test(item)).slice(0, 12), recruitment_status: recruitmentStatus as "recruiting" | "invite-only" | "closed", recruitment_details: nullable(data, "recruitment_details"), is_published: value(data, "is_published") === "true" };
 }
 
 async function uploadImage(supabase: Awaited<ReturnType<typeof requireStudioUser>>["supabase"], userId: string, file: FormDataEntryValue | null, kind: string, limit: number) {
@@ -37,8 +37,10 @@ export async function createCrew(_state: CrewActionState, data: FormData): Promi
         const bannerPath = await uploadImage(supabase, user.id, data.get("banner"), "banner", 10 * 1048576);
         const { data: crew, error } = await supabase.from("crews").insert({ ...crewFields, logo_path: logoPath, banner_path: bannerPath }).select("id").single();
         if (error) { await supabase.storage.from("crew-media").remove([logoPath, ...(bannerPath ? [bannerPath] : [])]); return { status: "error", message: error.code === "23505" ? "That slug is already in use." : error.message }; }
-        const member = await supabase.from("crew_members").insert({ crew_id: crew.id, user_id: crewFields.owner_id, role: "owner" });
-        if (member.error) return { status: "error", message: `Crew created, but its owner could not be added: ${member.error.message}` };
+        if (crewFields.owner_id) {
+            const member = await supabase.from("crew_members").insert({ crew_id: crew.id, user_id: crewFields.owner_id, role: "owner" });
+            if (member.error) return { status: "error", message: `Crew created, but its owner could not be added: ${member.error.message}` };
+        }
         revalidatePath("/studio/crews"); revalidatePath("/social"); redirect(`/studio/crews/${crew.id}`);
     } catch (error) { unstable_rethrow(error); return { status: "error", message: error instanceof Error ? error.message : "The crew could not be created." }; }
 }
@@ -54,8 +56,8 @@ export async function updateCrew(_state: CrewActionState, data: FormData): Promi
         const { error } = await supabase.from("crews").update({ ...crewFields, logo_path: newLogo ?? existing.logo_path, banner_path: newBanner ?? existing.banner_path, updated_at: new Date().toISOString() }).eq("id", id);
         if (error) return { status: "error", message: error.code === "23505" ? "That slug is already in use." : error.message };
         if (existing.owner_id !== crewFields.owner_id) {
-            await supabase.from("crew_members").upsert({ crew_id: id, user_id: crewFields.owner_id, role: "owner" }, { onConflict: "crew_id,user_id" });
-            await supabase.from("crew_members").update({ role: "member" }).eq("crew_id", id).eq("user_id", existing.owner_id);
+            if (crewFields.owner_id) await supabase.from("crew_members").upsert({ crew_id: id, user_id: crewFields.owner_id, role: "owner" }, { onConflict: "crew_id,user_id" });
+            if (existing.owner_id) await supabase.from("crew_members").update({ role: "member" }).eq("crew_id", id).eq("user_id", existing.owner_id);
         }
         const replaced = [newLogo ? existing.logo_path : null, newBanner ? existing.banner_path : null].filter((path): path is string => Boolean(path));
         if (replaced.length) await supabase.storage.from("crew-media").remove(replaced);

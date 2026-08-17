@@ -2,7 +2,7 @@ export type RecruitmentStatus = "recruiting" | "invite-only" | "closed";
 export type Crew = {
     id: string; slug: string; name: string; initials: string; tagline: string; description: string;
     location: string; platform: string; style: string[]; languages: { code: string; name: string; flag: string }[];
-    recruitment: RecruitmentStatus; memberCount: number; followerCount: string; accent: string; logoUrl?: string; bannerUrl?: string; ownerId: string;
+    recruitment: RecruitmentStatus; memberCount: number; followerCount: string; accent: string; logoUrl?: string; bannerUrl?: string; ownerId: string | null;
     owner: { handle: string; displayName: string }; members: { handle: string; displayName: string; role: string }[];
     socials: { label: string; href: string }[]; discord?: { inviteUrl: string; serverName: string; memberCount?: number; onlineCount?: number };
     videos: { title: string; type: string; duration: string; plays: string; color: string }[];

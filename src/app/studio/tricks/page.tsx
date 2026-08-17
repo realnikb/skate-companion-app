@@ -2,16 +2,17 @@ import Link from "next/link";
 
 import { requireStudioUser } from "@/lib/studio/auth";
 import { StudioTrickFilters } from "@/components/studio/studio-trick-filters";
+import { hasControls, normalizeTrickControls } from "@/lib/tricks/controls";
 import styles from "../studio.module.scss";
 
-type SearchParams = Promise<{ q?: string; category?: string; status?: string; page?: string }>;
+type SearchParams = Promise<{ q?: string; category?: string; status?: string; input?: string; page?: string }>;
 const PAGE_SIZE = 25;
 
 export default async function StudioTricksPage({ searchParams }: { searchParams: SearchParams }) {
     const filters = await searchParams;
     const { supabase } = await requireStudioUser();
     const [{ data: tricks, error }, { data: categories }] = await Promise.all([
-        supabase.from("tricks").select("id,slug,name,aliases,category_id,context,is_published,needs_name_review,needs_control_review,needs_description_review,updated_at,trick_categories(name,slug)").order("name"),
+        supabase.from("tricks").select("id,slug,name,aliases,category_id,context,controls,controls_reference_path,is_published,needs_name_review,needs_control_review,needs_description_review,updated_at,trick_categories(name,slug)").order("name"),
         supabase.from("trick_categories").select("id,name,slug").order("sort_order").order("name"),
     ]);
     if (error) throw new Error(`Unable to load Studio tricks: ${error.message}`);
@@ -26,7 +27,9 @@ export default async function StudioTricksPage({ searchParams }: { searchParams:
         const matchesCategory = !filters.category || trick.category_id === filters.category;
         const needsReview = trick.needs_name_review || trick.needs_control_review || trick.needs_description_review;
         const matchesStatus = !filters.status || (filters.status === "published" && trick.is_published) || (filters.status === "draft" && !trick.is_published) || (filters.status === "review" && needsReview);
-        return matchesQuery && matchesCategory && matchesStatus;
+        const usesOldScreenshotOnly = Boolean(trick.controls_reference_path) && !hasControls(normalizeTrickControls(trick.controls));
+        const matchesInputMethod = !filters.input || (filters.input === "legacy-reference" && usesOldScreenshotOnly);
+        return matchesQuery && matchesCategory && matchesStatus && matchesInputMethod;
     });
     const requestedPage = Number.parseInt(filters.page ?? "1", 10);
     const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -37,6 +40,7 @@ export default async function StudioTricksPage({ searchParams }: { searchParams:
         if (filters.q) params.set("q", filters.q);
         if (filters.category) params.set("category", filters.category);
         if (filters.status) params.set("status", filters.status);
+        if (filters.input) params.set("input", filters.input);
         if (page > 1) params.set("page", String(page));
         const queryString = params.toString();
         return queryString ? `/studio/tricks?${queryString}` : "/studio/tricks";
@@ -45,7 +49,7 @@ export default async function StudioTricksPage({ searchParams }: { searchParams:
     return (
         <main className={styles.content}>
             <header className={styles.pageHeader}><div><span>Catalogue</span><h1>Tricks</h1><p>{filtered.length} of {tricks?.length ?? 0} tricks</p></div><Link className={styles.primaryButton} href="/studio/tricks/new">Add trick</Link></header>
-            <StudioTrickFilters categories={categories ?? []} initialQuery={filters.q ?? ""} initialCategory={filters.category ?? ""} initialStatus={filters.status ?? ""} />
+            <StudioTrickFilters categories={categories ?? []} initialQuery={filters.q ?? ""} initialCategory={filters.category ?? ""} initialStatus={filters.status ?? ""} initialInputMethod={filters.input ?? ""} />
             <div className={styles.tableWrap}>
                 <table className={styles.table}>
                     <thead><tr><th>Trick</th><th>Category</th><th>Status</th><th>Review</th><th>Updated</th><th></th></tr></thead>
