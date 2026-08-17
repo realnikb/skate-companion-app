@@ -23,13 +23,15 @@ export default async function SocialPage() {
     ...crews.map((crew) => ({ id: crew.id, name: crew.name, slug: crew.slug, kind: "crew" as const })),
   ];
   const userId = typeof auth?.claims?.sub === "string" ? auth.claims.sub : null;
-  let viewer: undefined | { name: string; ownedCrews: { id: string; name: string }[] };
+  let viewer: undefined | { name: string; avatarUrl?: string; ownedCrews: { id: string; name: string }[] };
   if (userId) {
     const [{ data: profile }, { data: owned }] = await Promise.all([
-      supabase.from("profiles").select("display_name").eq("id", userId).maybeSingle(),
+      supabase.from("profiles").select("display_name,avatar_path").eq("id", userId).maybeSingle(),
       supabase.from("crews").select("id,name").eq("owner_id", userId),
     ]);
-    viewer = { name: profile?.display_name ?? (typeof auth?.claims?.email === "string" ? auth.claims.email.split("@")[0] : "Skater"), ownedCrews: owned ?? [] };
+    const base = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "");
+    const avatarUrl = profile?.avatar_path && base ? `${base}/storage/v1/object/public/profile-media/${profile.avatar_path}` : undefined;
+    viewer = { name: profile?.display_name ?? (typeof auth?.claims?.email === "string" ? auth.claims.email.split("@")[0] : "Skater"), avatarUrl, ownedCrews: owned ?? [] };
   }
   return <CrewDirectory crews={crews} posts={posts} maps={maps} tagOptions={tagOptions} viewer={viewer} />;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { ArrowLeftRight, ArrowUpRight, Bell, Check, ChevronLeft, ChevronRight, Footprints, Gamepad2, LogIn, Plus, Search, SlidersHorizontal, UserPlus, UserRound, X } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -12,7 +13,7 @@ import { matchesTrickSearch, parseTrickLine } from "@/lib/tricks/search";
 import type { Trick } from "@/types/trick";
 import styles from "./site-header.module.scss";
 
-export function SiteHeader({ tricks, isAuthenticated }: { tricks: Trick[]; isAuthenticated: boolean }) {
+export function SiteHeader({ tricks, isAuthenticated, avatarUrl }: { tricks: Trick[]; isAuthenticated: boolean; avatarUrl?: string }) {
     const pathname = usePathname();
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +70,7 @@ export function SiteHeader({ tricks, isAuthenticated }: { tricks: Trick[]; isAut
                 </div>
                 <button className={styles.circleButton} aria-label="Notifications"><Bell /><i /></button>
                 <div className={styles.accountMenuWrap}>
-                    <button className={`${styles.circleButton} ${isAuthenticated ? styles.accountActive : ""}`} aria-label="Open account menu" aria-expanded={isAccountMenuOpen} onClick={() => { setIsOpen(false); setIsAccountMenuOpen((open) => !open); setIsSettingsOpen(false); }}><UserRound /></button>
+                    <button className={`${styles.circleButton} ${isAuthenticated ? styles.accountActive : ""}`} aria-label="Open account menu" aria-expanded={isAccountMenuOpen} onClick={() => { setIsOpen(false); setIsAccountMenuOpen((open) => !open); setIsSettingsOpen(false); }}>{avatarUrl ? <Image className={styles.accountAvatar} src={avatarUrl} alt="Your profile picture" width={44} height={44} unoptimized /> : <UserRound />}</button>
                     {isAccountMenuOpen && (
                         <div className={styles.accountMenu}>
                             {!isSettingsOpen ? <>

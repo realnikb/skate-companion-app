@@ -12,10 +12,10 @@ import styles from "./social.module.scss";
 
 const initial: PostState = { status: "idle" };
 type Mode = "post" | "media" | "session" | "spot";
-type Props = { playerName?: string; ownedCrews?: { id: string; name: string }[]; maps?: PostMapOption[]; tagOptions?: PostTagOption[]; signedIn?: boolean };
+type Props = { playerName?: string; avatarUrl?: string; ownedCrews?: { id: string; name: string }[]; maps?: PostMapOption[]; tagOptions?: PostTagOption[]; signedIn?: boolean };
 const acceptedMedia = ["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm", "video/quicktime"];
 
-export function PostComposer({ playerName, ownedCrews = [], maps = [], tagOptions = [], signedIn = true }: Props) {
+export function PostComposer({ playerName, avatarUrl, ownedCrews = [], maps = [], tagOptions = [], signedIn = true }: Props) {
   const form = useRef<HTMLFormElement>(null);
   const mediaInput = useRef<HTMLInputElement>(null);
   const [mode, setMode] = useState<Mode>("post");
@@ -66,7 +66,7 @@ export function PostComposer({ playerName, ownedCrews = [], maps = [], tagOption
   };
 
   return <form ref={form} action={action} className={styles.composer} data-dragging={dragging} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) setDragging(false); }} onDrop={(event) => { event.preventDefault(); setDragging(false); attach(event.dataTransfer.files[0]); }} onSubmit={(event) => { if (!signedIn) { event.preventDefault(); setGate(true); } }}>
-    <header><span>{signedIn ? name.slice(0, 1).toUpperCase() : "+"}</span><textarea name="body" required maxLength={2000} rows={1} placeholder={`What's on your mind, ${name}?`} onFocus={() => { setExpanded(true); if (!signedIn) setGate(true); }} /></header>
+    <header><span>{signedIn && avatarUrl ? <img src={avatarUrl} alt="" /> : signedIn ? name.slice(0, 1).toUpperCase() : "+"}</span><textarea name="body" required maxLength={2000} rows={1} placeholder={`What's on your mind, ${name}?`} onFocus={() => { setExpanded(true); if (!signedIn) setGate(true); }} /></header>
     <input ref={mediaInput} className={styles.hiddenMediaInput} name="media" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" onChange={(event) => attach(event.target.files?.[0])} />
     {preview && <div className={styles.mediaPreview}>{media?.type.startsWith("video/") ? <video src={preview} controls /> : <img src={preview} alt="Post upload preview" />}<button type="button" onClick={() => { setMedia(null); setPreview((url) => { if (url) URL.revokeObjectURL(url); return null; }); if (mediaInput.current) mediaInput.current.value = ""; }} aria-label="Remove attachment"><X /></button><span>{media?.name}</span></div>}
     <div className={styles.quickActions}>
