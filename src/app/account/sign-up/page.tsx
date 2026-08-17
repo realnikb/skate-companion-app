@@ -29,6 +29,7 @@ export default async function SignUpPage({ searchParams }: { searchParams: Promi
                 <h1>Save every trick. Keep every line.</h1>
                 <p className={styles.intro}>Create your free account and keep your skating setup synced wherever you play.</p>
                 <SignInForm mode="sign-up" nextPath={next} />
+                <p className={styles.legalLinks}>By creating an account, you agree to our <Link href="/terms">Terms</Link> and acknowledge our <Link href="/privacy">Privacy policy</Link> and <Link href="/community-guidelines">Community guidelines</Link>.</p>
                 <p className={styles.switchAuth}>Already have an account? <Link href="/account/sign-in">Sign in</Link></p>
                 <div className={styles.trust}><LockKeyhole /><span>Secure, passwordless sign-up. We’ll only email you to access your account.</span></div>
             </section>

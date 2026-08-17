@@ -19,6 +19,13 @@ function fields(data: FormData) {
     return { owner_id: ownerId || null, name, slug, tagline: nullable(data, "tagline"), description: nullable(data, "description"), location: nullable(data, "location"), platform: nullable(data, "platform"), primary_color: primaryColor, styles: value(data, "styles").split(",").map(item => item.trim()).filter(Boolean).slice(0, 8), languages: value(data, "languages").split(",").map(item => item.trim().toLowerCase()).filter(item => /^[a-z]{2}$/.test(item)).slice(0, 12), recruitment_status: recruitmentStatus as "recruiting" | "invite-only" | "closed", recruitment_details: nullable(data, "recruitment_details"), is_published: value(data, "is_published") === "true" };
 }
 
+async function replaceLinks(supabase: Awaited<ReturnType<typeof requireStudioUser>>["supabase"], crewId: string, data: FormData) {
+    const links = [["discord", value(data, "discord_url")], ["youtube", value(data, "youtube_url")], ["tiktok", value(data, "tiktok_url")], ["instagram", value(data, "instagram_url")], ["website", value(data, "website_url")]].filter((entry): entry is [string, string] => Boolean(entry[1]));
+    const removed = await supabase.from("crew_links").delete().eq("crew_id", crewId);
+    if (removed.error) throw new Error(`Crew links could not be updated: ${removed.error.message}`);
+    if (links.length) { const inserted = await supabase.from("crew_links").insert(links.map(([platform, url], sort_order) => ({ crew_id: crewId, platform, url, sort_order }))); if (inserted.error) throw new Error(`Crew links could not be updated: ${inserted.error.message}`); }
+}
+
 async function uploadImage(supabase: Awaited<ReturnType<typeof requireStudioUser>>["supabase"], userId: string, file: FormDataEntryValue | null, kind: string, limit: number) {
     if (!(file instanceof File) || !file.size) return null;
     if (!new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]).has(file.type) || file.size > limit) throw new Error(`Use a JPG, PNG, WebP or GIF under ${Math.round(limit / 1048576)} MB.`);
@@ -41,6 +48,7 @@ export async function createCrew(_state: CrewActionState, data: FormData): Promi
             const member = await supabase.from("crew_members").insert({ crew_id: crew.id, user_id: crewFields.owner_id, role: "owner" });
             if (member.error) return { status: "error", message: `Crew created, but its owner could not be added: ${member.error.message}` };
         }
+        await replaceLinks(supabase, crew.id, data);
         revalidatePath("/studio/crews"); revalidatePath("/social"); redirect(`/studio/crews/${crew.id}`);
     } catch (error) { unstable_rethrow(error); return { status: "error", message: error instanceof Error ? error.message : "The crew could not be created." }; }
 }
@@ -59,9 +67,10 @@ export async function updateCrew(_state: CrewActionState, data: FormData): Promi
             if (crewFields.owner_id) await supabase.from("crew_members").upsert({ crew_id: id, user_id: crewFields.owner_id, role: "owner" }, { onConflict: "crew_id,user_id" });
             if (existing.owner_id) await supabase.from("crew_members").update({ role: "member" }).eq("crew_id", id).eq("user_id", existing.owner_id);
         }
+        await replaceLinks(supabase, id, data);
         const replaced = [newLogo ? existing.logo_path : null, newBanner ? existing.banner_path : null].filter((path): path is string => Boolean(path));
         if (replaced.length) await supabase.storage.from("crew-media").remove(replaced);
-        revalidatePath(`/studio/crews/${id}`); revalidatePath("/studio/crews"); revalidatePath("/social"); revalidatePath(`/social/${existing.slug}`); revalidatePath(`/social/${crewFields.slug}`);
+        revalidatePath(`/studio/crews/${id}`); revalidatePath("/studio/crews"); revalidatePath("/social"); revalidatePath("/social/crews"); revalidatePath(`/social/crew/${existing.slug}`); revalidatePath(`/social/crew/${crewFields.slug}`);
         redirect(`/studio/crews/${id}`);
     } catch (error) { unstable_rethrow(error); return { status: "error", message: error instanceof Error ? error.message : "The crew could not be saved." }; }
 }

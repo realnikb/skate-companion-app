@@ -35,6 +35,8 @@
 .trust svg { flex: 0 0 auto; width: .9rem; }
 .switchAuth { margin: .85rem 0 0; color: rgba(255,255,255,.42); font-size: .65rem; }
 .switchAuth a { color: #a98cff; font-weight: 800; }
+.legalLinks{max-width:34rem;margin:.85rem 0 0;color:rgba(255,255,255,.38);font-size:.61rem;line-height:1.55}
+.legalLinks a{color:#a98cff;font-weight:800}
 .success { display: grid; max-width: 34rem; gap: .7rem; padding: 1.4rem; border: 1px solid rgba(92,216,149,.25); border-radius: 1rem; background: rgba(92,216,149,.07); }
 .success > svg { width: 1.5rem; color: #72dca1; }
 .success h2, .success p { margin: 0; }

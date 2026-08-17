@@ -25,6 +25,12 @@ export function SiteFooter() {
                 <Image src="/skate-logo.webp" alt="skate." width={401} height={112} />
                 <span>Unofficial fan companion</span>
             </div>
+            <nav className={styles.links} aria-label="Legal and community information">
+                <Link href="/privacy">Privacy</Link>
+                <Link href="/terms">Terms</Link>
+                <Link href="/community-guidelines">Community guidelines</Link>
+                <Link href="/cookies">Cookies</Link>
+            </nav>
             <small>© 2026 Skate Companion</small>
         </footer>
     );

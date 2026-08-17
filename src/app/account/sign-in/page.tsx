@@ -30,6 +30,7 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
                 <h1>Welcome back.</h1>
                 <p>Enter your email and we’ll send you a secure link to sign in.</p>
                 <SignInForm nextPath={next} />
+                <p className={styles.legalLinks}>See how we handle your information in our <Link href="/privacy">Privacy policy</Link> and <Link href="/cookies">Cookie policy</Link>.</p>
                 <p className={styles.switchAuth}>New to Skate Companion? <Link href="/account/sign-up">Create a free account</Link></p>
             </section>
             <span className={styles.loginFoot}>Passwordless and secure</span>

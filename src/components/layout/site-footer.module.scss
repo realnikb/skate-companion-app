@@ -8,4 +8,7 @@
 .skateBrand { display: grid; justify-items: start; gap: .6rem; }
 .skateBrand img { width: 7rem; height: auto; }
 .skateBrand span, .footer small { color: rgba(255,255,255,.3); font-size: .56rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.links{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.65rem 1.4rem;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,.07)}
+.links a{color:rgba(255,255,255,.5);font-size:.65rem;font-weight:750;transition:color .18s}
+.links a:hover{color:#fff}
 @media(max-width:800px){.footer{grid-template-columns:1fr auto;min-height:16rem;padding-bottom:7rem}.skateBrand{justify-items:end}.footer>small{grid-column:1/-1}.brand p{font-size:1.1rem}}

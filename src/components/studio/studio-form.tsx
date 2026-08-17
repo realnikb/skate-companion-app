@@ -2,13 +2,13 @@
 
 import { useActionState, useState } from "react";
 
-import { createCategory, createTrick, updateCategory, updateTrick, type StudioActionState } from "@/app/studio/actions";
+import { createCategory, createPage, createTrick, updateCategory, updatePage, updateTrick, type StudioActionState } from "@/app/studio/actions";
 import styles from "@/app/studio/studio.module.scss";
 
 const initialState: StudioActionState = { status: "idle" };
 
 type StudioFormProps = {
-    kind: "trick" | "new-trick" | "category" | "new-category";
+    kind: "trick" | "new-trick" | "category" | "new-category" | "page" | "new-page";
     children: React.ReactNode;
     lastSavedAt?: string;
     lastSavedBy?: string | null;
@@ -21,7 +21,7 @@ function savedLabel(value?: string) {
 }
 
 export function StudioForm({ kind, children, lastSavedAt, lastSavedBy, isPublished = false }: StudioFormProps) {
-    const action = kind === "trick" ? updateTrick : kind === "new-trick" ? createTrick : kind === "new-category" ? createCategory : updateCategory;
+    const action = kind === "trick" ? updateTrick : kind === "new-trick" ? createTrick : kind === "new-category" ? createCategory : kind === "page" ? updatePage : kind === "new-page" ? createPage : updateCategory;
     const [dirty, setDirty] = useState(false);
     const [publicationStatus, setPublicationStatus] = useState<"draft" | "published">(isPublished ? "published" : "draft");
     const [savedPublicationStatus, setSavedPublicationStatus] = useState<"draft" | "published">(isPublished ? "published" : "draft");
@@ -34,7 +34,7 @@ export function StudioForm({ kind, children, lastSavedAt, lastSavedBy, isPublish
 
     const savedAt = state.savedAt ?? lastSavedAt;
     const savedBy = state.savedBy ?? lastSavedBy;
-    const isExistingEntry = kind === "trick" || kind === "category";
+    const isExistingEntry = kind === "trick" || kind === "category" || kind === "page";
     const saveLabel = publicationStatus === "published"
         ? (savedPublicationStatus === "published" ? "Update" : "Publish")
         : (savedPublicationStatus === "published" ? "Switch to draft" : "Save draft");
@@ -66,7 +66,7 @@ export function StudioForm({ kind, children, lastSavedAt, lastSavedBy, isPublish
             {!isExistingEntry && (
                 <div className={styles.formActions}>
                     {state.message && <p className={state.status === "error" ? styles.error : undefined} role="status">{state.message}</p>}
-                    <button type="submit" disabled={pending}>{pending ? "Saving…" : kind === "new-trick" || kind === "new-category" ? "Create draft" : "Save changes"}</button>
+                    <button type="submit" disabled={pending}>{pending ? "Saving…" : kind === "new-trick" || kind === "new-category" || kind === "new-page" ? "Create draft" : "Save changes"}</button>
                 </div>
             )}
         </form>

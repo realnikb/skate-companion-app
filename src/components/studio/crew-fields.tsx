@@ -2,7 +2,7 @@ import styles from "@/app/studio/studio.module.scss";
 import { ImageCropField } from "./image-crop-field";
 
 type Profile = { id: string; handle: string; display_name: string };
-type CrewValue = { id?: string; owner_id?: string | null; name?: string; slug?: string; tagline?: string | null; description?: string | null; location?: string | null; platform?: string | null; primary_color?: string; styles?: string[]; languages?: string[]; recruitment_status?: string; recruitment_details?: string | null; is_published?: boolean };
+type CrewValue = { id?: string; owner_id?: string | null; name?: string; slug?: string; tagline?: string | null; description?: string | null; location?: string | null; platform?: string | null; primary_color?: string; styles?: string[]; languages?: string[]; recruitment_status?: string; recruitment_details?: string | null; is_published?: boolean; links?: Record<string, string> };
 
 export function CrewFields({ profiles, crew = {} }: { profiles: Profile[]; crew?: CrewValue }) {
     return <>
@@ -14,6 +14,10 @@ export function CrewFields({ profiles, crew = {} }: { profiles: Profile[]; crew?
             <div className={styles.fieldRow}><div className={styles.field}><label htmlFor="location">Location</label><input id="location" name="location" defaultValue={crew.location ?? ""} /></div><div className={styles.field}><label htmlFor="platform">Platform</label><select id="platform" name="platform" defaultValue={crew.platform ?? "Cross-platform"}><option>Cross-platform</option><option>PC</option><option>PlayStation</option><option>Xbox</option></select></div></div>
             <div className={styles.fieldRow}><div className={styles.field}><label htmlFor="styles">Styles</label><input id="styles" name="styles" defaultValue={crew.styles?.join(", ")} placeholder="Realism, filming, social" /></div><div className={styles.field}><label htmlFor="languages">Languages</label><input id="languages" name="languages" defaultValue={crew.languages?.join(", ") ?? "en"} placeholder="en, fr, de" /></div></div>
             <div className={styles.field}><label htmlFor="recruitment_details">Recruitment details</label><textarea id="recruitment_details" name="recruitment_details" defaultValue={crew.recruitment_details ?? ""} maxLength={1500} /></div>
+            <h2>Social links</h2>
+            <div className={styles.field}><label htmlFor="discord_url">Discord invite</label><input id="discord_url" name="discord_url" type="url" defaultValue={crew.links?.discord ?? ""} placeholder="https://discord.gg/…" /></div>
+            <div className={styles.fieldRow}><div className={styles.field}><label htmlFor="youtube_url">YouTube</label><input id="youtube_url" name="youtube_url" type="url" defaultValue={crew.links?.youtube ?? ""} /></div><div className={styles.field}><label htmlFor="tiktok_url">TikTok</label><input id="tiktok_url" name="tiktok_url" type="url" defaultValue={crew.links?.tiktok ?? ""} /></div></div>
+            <div className={styles.fieldRow}><div className={styles.field}><label htmlFor="instagram_url">Instagram</label><input id="instagram_url" name="instagram_url" type="url" defaultValue={crew.links?.instagram ?? ""} /></div><div className={styles.field}><label htmlFor="website_url">Website</label><input id="website_url" name="website_url" type="url" defaultValue={crew.links?.website ?? ""} /></div></div>
         </section>
         <aside className={`${styles.panel} ${styles.publishingPanel}`}><h2>Ownership & publishing</h2>
             <div className={styles.field}><label htmlFor="owner_id">Owner</label><select id="owner_id" name="owner_id" defaultValue={crew.owner_id ?? ""}><option value="">Unclaimed — assign later</option>{profiles.map(profile => <option value={profile.id} key={profile.id}>{profile.display_name} (@{profile.handle})</option>)}</select><small>The crew can be created before its owner has an account.</small></div>

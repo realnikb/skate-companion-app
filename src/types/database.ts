@@ -9,10 +9,15 @@ export type Json =
 export type Database = {
     public: {
         Tables: {
+            content_pages: {
+                Row:{id:string;slug:string;title:string;eyebrow:string|null;summary:string|null;body:string;is_published:boolean;last_edited_by:string|null;created_at:string;updated_at:string};
+                Insert:{id?:string;slug:string;title:string;eyebrow?:string|null;summary?:string|null;body?:string;is_published?:boolean;last_edited_by?:string|null;created_at?:string;updated_at?:string};
+                Update:{id?:string;slug?:string;title?:string;eyebrow?:string|null;summary?:string|null;body?:string;is_published?:boolean;last_edited_by?:string|null;created_at?:string;updated_at?:string};Relationships:[];
+            };
             profiles: {
-                Row:{id:string;handle:string;display_name:string;avatar_path:string|null;bio:string|null;preferred_controller:"xbox"|"playstation";stance:"regular"|"goofy";created_at:string;updated_at:string};
-                Insert:{id:string;handle:string;display_name:string;avatar_path?:string|null;bio?:string|null;preferred_controller?:"xbox"|"playstation";stance?:"regular"|"goofy";created_at?:string;updated_at?:string};
-                Update:{id?:string;handle?:string;display_name?:string;avatar_path?:string|null;bio?:string|null;preferred_controller?:"xbox"|"playstation";stance?:"regular"|"goofy";created_at?:string;updated_at?:string};Relationships:[];
+                Row:{id:string;handle:string;display_name:string;avatar_path:string|null;bio:string|null;preferred_controller:"xbox"|"playstation";stance:"regular"|"goofy";playstation_gamertag:string|null;xbox_gamertag:string|null;ea_id:string|null;steam_gamertag:string|null;youtube_url:string|null;tiktok_url:string|null;instagram_url:string|null;created_at:string;updated_at:string};
+                Insert:{id:string;handle:string;display_name:string;avatar_path?:string|null;bio?:string|null;preferred_controller?:"xbox"|"playstation";stance?:"regular"|"goofy";playstation_gamertag?:string|null;xbox_gamertag?:string|null;ea_id?:string|null;steam_gamertag?:string|null;youtube_url?:string|null;tiktok_url?:string|null;instagram_url?:string|null;created_at?:string;updated_at?:string};
+                Update:{id?:string;handle?:string;display_name?:string;avatar_path?:string|null;bio?:string|null;preferred_controller?:"xbox"|"playstation";stance?:"regular"|"goofy";playstation_gamertag?:string|null;xbox_gamertag?:string|null;ea_id?:string|null;steam_gamertag?:string|null;youtube_url?:string|null;tiktok_url?:string|null;instagram_url?:string|null;created_at?:string;updated_at?:string};Relationships:[];
             };
             crews: {
                 Row:{id:string;owner_id:string|null;slug:string;name:string;tagline:string|null;description:string|null;logo_path:string;banner_path:string|null;primary_color:string;location:string|null;platform:string|null;styles:string[];languages:string[];recruitment_status:"recruiting"|"invite-only"|"closed";recruitment_details:string|null;is_published:boolean;created_at:string;updated_at:string};

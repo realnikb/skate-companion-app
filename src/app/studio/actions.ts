@@ -103,6 +103,54 @@ export async function createCategory(_state: StudioActionState, formData: FormDa
     redirect(`/studio/categories/${category.id}`);
 }
 
+export async function createPage(_state: StudioActionState, formData: FormData): Promise<StudioActionState> {
+    const title = value(formData, "title");
+    const slug = value(formData, "slug");
+    if (!title || !slug) return { status: "error", message: "Page title and slug are required." };
+    if (!validSlug(slug)) return { status: "error", message: "Slug must contain lowercase letters, numbers and hyphens only." };
+
+    const { supabase, user } = await requireStudioUser();
+    const { data: page, error } = await supabase.from("content_pages").insert({
+        title,
+        slug,
+        eyebrow: nullable(formData, "eyebrow"),
+        summary: nullable(formData, "summary"),
+        body: value(formData, "body"),
+        is_published: false,
+        last_edited_by: user.email,
+    }).select("id").single();
+    if (error) return { status: "error", message: error.code === "23505" ? "That slug is already in use." : error.message };
+    revalidatePath("/studio/pages");
+    redirect(`/studio/pages/${page.id}`);
+}
+
+export async function updatePage(_state: StudioActionState, formData: FormData): Promise<StudioActionState> {
+    const id = value(formData, "id");
+    const title = value(formData, "title");
+    const slug = value(formData, "slug");
+    const body = value(formData, "body");
+    if (!id || !title || !slug || !body) return { status: "error", message: "Title, slug and page content are required." };
+    if (!validSlug(slug)) return { status: "error", message: "Slug must contain lowercase letters, numbers and hyphens only." };
+
+    const { supabase, user } = await requireStudioUser();
+    const { data: savedPage, error } = await supabase.from("content_pages").update({
+        title,
+        slug,
+        eyebrow: nullable(formData, "eyebrow"),
+        summary: nullable(formData, "summary"),
+        body,
+        is_published: value(formData, "publication_status") === "published",
+        last_edited_by: user.email,
+        updated_at: new Date().toISOString(),
+    }).eq("id", id).select("updated_at,last_edited_by").maybeSingle();
+    if (error) return { status: "error", message: error.code === "23505" ? "That slug is already in use." : error.message };
+    if (!savedPage) return { status: "error", message: "The page could not be updated. Refresh and confirm your Studio access." };
+    revalidatePath("/studio/pages");
+    revalidatePath(`/studio/pages/${id}`);
+    revalidatePath(`/${slug}`);
+    return { status: "success", message: "Page saved.", savedAt: savedPage.updated_at, savedBy: savedPage.last_edited_by ?? user.email };
+}
+
 export async function updateTrick(_state: StudioActionState, formData: FormData): Promise<StudioActionState> {
     const id = value(formData, "id");
     const name = value(formData, "name");

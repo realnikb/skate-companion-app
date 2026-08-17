@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Camera, CheckCircle2, Gamepad2, Minus, Plus, Save, UserRound, X } from "lucide-react";
+import { Camera, CheckCircle2, CircleDot, Gamepad2, Minus, Monitor, Plus, Save, UserRound, X } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { InstagramIcon, TiktokIcon, YoutubeIcon } from "@hugeicons/core-free-icons";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { ControllerPreference } from "@/components/tricks/controller-preference";
 import { useControllerPreference } from "@/hooks/use-controller-preference";
@@ -10,7 +12,7 @@ import type { ControllerPlatform } from "@/types/trick";
 import { updateProfile, type ProfileState } from "./actions";
 import styles from "./account.module.scss";
 
-type Props={displayName:string;handle:string;email:string;avatarUrl?:string;controller:ControllerPlatform;stance:SkaterStance};
+type Props={displayName:string;handle:string;email:string;avatarUrl?:string;controller:ControllerPlatform;stance:SkaterStance;playstationGamertag:string;xboxGamertag:string;eaId:string;steamGamertag:string;youtubeUrl:string;tiktokUrl:string;instagramUrl:string};
 const initialState:ProfileState={status:"idle"};
 const cropSize=280;
 
@@ -63,6 +65,20 @@ export function ProfileEditor(props:Props){
    <div className={styles.sectionHeading}><Gamepad2/><div><span>Your setup</span><h2>Skate preferences</h2></div></div>
    <div className={styles.preferences}><ControllerPreference platform={controller} onChange={chooseController}/><div className={styles.stancePreference}><span>Stance</span><div role="group" aria-label="Stance preference">{(["regular","goofy"] as const).map(option=><button key={option} type="button" aria-pressed={stance===option} onClick={()=>chooseStance(option)}>{option}</button>)}</div></div></div>
    <input type="hidden" name="preferred_controller" value={controller}/><input type="hidden" name="stance" value={stance}/>
+  </section>
+  <section className={styles.formSection}>
+   <div className={styles.sectionHeading}><Gamepad2/><div><span>Find each other</span><h2>Skate with me on:</h2></div></div>
+   <div className={styles.identityFields}>
+    <label><span className={styles.platformIcon}><Gamepad2/></span><span>PlayStation<input name="playstation_gamertag" defaultValue={props.playstationGamertag} maxLength={64} placeholder="Online ID"/></span></label>
+    <label><span className={styles.platformIcon}><CircleDot/></span><span>Xbox<input name="xbox_gamertag" defaultValue={props.xboxGamertag} maxLength={64} placeholder="Gamertag"/></span></label>
+    <label><span className={styles.platformIcon}><strong>EA</strong></span><span>EA<input name="ea_id" defaultValue={props.eaId} maxLength={64} placeholder="EA ID"/></span></label>
+    <label><span className={styles.platformIcon}><Monitor/></span><span>Steam<input name="steam_gamertag" defaultValue={props.steamGamertag} maxLength={64} placeholder="Steam name or friend code"/></span></label>
+   </div>
+   <div className={styles.socialFields}>
+    <label><HugeiconsIcon icon={YoutubeIcon}/><span>YouTube<input name="youtube_url" type="url" defaultValue={props.youtubeUrl} placeholder="https://youtube.com/@…"/></span></label>
+    <label><HugeiconsIcon icon={TiktokIcon}/><span>TikTok<input name="tiktok_url" type="url" defaultValue={props.tiktokUrl} placeholder="https://tiktok.com/@…"/></span></label>
+    <label><HugeiconsIcon icon={InstagramIcon}/><span>Instagram<input name="instagram_url" type="url" defaultValue={props.instagramUrl} placeholder="https://instagram.com/…"/></span></label>
+   </div>
   </section>
   <footer className={styles.formFooter}><p className={state.status==="error"?styles.error:styles.success} role={state.message?"status":undefined}>{state.message&&<>{state.status==="success"&&<CheckCircle2/>} {state.message}</>}</p><button type="submit" disabled={pending}><Save/> {pending?"Saving…":"Save changes"}</button></footer>
   {cropImage&&<div className={styles.cropOverlay} role="dialog" aria-modal="true" aria-labelledby="crop-title">

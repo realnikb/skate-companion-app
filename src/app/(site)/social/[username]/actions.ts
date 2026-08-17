@@ -31,6 +31,6 @@ export async function updateCrewBrand(_state: CrewBrandState, data: FormData): P
     return { status: "error", message: saved.error.message };
   }
   if (uploadedPath && crew.banner_path) await supabase.storage.from("crew-media").remove([crew.banner_path]);
-  revalidatePath(`/social/${slug}`); revalidatePath("/social"); revalidatePath("/account");
+  revalidatePath(`/social/crew/${slug}`); revalidatePath("/social"); revalidatePath("/social/crews"); revalidatePath("/account");
   return { status: "success", message: "Crew branding updated." };
 }
