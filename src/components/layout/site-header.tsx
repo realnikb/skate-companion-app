@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { ArrowLeftRight, ArrowUpRight, Bell, Check, ChevronLeft, ChevronRight, Footprints, Gamepad2, LogIn, Plus, Search, SlidersHorizontal, UserPlus, UserRound, X } from "lucide-react";
+import { ArrowLeftRight, ArrowUpRight, Bell, Check, ChevronDown, ChevronLeft, ChevronRight, Footprints, Gamepad2, LogIn, Plus, Search, SlidersHorizontal, UserPlus, UserRound, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { isSessionTrick, useSessionLine } from "@/hooks/use-session-line";
@@ -13,7 +13,7 @@ import { matchesTrickSearch, parseTrickLine } from "@/lib/tricks/search";
 import type { Trick } from "@/types/trick";
 import styles from "./site-header.module.scss";
 
-export function SiteHeader({ tricks, isAuthenticated, avatarUrl }: { tricks: Trick[]; isAuthenticated: boolean; avatarUrl?: string }) {
+export function SiteHeader({ tricks, isAuthenticated, avatarUrl, displayName }: { tricks: Trick[]; isAuthenticated: boolean; avatarUrl?: string; displayName?: string }) {
     const pathname = usePathname();
     const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
@@ -70,7 +70,7 @@ export function SiteHeader({ tricks, isAuthenticated, avatarUrl }: { tricks: Tri
                 </div>
                 <button className={styles.circleButton} aria-label="Notifications"><Bell /><i /></button>
                 <div className={styles.accountMenuWrap}>
-                    <button className={`${styles.circleButton} ${isAuthenticated ? styles.accountActive : ""}`} aria-label="Open account menu" aria-expanded={isAccountMenuOpen} onClick={() => { setIsOpen(false); setIsAccountMenuOpen((open) => !open); setIsSettingsOpen(false); }}>{avatarUrl ? <Image className={styles.accountAvatar} src={avatarUrl} alt="Your profile picture" width={44} height={44} unoptimized /> : <UserRound />}</button>
+                    <button className={isAuthenticated ? styles.signedInAccount : styles.circleButton} aria-label="Open account menu" aria-expanded={isAccountMenuOpen} onClick={() => { setIsOpen(false); setIsAccountMenuOpen((open) => !open); setIsSettingsOpen(false); }}>{avatarUrl ? <Image className={styles.accountAvatar} src={avatarUrl} alt="Your profile picture" width={44} height={44} unoptimized /> : <span className={styles.avatarFallback}>{displayName?.slice(0,1).toUpperCase()??<UserRound/>}</span>}{isAuthenticated&&<><strong>{displayName??"Skater"}</strong><ChevronDown className={styles.accountChevron}/></>}</button>
                     {isAccountMenuOpen && (
                         <div className={styles.accountMenu}>
                             {!isSettingsOpen ? <>

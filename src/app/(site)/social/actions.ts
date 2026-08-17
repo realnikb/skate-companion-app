@@ -23,10 +23,10 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
   const taggedUserIds = [...new Set(data.getAll("tagged_user_ids").map(String))];
   const taggedCrewIds = [...new Set(data.getAll("tagged_crew_ids").map(String))];
   const media = data.get("media") ?? data.get("image");
-  const directPath = value(data, "uploaded_media_path") || null;
-  const directType = value(data, "uploaded_media_type") as "image" | "video" | "";
-  const directMime = value(data, "uploaded_media_mime");
-  const directSize = Number(value(data, "uploaded_media_size") || 0);
+  const directPaths = data.getAll("uploaded_media_path").map(String);
+  const directTypes = data.getAll("uploaded_media_type").map(String) as ("image" | "video")[];
+  const directMimes = data.getAll("uploaded_media_mime").map(String);
+  const directSizes = data.getAll("uploaded_media_size").map(Number);
 
   if (!body || body.length > 2000) return { status: "error", message: "Write something up to 2,000 characters." };
   if (externalVideo && !externalVideo.startsWith("https://")) return { status: "error", message: "Video links must use HTTPS." };
@@ -46,12 +46,14 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
     if (!publishedMap) return { status: "error", message: "That game map is no longer available." };
   }
 
-  let imagePath: string | null = directPath;
-  let mediaType: "image" | "video" | null = directType || null;
-  if (directPath) {
+  if(directPaths.length>10||directPaths.length!==directTypes.length||directPaths.length!==directMimes.length||directPaths.length!==directSizes.length||(directTypes.includes("video")&&directPaths.length>1))return {status:"error",message:"Choose up to 10 photos or one video."};
+  let imagePath: string | null = directPaths[0]??null;
+  let mediaType: "image" | "video" | null = directTypes[0]??null;
+  for(let index=0;index<directPaths.length;index++) {
+    const directPath=directPaths[index],directType=directTypes[index],directMime=directMimes[index],directSize=directSizes[index];
     const directLimit = directType === "video" ? 100 * 1024 * 1024 : 10 * 1024 * 1024;
-    const directMimes = directType === "video" ? ["video/mp4", "video/webm", "video/quicktime"] : ["image/jpeg", "image/png", "image/webp", "image/gif"];
-    if (!directPath.startsWith(`${userId}/social/`) || !["image", "video"].includes(directType) || !directMimes.includes(directMime) || !Number.isFinite(directSize) || directSize <= 0 || directSize > directLimit) return { status: "error", message: "The uploaded media details are invalid." };
+    const allowedMimes = directType === "video" ? ["video/mp4", "video/webm", "video/quicktime"] : ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!directPath.startsWith(`${userId}/social/`) || !["image", "video"].includes(directType) || !allowedMimes.includes(directMime) || !Number.isFinite(directSize) || directSize <= 0 || directSize > directLimit) return { status: "error", message: "The uploaded media details are invalid." };
     const folder = directPath.slice(0, directPath.lastIndexOf("/")), fileName = directPath.slice(directPath.lastIndexOf("/") + 1);
     const { data: stored } = await supabase.storage.from("social-media").list(folder, { search: fileName, limit: 2 });
     if (!stored?.some((object) => object.name === fileName)) return { status: "error", message: "We couldn't verify the uploaded media. Please try again." };
@@ -71,9 +73,10 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
   const crewId = identity.startsWith("crew:") ? identity.slice(5) : null;
   const inserted = await supabase.from("social_posts").insert({ author_id: userId, crew_id: crewId, body, post_type: mediaType === "video" ? "video" : postType, image_path: imagePath, media_type: mediaType, external_video_url: externalVideo, location, session_at: sessionRaw ? new Date(sessionRaw).toISOString() : null, map_id: mapId, map_position: mapPosition, is_published: true }).select("id").single();
   if (inserted.error) {
-    if (imagePath) await supabase.storage.from("social-media").remove([imagePath]);
+    if (directPaths.length) await supabase.storage.from("social-media").remove(directPaths);
     return { status: "error", message: inserted.error.message };
   }
+  if(directPaths.length){const gallery=await supabase.from("social_post_media").insert(directPaths.map((storage_path,position)=>({post_id:inserted.data.id,storage_path,media_type:directTypes[position],position})));if(gallery.error){await supabase.from("social_posts").delete().eq("id",inserted.data.id);await supabase.storage.from("social-media").remove(directPaths);return {status:"error",message:gallery.error.message};}}
   const tagWrites = await Promise.all([
     taggedUserIds.length ? supabase.from("social_post_user_tags").insert(taggedUserIds.map((taggedUserId) => ({ post_id: inserted.data.id, user_id: taggedUserId }))) : Promise.resolve({ error: null }),
     taggedCrewIds.length ? supabase.from("social_post_crew_tags").insert(taggedCrewIds.map((taggedCrewId) => ({ post_id: inserted.data.id, crew_id: taggedCrewId }))) : Promise.resolve({ error: null }),
@@ -81,9 +84,28 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
   const tagError = tagWrites.find((result) => result.error)?.error;
   if (tagError) {
     await supabase.from("social_posts").delete().eq("id", inserted.data.id);
-    if (imagePath) await supabase.storage.from("social-media").remove([imagePath]);
+    if (directPaths.length) await supabase.storage.from("social-media").remove(directPaths);
     return { status: "error", message: tagError.message };
   }
   revalidatePath("/social");
   return { status: "success", message: "Posted." };
+}
+
+export async function toggleSocialPostLike(postId:string){
+  const supabase=await createClient();const {data:auth}=await supabase.auth.getClaims();const userId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;
+  if(!userId)return {ok:false,message:"Sign in to like posts."};
+  const {data:existing}=await supabase.from("social_post_likes").select("post_id").eq("post_id",postId).eq("user_id",userId).maybeSingle();
+  const result=existing?await supabase.from("social_post_likes").delete().eq("post_id",postId).eq("user_id",userId):await supabase.from("social_post_likes").insert({post_id:postId,user_id:userId});
+  if(result.error)return {ok:false,message:result.error.message};
+  revalidatePath("/social");return {ok:true,liked:!existing};
+}
+
+export async function addSocialPostComment(postId:string,body:string){
+  const supabase=await createClient();const {data:auth}=await supabase.auth.getClaims();const userId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;
+  if(!userId)return {ok:false,message:"Sign in to comment."};
+  const clean=body.trim();if(!clean||clean.length>2000)return {ok:false,message:"Write a comment up to 2,000 characters."};
+  const {data,error}=await supabase.from("social_post_comments").insert({post_id:postId,user_id:userId,body:clean}).select("id,body,created_at").single();
+  if(error)return {ok:false,message:error.message};
+  const {data:profile}=await supabase.from("profiles").select("display_name,handle").eq("id",userId).maybeSingle();
+  revalidatePath("/social");return {ok:true,comment:{id:data.id,body:data.body,createdAt:data.created_at,author:{name:profile?.display_name??"Skater",handle:profile?.handle??"skater"}}};
 }

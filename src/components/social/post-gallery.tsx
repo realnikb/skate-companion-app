@@ -1,0 +1,6 @@
+/* eslint-disable @next/next/no-img-element -- User uploads have no known intrinsic dimensions. */
+"use client";
+import { useState } from "react";
+import { ChevronLeft,ChevronRight } from "lucide-react";
+import styles from "./social.module.scss";
+export function PostGallery({media}:{media:{url:string;type:"image"|"video"}[]}){const [active,setActive]=useState(0),item=media[active];if(!item)return null;return <div className={styles.postGallery}>{item.type==="video"?<video className={styles.postVideo} src={item.url} controls preload="metadata"/>:<img src={item.url} alt={media.length>1?`Post gallery image ${active+1} of ${media.length}`:"Post attachment"}/>} {media.length>1&&<><button type="button" className={styles.galleryPrevious} onClick={()=>setActive(index=>(index-1+media.length)%media.length)} aria-label="Previous photo"><ChevronLeft/></button><button type="button" className={styles.galleryNext} onClick={()=>setActive(index=>(index+1)%media.length)} aria-label="Next photo"><ChevronRight/></button><span className={styles.galleryCount}>{active+1} / {media.length}</span><div className={styles.galleryDots}>{media.map((_,index)=><button type="button" data-active={index===active} onClick={()=>setActive(index)} aria-label={`Show photo ${index+1}`} key={index}/>)}</div></>}</div>}
