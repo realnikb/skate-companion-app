@@ -3,11 +3,12 @@ import { mapTrick } from "@/lib/tricks/mapper";
 import type { Trick } from "@/types/trick";
 
 export async function getTrick(slug: string): Promise<Trick> {
-    const supabase = await createClient();
+  const supabase = await createClient();
 
-    const { data, error } = await supabase
-        .from("tricks")
-        .select(`
+  const { data, error } = await supabase
+    .from("tricks")
+    .select(
+      `
             id,
             category_id,
             slug,
@@ -27,25 +28,26 @@ export async function getTrick(slug: string): Promise<Trick> {
             trick_categories!inner (
                 slug
             )
-        `)
-        .eq("slug", slug)
-        .eq("is_published", true)
-        .eq("trick_categories.is_published", true)
-        .single();
+        `,
+    )
+    .eq("slug", slug)
+    .eq("is_published", true)
+    .eq("trick_categories.is_published", true)
+    .single();
 
-    if (error) {
-        throw new Error(`Failed to load trick "${slug}": ${error.message}`);
-    }
+  if (error) {
+    throw new Error(`Failed to load trick "${slug}": ${error.message}`);
+  }
 
-    if (!data) {
-        throw new Error(`Failed to load trick "${slug}": no data returned.`);
-    }
+  if (!data) {
+    throw new Error(`Failed to load trick "${slug}": no data returned.`);
+  }
 
-    const { data: metric } = await supabase
-        .from("trick_metrics")
-        .select("view_count, favourite_count")
-        .eq("trick_id", data.id)
-        .maybeSingle();
+  const { data: metric } = await supabase
+    .from("trick_metrics")
+    .select("view_count, favourite_count")
+    .eq("trick_id", data.id)
+    .maybeSingle();
 
-    return mapTrick({ ...data, trick_metrics: metric ?? null });
+  return mapTrick({ ...data, trick_metrics: metric ?? null });
 }

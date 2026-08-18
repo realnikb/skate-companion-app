@@ -2,11 +2,130 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
-const value=(data:FormData,key:string)=>String(data.get(key)??"").trim();
-export async function createCommunitySpot(data:FormData){const supabase=await createClient();const {data:auth}=await supabase.auth.getClaims();const userId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;if(!userId)throw new Error("Sign in to add a spot.");const name=value(data,"name"),description=value(data,"description"),mapId=value(data,"map_id"),raw=value(data,"position");let position:unknown;try{position=JSON.parse(raw)}catch{throw new Error("Drop a valid map pin first.")}if(!name||!description||!mapId||!Array.isArray(position)||position.length!==2)throw new Error("Name, description and pin are required.");const slug=`${name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}-${Date.now().toString(36)}`;const {error}=await supabase.from("map_spots").insert({map_id:mapId,created_by:userId,slug,name,description,category:"community",position:position as [number,number],is_published:false});if(error)throw new Error(error.message);revalidatePath("/spots")}
+const value = (data: FormData, key: string) =>
+  String(data.get(key) ?? "").trim();
+export async function createCommunitySpot(data: FormData) {
+  const supabase = await createClient();
+  const { data: auth } = await supabase.auth.getClaims();
+  const userId = typeof auth?.claims?.sub === "string" ? auth.claims.sub : null;
+  if (!userId) throw new Error("Sign in to add a spot.");
+  const name = value(data, "name"),
+    description = value(data, "description"),
+    mapId = value(data, "map_id"),
+    raw = value(data, "position");
+  let position: unknown;
+  try {
+    position = JSON.parse(raw);
+  } catch {
+    throw new Error("Drop a valid map pin first.");
+  }
+  if (
+    !name ||
+    !description ||
+    !mapId ||
+    !Array.isArray(position) ||
+    position.length !== 2
+  )
+    throw new Error("Name, description and pin are required.");
+  const slug = `${name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")}-${Date.now().toString(36)}`;
+  const { error } = await supabase.from("map_spots").insert({
+    map_id: mapId,
+    created_by: userId,
+    slug,
+    name,
+    description,
+    category: "community",
+    position: position as [number, number],
+    is_published: false,
+  });
+  if (error) throw new Error(error.message);
+  revalidatePath("/spots");
+}
 
-export async function rateSpot(spotId:string,rating:number,body?:string){const supabase=await createClient();const {data:auth}=await supabase.auth.getClaims();const userId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;if(!userId)throw new Error("Sign in to review a spot.");if(!Number.isInteger(rating)||rating<1||rating>5)throw new Error("Choose a rating from 1 to 5.");const reviewBody=body?.trim()||null;const {error}=await supabase.from("spot_reviews").upsert({spot_id:spotId,user_id:userId,rating,body:reviewBody,updated_at:new Date().toISOString()},{onConflict:"spot_id,user_id"});if(error)throw new Error(error.message);revalidatePath("/spots")}
+export async function rateSpot(spotId: string, rating: number, body?: string) {
+  const supabase = await createClient();
+  const { data: auth } = await supabase.auth.getClaims();
+  const userId = typeof auth?.claims?.sub === "string" ? auth.claims.sub : null;
+  if (!userId) throw new Error("Sign in to review a spot.");
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5)
+    throw new Error("Choose a rating from 1 to 5.");
+  const reviewBody = body?.trim() || null;
+  const { error } = await supabase.from("spot_reviews").upsert(
+    {
+      spot_id: spotId,
+      user_id: userId,
+      rating,
+      body: reviewBody,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "spot_id,user_id" },
+  );
+  if (error) throw new Error(error.message);
+  revalidatePath("/spots");
+}
 
-export async function addSpotComment(data:FormData){const supabase=await createClient();const {data:auth}=await supabase.auth.getClaims();const userId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;if(!userId)throw new Error("Sign in to comment.");const spotId=value(data,"spot_id"),body=value(data,"body");if(!spotId||!body||body.length>2000)throw new Error("Enter a comment up to 2,000 characters.");const {error}=await supabase.from("spot_comments").insert({spot_id:spotId,user_id:userId,body,is_published:true});if(error)throw new Error(error.message);revalidatePath("/spots")}
+export async function addSpotComment(data: FormData) {
+  const supabase = await createClient();
+  const { data: auth } = await supabase.auth.getClaims();
+  const userId = typeof auth?.claims?.sub === "string" ? auth.claims.sub : null;
+  if (!userId) throw new Error("Sign in to comment.");
+  const spotId = value(data, "spot_id"),
+    body = value(data, "body");
+  if (!spotId || !body || body.length > 2000)
+    throw new Error("Enter a comment up to 2,000 characters.");
+  const { error } = await supabase
+    .from("spot_comments")
+    .insert({ spot_id: spotId, user_id: userId, body, is_published: true });
+  if (error) throw new Error(error.message);
+  revalidatePath("/spots");
+}
 
-export async function uploadSpotMedia(data:FormData){const supabase=await createClient();const {data:auth}=await supabase.auth.getClaims();const userId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;if(!userId)throw new Error("Sign in to add media.");const spotId=value(data,"spot_id"),caption=value(data,"caption")||null,file=data.get("media");if(!(file instanceof File)||!spotId)throw new Error("Choose an image or video.");const allowed=new Set(["image/jpeg","image/png","image/webp","image/gif","video/mp4","video/webm"]);if(!allowed.has(file.type)||file.size>52428800)throw new Error("Use a JPG, PNG, WebP, GIF, MP4 or WebM up to 50 MB.");const extension=file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g,"")||"bin",path=`${userId}/${spotId}/${crypto.randomUUID()}.${extension}`;const uploaded=await supabase.storage.from("spot-media").upload(path,file,{contentType:file.type,upsert:false});if(uploaded.error)throw new Error(uploaded.error.message);const mediaType=file.type.startsWith("video/")?"video":"image";const inserted=await supabase.from("spot_media").insert({spot_id:spotId,created_by:userId,storage_path:path,media_type:mediaType,caption,is_published:false});if(inserted.error){await supabase.storage.from("spot-media").remove([path]);throw new Error(inserted.error.message)}revalidatePath("/spots")}
+export async function uploadSpotMedia(data: FormData) {
+  const supabase = await createClient();
+  const { data: auth } = await supabase.auth.getClaims();
+  const userId = typeof auth?.claims?.sub === "string" ? auth.claims.sub : null;
+  if (!userId) throw new Error("Sign in to add media.");
+  const spotId = value(data, "spot_id"),
+    caption = value(data, "caption") || null,
+    file = data.get("media");
+  if (!(file instanceof File) || !spotId)
+    throw new Error("Choose an image or video.");
+  const allowed = new Set([
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "video/mp4",
+    "video/webm",
+  ]);
+  if (!allowed.has(file.type) || file.size > 52428800)
+    throw new Error("Use a JPG, PNG, WebP, GIF, MP4 or WebM up to 50 MB.");
+  const extension =
+      file.name
+        .split(".")
+        .pop()
+        ?.toLowerCase()
+        .replace(/[^a-z0-9]/g, "") || "bin",
+    path = `${userId}/${spotId}/${crypto.randomUUID()}.${extension}`;
+  const uploaded = await supabase.storage
+    .from("spot-media")
+    .upload(path, file, { contentType: file.type, upsert: false });
+  if (uploaded.error) throw new Error(uploaded.error.message);
+  const mediaType = file.type.startsWith("video/") ? "video" : "image";
+  const inserted = await supabase.from("spot_media").insert({
+    spot_id: spotId,
+    created_by: userId,
+    storage_path: path,
+    media_type: mediaType,
+    caption,
+    is_published: false,
+  });
+  if (inserted.error) {
+    await supabase.storage.from("spot-media").remove([path]);
+    throw new Error(inserted.error.message);
+  }
+  revalidatePath("/spots");
+}

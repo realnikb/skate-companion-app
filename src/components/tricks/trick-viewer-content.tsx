@@ -8,52 +8,138 @@ import { ControlSequence } from "./control-sequence";
 import styles from "./trick-viewer.module.scss";
 
 type TrickViewerContentProps = {
-    trick: Trick;
-    category: TrickCategory | null;
-    controllerPlatform: ControllerPlatform;
-    stance: SkaterStance;
-    onControllerPlatformChange: (platform: ControllerPlatform) => void;
-    onStanceChange: (stance: SkaterStance) => void;
+  trick: Trick;
+  category: TrickCategory | null;
+  controllerPlatform: ControllerPlatform;
+  stance: SkaterStance;
+  onControllerPlatformChange: (platform: ControllerPlatform) => void;
+  onStanceChange: (stance: SkaterStance) => void;
 };
 
-export function TrickViewerContent({ trick, category, controllerPlatform, stance, onControllerPlatformChange, onStanceChange }: TrickViewerContentProps) {
-    const difficulty = trick.difficulty ? `${trick.difficulty[0].toUpperCase()}${trick.difficulty.slice(1)}` : "All levels";
-    const categoryTheme = category ?? trick.category;
-    const indefiniteArticle = /^[aeiou]/i.test(trick.name) ? "an" : "a";
-    const variants = controlsForStance(trick.controls, stance);
-    const hasNormalizedControls = hasControls(trick.controls);
+export function TrickViewerContent({
+  trick,
+  category,
+  controllerPlatform,
+  stance,
+  onControllerPlatformChange,
+  onStanceChange,
+}: TrickViewerContentProps) {
+  const difficulty = trick.difficulty
+    ? `${trick.difficulty[0].toUpperCase()}${trick.difficulty.slice(1)}`
+    : "All levels";
+  const categoryTheme = category ?? trick.category;
+  const indefiniteArticle = /^[aeiou]/i.test(trick.name) ? "an" : "a";
+  const variants = controlsForStance(trick.controls, stance);
+  const hasNormalizedControls = hasControls(trick.controls);
 
-    return <>
-        {hasNormalizedControls && <div className={styles.infoGrid} style={getCategoryTheme(categoryTheme)}>
-            <section className={`${styles.contentCard} ${styles.controlsCard}`}>
-                <h2><BookOpen /> How to do {indefiniteArticle} {trick.name}</h2>
-                <ControlSequence variants={variants} platform={controllerPlatform} />
-                <p>Work through the {controllerPlatform === "xbox" ? "Xbox" : "PlayStation"} inputs from left to right. Keep each movement deliberate and smooth, and use the looping demonstration to match the setup, flick, and landing timing.</p>
-            </section>
-        </div>}
-        <section className={styles.contentCard}>
-            <div className={styles.detailsHeading}>
-                <h2><Gamepad2 /> {trick.name} {hasNormalizedControls ? "controls and details" : "details"}</h2>
-                {hasNormalizedControls && <p>Choose your setup — the controls above update instantly.</p>}
+  return (
+    <>
+      {hasNormalizedControls && (
+        <div
+          className={styles.infoGrid}
+          style={getCategoryTheme(categoryTheme)}
+        >
+          <section className={`${styles.contentCard} ${styles.controlsCard}`}>
+            <h2>
+              <BookOpen /> How to do {indefiniteArticle} {trick.name}
+            </h2>
+            <ControlSequence
+              variants={variants}
+              platform={controllerPlatform}
+            />
+            <p>
+              Work through the{" "}
+              {controllerPlatform === "xbox" ? "Xbox" : "PlayStation"} inputs
+              from left to right. Keep each movement deliberate and smooth, and
+              use the looping demonstration to match the setup, flick, and
+              landing timing.
+            </p>
+          </section>
+        </div>
+      )}
+      <section className={styles.contentCard}>
+        <div className={styles.detailsHeading}>
+          <h2>
+            <Gamepad2 /> {trick.name}{" "}
+            {hasNormalizedControls ? "controls and details" : "details"}
+          </h2>
+          {hasNormalizedControls && (
+            <p>Choose your setup — the controls above update instantly.</p>
+          )}
+        </div>
+        <div className={styles.details}>
+          <div>
+            <span>Category</span>
+            <strong
+              className={styles.categoryValue}
+              style={getCategoryTheme(categoryTheme)}
+            >
+              {category?.name ?? trick.category}
+            </strong>
+          </div>
+          <div>
+            <span>Difficulty</span>
+            <strong>{difficulty}</strong>
+          </div>
+          {hasNormalizedControls && (
+            <div className={styles.editableDetail}>
+              <span>
+                <Gamepad2 /> Controller <em>Change</em>
+              </span>
+              <div
+                className={styles.detailOptions}
+                role="group"
+                aria-label="Choose controller"
+              >
+                <button
+                  type="button"
+                  aria-pressed={controllerPlatform === "xbox"}
+                  onClick={() => onControllerPlatformChange("xbox")}
+                >
+                  Xbox
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={controllerPlatform === "playstation"}
+                  onClick={() => onControllerPlatformChange("playstation")}
+                >
+                  PlayStation
+                </button>
+              </div>
             </div>
-            <div className={styles.details}>
-                <div><span>Category</span><strong className={styles.categoryValue} style={getCategoryTheme(categoryTheme)}>{category?.name ?? trick.category}</strong></div>
-                <div><span>Difficulty</span><strong>{difficulty}</strong></div>
-                {hasNormalizedControls && <div className={styles.editableDetail}>
-                    <span><Gamepad2 /> Controller <em>Change</em></span>
-                    <div className={styles.detailOptions} role="group" aria-label="Choose controller">
-                        <button type="button" aria-pressed={controllerPlatform === "xbox"} onClick={() => onControllerPlatformChange("xbox")}>Xbox</button>
-                        <button type="button" aria-pressed={controllerPlatform === "playstation"} onClick={() => onControllerPlatformChange("playstation")}>PlayStation</button>
-                    </div>
-                </div>}
-                {hasNormalizedControls && <div className={styles.editableDetail}>
-                    <span><Footprints /> Stance <em>Change</em></span>
-                    <div className={styles.detailOptions} role="group" aria-label="Choose stance">
-                        <button type="button" aria-pressed={stance === "regular"} onClick={() => onStanceChange("regular")}><span>Regular</span><small>Left foot</small></button>
-                        <button type="button" aria-pressed={stance === "goofy"} onClick={() => onStanceChange("goofy")}><span>Goofy</span><small>Right foot</small><ArrowLeftRight aria-hidden="true" /></button>
-                    </div>
-                </div>}
+          )}
+          {hasNormalizedControls && (
+            <div className={styles.editableDetail}>
+              <span>
+                <Footprints /> Stance <em>Change</em>
+              </span>
+              <div
+                className={styles.detailOptions}
+                role="group"
+                aria-label="Choose stance"
+              >
+                <button
+                  type="button"
+                  aria-pressed={stance === "regular"}
+                  onClick={() => onStanceChange("regular")}
+                >
+                  <span>Regular</span>
+                  <small>Left foot</small>
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={stance === "goofy"}
+                  onClick={() => onStanceChange("goofy")}
+                >
+                  <span>Goofy</span>
+                  <small>Right foot</small>
+                  <ArrowLeftRight aria-hidden="true" />
+                </button>
+              </div>
             </div>
-        </section>
-    </>;
+          )}
+        </div>
+      </section>
+    </>
+  );
 }

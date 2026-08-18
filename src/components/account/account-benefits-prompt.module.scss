@@ -1,1 +1,81 @@
-.prompt{display:grid;gap:1rem}.prompt>span{display:flex;align-items:center;gap:.4rem;color:#8daeff;font-size:.58rem;font-weight:850;letter-spacing:.13em;text-transform:uppercase}.prompt>span svg{width:.85rem}.prompt h2{margin:0;font-size:2rem;letter-spacing:-.05em}.prompt>p{margin:-.5rem 0 0;color:rgba(255,255,255,.48);font-size:.72rem;line-height:1.6}.prompt ul{display:grid;gap:.45rem;margin:0;padding:0;list-style:none}.prompt li{display:grid;grid-template-columns:2rem 1fr;align-items:center;gap:.7rem;padding:.65rem;border:1px solid rgba(255,255,255,.08);border-radius:.55rem;background:rgba(255,255,255,.025)}.prompt li>svg{width:1rem;color:#7ea4ff}.prompt li span{display:grid;gap:.15rem}.prompt strong{font-size:.65rem}.prompt small{color:rgba(255,255,255,.36);font-size:.55rem}.prompt>div{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}.prompt>div a{display:grid;min-height:2.7rem;padding:.5rem;place-items:center;border:1px solid rgba(255,255,255,.13);border-radius:.55rem;color:rgba(255,255,255,.62);font-size:.62rem;font-weight:800}.prompt>div a:first-child{border:0;background:#3d7eff;color:#fff}
+.prompt {
+  display: grid;
+  gap: 1rem;
+}
+.prompt > span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #8daeff;
+  font-size: 0.58rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.prompt > span svg {
+  width: 0.85rem;
+}
+.prompt h2 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: -0.05em;
+}
+.prompt > p {
+  margin: -0.5rem 0 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+.prompt ul {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.prompt li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+.prompt li > svg {
+  width: 1rem;
+  color: #7ea4ff;
+}
+.prompt li span {
+  display: grid;
+  gap: 0.15rem;
+}
+.prompt strong {
+  font-size: 0.65rem;
+}
+.prompt small {
+  color: rgba(255, 255, 255, 0.36);
+  font-size: 0.55rem;
+}
+.prompt > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+.prompt > div a {
+  display: grid;
+  min-height: 2.7rem;
+  padding: 0.5rem;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 0.55rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+.prompt > div a:first-child {
+  border: 0;
+  background: #3d7eff;
+  color: #fff;
+}

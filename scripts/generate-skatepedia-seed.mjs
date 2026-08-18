@@ -5,7 +5,9 @@ const sourcePath = process.argv[2];
 const outputPath = process.argv[3] ?? "supabase/seed.sql";
 
 if (!sourcePath) {
-  throw new Error("Usage: node scripts/generate-skatepedia-seed.mjs <skatepedia.json> [output.sql]");
+  throw new Error(
+    "Usage: node scripts/generate-skatepedia-seed.mjs <skatepedia.json> [output.sql]",
+  );
 }
 
 const document = JSON.parse(await readFile(sourcePath, "utf8"));
@@ -15,46 +17,75 @@ if (!Array.isArray(tricks) || tricks.length === 0) {
   throw new Error("The source must contain a non-empty tricks array.");
 }
 
-const quote = (value) => value === null || value === undefined
-  ? "null"
-  : `'${String(value).replaceAll("'", "''")}'`;
-const bool = (value) => value ? "true" : "false";
+const quote = (value) =>
+  value === null || value === undefined
+    ? "null"
+    : `'${String(value).replaceAll("'", "''")}'`;
+const bool = (value) => (value ? "true" : "false");
 const json = (value) => `${quote(JSON.stringify(value))}::jsonb`;
-const textArray = (values) => values.length
-  ? `array[${values.map(quote).join(", ")}]::text[]`
-  : "'{}'::text[]";
+const textArray = (values) =>
+  values.length
+    ? `array[${values.map(quote).join(", ")}]::text[]`
+    : "'{}'::text[]";
 
 const categoryDetails = {
-  "riding": ["Riding", "Movement fundamentals, setup motions, and board control."],
+  riding: [
+    "Riding",
+    "Movement fundamentals, setup motions, and board control.",
+  ],
   "flip-tricks": ["Flip Tricks", "Flatground flips and board rotations."],
-  "grinds": ["Grinds", "Rail and ledge grinds."],
-  "grabs": ["Grabs", "Air tricks focused on grabs and style."],
-  "finger-flips": ["Finger Flips", "Finger-flip variations performed from grabs and aerial positions."],
+  grinds: ["Grinds", "Rail and ledge grinds."],
+  grabs: ["Grabs", "Air tricks focused on grabs and style."],
+  "finger-flips": [
+    "Finger Flips",
+    "Finger-flip variations performed from grabs and aerial positions.",
+  ],
   "off-board": ["Off-board", "On-foot and board-handling tricks."],
-  "plants": ["Plants", "Handplants, footplants, and related tricks."],
+  plants: ["Plants", "Handplants, footplants, and related tricks."],
   "dark-tricks": ["Dark Tricks", "Dark catches, slides, and grinds."],
-  "terminology": ["Terminology", "Reference entries for skateboarding terminology."],
+  terminology: [
+    "Terminology",
+    "Reference entries for skateboarding terminology.",
+  ],
 };
 
-const fingerFlipSlugs = new Set(["bs-fingerflip", "fs-fingerflip", "fingerflip", "coffin-fingerflip", "double-grab-fingerflip"]);
-const categorySlugFor = (trick) => fingerFlipSlugs.has(trick.slug) ? "finger-flips" : trick.category_slug;
+const fingerFlipSlugs = new Set([
+  "bs-fingerflip",
+  "fs-fingerflip",
+  "fingerflip",
+  "coffin-fingerflip",
+  "double-grab-fingerflip",
+]);
+const categorySlugFor = (trick) =>
+  fingerFlipSlugs.has(trick.slug) ? "finger-flips" : trick.category_slug;
 const categorySlugs = [...new Set(tricks.map(categorySlugFor))];
-const missingCategoryDetails = categorySlugs.filter((slug) => !categoryDetails[slug]);
+const missingCategoryDetails = categorySlugs.filter(
+  (slug) => !categoryDetails[slug],
+);
 if (missingCategoryDetails.length) {
-  throw new Error(`Missing category details for: ${missingCategoryDetails.join(", ")}`);
+  throw new Error(
+    `Missing category details for: ${missingCategoryDetails.join(", ")}`,
+  );
 }
 
 const duplicateSlugs = tricks
   .map((trick) => trick.slug)
   .filter((slug, index, values) => values.indexOf(slug) !== index);
 if (duplicateSlugs.length) {
-  throw new Error(`Duplicate trick slugs: ${[...new Set(duplicateSlugs)].join(", ")}`);
+  throw new Error(
+    `Duplicate trick slugs: ${[...new Set(duplicateSlugs)].join(", ")}`,
+  );
 }
 
-const requiredMedia = ["video_file", "controls_reference_file", "controls_clean_file"];
+const requiredMedia = [
+  "video_file",
+  "controls_reference_file",
+  "controls_clean_file",
+];
 for (const trick of tricks) {
   for (const field of requiredMedia) {
-    if (!trick.media?.[field]) throw new Error(`${trick.slug} is missing media.${field}`);
+    if (!trick.media?.[field])
+      throw new Error(`${trick.slug} is missing media.${field}`);
   }
 }
 
@@ -63,7 +94,8 @@ const categoryRows = categorySlugs.map((slug, index) => {
   return `    (${quote(slug)}, ${quote(name)}, ${quote(description)}, ${(index + 1) * 10}, true)`;
 });
 
-const trickRows = tricks.map((trick, index) => `    (
+const trickRows = tricks.map(
+  (trick, index) => `    (
         ${quote(categorySlugFor(trick))}, ${quote(trick.slug)}, ${quote(trick.name)},
         ${quote(trick.description)}, ${quote(trick.detected_description)}, ${quote(trick.context)},
         ${textArray(trick.aliases ?? [])}, ${json(trick.controls ?? [])},
@@ -73,7 +105,8 @@ const trickRows = tricks.map((trick, index) => `    (
         ${trick.source_metadata?.end ?? "null"}, ${trick.source_metadata?.ocr_confidence ?? "null"},
         ${bool(trick.needs_name_review)}, ${bool(trick.needs_control_review)},
         ${bool(trick.needs_description_review)}, ${index + 1}, true
-    )`);
+    )`,
+);
 
 const sql = `-- Generated from ${path.basename(sourcePath)}. Do not edit by hand.
 insert into public.trick_categories (slug, name, description, sort_order, is_published)
@@ -114,4 +147,6 @@ join public.trick_categories category on category.slug = rows.category_slug;
 `;
 
 await writeFile(outputPath, sql);
-console.log(`Wrote ${tricks.length} tricks across ${categorySlugs.length} categories to ${outputPath}`);
+console.log(
+  `Wrote ${tricks.length} tricks across ${categorySlugs.length} categories to ${outputPath}`,
+);

@@ -1,37 +1,541 @@
-.page { flex: 1; width: min(100% - 2rem, 1200px); margin: 0 auto; padding: clamp(3rem, 7vw, 7rem) 0; }
-.page > header { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,.13); }
-.page header span, .grid article > span { color: #888f9a; font-size: .64rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
-.page h1 { margin: .55rem 0 .4rem; font-size: clamp(2.7rem, 6vw, 5rem); letter-spacing: -.065em; line-height: 1; }
-.page header p { margin: 0; color: rgba(255,255,255,.48); font-size: .78rem; }
-.page header button { display: flex; align-items: center; gap: .45rem; padding: .75rem 1rem; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; background: transparent; color: rgba(255,255,255,.7); font-size: .7rem; font-weight: 750; }
-.page header button svg { width: 1rem; }
-.grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; padding-top: 2rem; }
-.grid article { display: flex; min-height: 18rem; flex-direction: column; align-items: flex-start; padding: 1.5rem; border: 1px solid rgba(255,255,255,.12); border-radius: 1rem; background: rgba(255,255,255,.035); }
-.grid article > svg { width: 1.35rem; margin-bottom: 2.5rem; color: #8a6dff; }
-.grid h2 { margin: .75rem 0 .5rem; font-size: 1.35rem; letter-spacing: -.035em; }
-.grid p { margin: 0; color: rgba(255,255,255,.45); font-size: .73rem; line-height: 1.6; }
-.grid a, .grid small { margin-top: auto; color: #a98cff; font-size: .68rem; font-weight: 800; }
-.grid .crewCard { border-color: rgba(121,87,255,.35); background: radial-gradient(circle at 90% 10%,rgba(121,87,255,.18),transparent 40%),rgba(255,255,255,.035); }
-.profileForm { display: grid; gap: 1rem; padding-top: 2rem; scroll-margin-top: 6rem; }
-.profileIntro, .formSection { border: 1px solid rgba(255,255,255,.12); border-radius: 1rem; background: rgba(255,255,255,.035); }
-.profileIntro { display: flex; align-items: center; gap: 1.4rem; padding: 1.5rem; background: radial-gradient(circle at 90% 10%,rgba(121,87,255,.18),transparent 42%),rgba(255,255,255,.035); }
-.profileIntro span, .sectionHeading span { color:#888f9a;font-size:.64rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase }
-.avatar { position:relative;display:grid;width:7rem;height:7rem;flex:0 0 7rem;place-items:center;overflow:hidden;border:2px solid rgba(169,140,255,.6);border-radius:50%;background:#19191f }
-.avatar img { object-fit:cover }.avatar>svg{width:2.6rem;height:2.6rem;color:#8f75ed}
-.profileIntro h2{margin:.35rem 0;font-size:1.5rem;letter-spacing:-.035em}.profileIntro p{margin:0 0 .8rem;color:rgba(255,255,255,.48);font-size:.7rem}
-.uploadButton,.formFooter button{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:0;border-radius:999px;background:#8a3ffc;color:#fff;font-size:.68rem;font-weight:800;cursor:pointer}.uploadButton{width:fit-content;padding:.62rem .85rem}.uploadButton svg,.formFooter button svg{width:1rem;height:1rem}
-.fileInput{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
-.formSection{padding:1.5rem}.sectionHeading{display:flex;align-items:center;gap:.8rem;margin-bottom:1.35rem}.sectionHeading>svg{width:1.25rem;color:#a98cff}.sectionHeading h2{margin:.2rem 0 0;font-size:1.2rem;letter-spacing:-.025em}
-.fields,.preferences{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.fields label{display:grid;gap:.45rem;color:rgba(255,255,255,.72);font-size:.68rem;font-weight:800}.fields input{min-width:0;height:3.2rem;padding:0 .9rem;border:1px solid rgba(255,255,255,.14);border-radius:.65rem;outline:0;background:rgba(0,0,0,.28);color:#fff;font:inherit;font-size:.78rem}.fields input:focus{border-color:#984eff;box-shadow:0 0 0 3px rgba(152,78,255,.16)}.fields small{color:rgba(255,255,255,.36);font-size:.61rem;font-weight:500}
-.stancePreference{display:grid;gap:.35rem}.stancePreference>span{color:rgba(246,243,235,.62);font-size:.65rem;font-weight:950;text-transform:uppercase}.stancePreference>div{display:grid;grid-template-columns:1fr 1fr;gap:.3rem;padding:.25rem;border:2px solid rgba(246,243,235,.2);background:rgba(0,0,0,.32)}.stancePreference button{min-height:2.75rem;border:0;background:transparent;color:rgba(246,243,235,.66);font-size:.72rem;font-weight:950;text-transform:uppercase}.stancePreference button[aria-pressed="true"]{background:#8a3ffc;color:#fff}
-.identityFields,.socialFields{display:grid;gap:.8rem}.identityFields{grid-template-columns:repeat(2,1fr)}.socialFields{grid-template-columns:repeat(3,1fr);margin-top:1rem}.identityFields label,.socialFields label{display:flex;align-items:center;gap:.75rem;padding:.7rem;border:1px solid rgba(255,255,255,.12);border-radius:.7rem;background:rgba(0,0,0,.2)}.identityFields label>span:last-child,.socialFields label>span{display:grid;min-width:0;flex:1;gap:.35rem;color:rgba(255,255,255,.7);font-size:.65rem;font-weight:850}.identityFields input,.socialFields input{width:100%;min-width:0;height:2.7rem;padding:0 .75rem;border:1px solid rgba(255,255,255,.13);border-radius:.55rem;outline:0;background:rgba(0,0,0,.3);color:#fff;font-size:.72rem}.identityFields input:focus,.socialFields input:focus{border-color:#984eff;box-shadow:0 0 0 3px rgba(152,78,255,.16)}.platformIcon{display:grid;width:2.45rem;height:2.45rem;flex:0 0 2.45rem;place-items:center;border-radius:.55rem;background:rgba(138,63,252,.18);color:#b89cff}.platformIcon svg,.socialFields label>svg{width:1.2rem;height:1.2rem}.platformIcon strong{font-size:.72rem;letter-spacing:-.04em}.socialFields label>svg{flex:0 0 auto;color:#b89cff}
-.formFooter{display:flex;align-items:center;justify-content:flex-end;gap:1rem;min-height:3rem}.formFooter p{margin:0 auto 0 0;font-size:.7rem}.formFooter p svg{width:.9rem;height:.9rem;vertical-align:middle}.success{color:#8ce9b1}.error{color:#ff8e9b}.formFooter button{min-width:9rem;padding:.8rem 1.1rem}.formFooter button:disabled{cursor:wait;opacity:.65}
-.cropOverlay{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;padding:1rem;background:rgba(5,5,8,.82);backdrop-filter:blur(10px)}
-.cropDialog{width:min(100%,31rem);padding:1.35rem;border:1px solid rgba(255,255,255,.15);border-radius:1.15rem;background:#15151a;box-shadow:0 2rem 6rem rgba(0,0,0,.55)}
-.cropDialog>header{display:flex;justify-content:space-between;gap:1rem;margin-bottom:1.2rem}.cropDialog header span{color:#9580ef;font-size:.62rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.cropDialog header h2{margin:.3rem 0;font-size:1.4rem;letter-spacing:-.035em}.cropDialog header p{margin:0;color:rgba(255,255,255,.48);font-size:.7rem}.cropDialog header button{display:grid;width:2.2rem;height:2.2rem;flex:0 0 auto;place-items:center;padding:0;border:1px solid rgba(255,255,255,.12);border-radius:50%;background:transparent;color:#fff}.cropDialog header button svg{width:1rem}
-.cropViewport{position:relative;width:280px;height:280px;margin:auto;overflow:hidden;border-radius:50%;background:#09090c;cursor:grab;touch-action:none;user-select:none}.cropViewport:active{cursor:grabbing}.cropViewport img{position:absolute;top:50%;left:50%;max-width:none;translate:-50% -50%;pointer-events:none}.cropViewport>div{position:absolute;inset:0;border:2px solid rgba(255,255,255,.75);border-radius:50%;box-shadow:0 0 0 100px rgba(0,0,0,.42);pointer-events:none}
-.zoomControl{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.7rem;width:280px;margin:1rem auto}.zoomControl svg{width:1rem;color:rgba(255,255,255,.55)}.zoomControl input{width:100%;accent-color:#8a3ffc}
-.cropDialog>footer{display:flex;justify-content:flex-end;gap:.65rem;padding-top:.3rem}.cropDialog>footer button{padding:.7rem 1rem;border-radius:999px;font-size:.7rem;font-weight:850}.cancelCrop{border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.72)}.applyCrop{border:0;background:#8a3ffc;color:#fff}
-@media(max-width:760px){.page>header{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.grid article{min-height:15rem}}
-@media(max-width:700px){.fields,.preferences,.identityFields,.socialFields{grid-template-columns:1fr}.formFooter{align-items:stretch;flex-direction:column}.formFooter button{width:100%}}
-@media(max-width:450px){.profileIntro{align-items:flex-start;flex-direction:column}.avatar{width:6rem;height:6rem;flex-basis:6rem}}
+.page {
+  flex: 1;
+  width: min(100% - 2rem, 1200px);
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 7rem) 0;
+}
+.page > header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+}
+.page header span,
+.grid article > span {
+  color: #888f9a;
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.page h1 {
+  margin: 0.55rem 0 0.4rem;
+  font-size: clamp(2.7rem, 6vw, 5rem);
+  letter-spacing: -0.065em;
+  line-height: 1;
+}
+.page header p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.78rem;
+}
+.page header button {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+.page header button svg {
+  width: 1rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  padding-top: 2rem;
+}
+.grid article {
+  display: flex;
+  min-height: 18rem;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+.grid article > svg {
+  width: 1.35rem;
+  margin-bottom: 2.5rem;
+  color: #8a6dff;
+}
+.grid h2 {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 1.35rem;
+  letter-spacing: -0.035em;
+}
+.grid p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.73rem;
+  line-height: 1.6;
+}
+.grid a,
+.grid small {
+  margin-top: auto;
+  color: #a98cff;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+.grid .crewCard {
+  border-color: rgba(121, 87, 255, 0.35);
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(121, 87, 255, 0.18),
+      transparent 40%
+    ),
+    rgba(255, 255, 255, 0.035);
+}
+.profileForm {
+  display: grid;
+  gap: 1rem;
+  padding-top: 2rem;
+  scroll-margin-top: 6rem;
+}
+.profileIntro,
+.formSection {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+.profileIntro {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.5rem;
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(121, 87, 255, 0.18),
+      transparent 42%
+    ),
+    rgba(255, 255, 255, 0.035);
+}
+.profileIntro span,
+.sectionHeading span {
+  color: #888f9a;
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.avatar {
+  position: relative;
+  display: grid;
+  width: 7rem;
+  height: 7rem;
+  flex: 0 0 7rem;
+  place-items: center;
+  overflow: hidden;
+  border: 2px solid rgba(169, 140, 255, 0.6);
+  border-radius: 50%;
+  background: #19191f;
+}
+.avatar img {
+  object-fit: cover;
+}
+.avatar > svg {
+  width: 2.6rem;
+  height: 2.6rem;
+  color: #8f75ed;
+}
+.profileIntro h2 {
+  margin: 0.35rem 0;
+  font-size: 1.5rem;
+  letter-spacing: -0.035em;
+}
+.profileIntro p {
+  margin: 0 0 0.8rem;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.7rem;
+}
+.uploadButton,
+.formFooter button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: #8a3ffc;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.uploadButton {
+  width: fit-content;
+  padding: 0.62rem 0.85rem;
+}
+.uploadButton svg,
+.formFooter button svg {
+  width: 1rem;
+  height: 1rem;
+}
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.formSection {
+  padding: 1.5rem;
+}
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.35rem;
+}
+.sectionHeading > svg {
+  width: 1.25rem;
+  color: #a98cff;
+}
+.sectionHeading h2 {
+  margin: 0.2rem 0 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.025em;
+}
+.fields,
+.preferences {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.fields label {
+  display: grid;
+  gap: 0.45rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+.fields input {
+  min-width: 0;
+  height: 3.2rem;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.65rem;
+  outline: 0;
+  background: rgba(0, 0, 0, 0.28);
+  color: #fff;
+  font: inherit;
+  font-size: 0.78rem;
+}
+.fields input:focus {
+  border-color: #984eff;
+  box-shadow: 0 0 0 3px rgba(152, 78, 255, 0.16);
+}
+.fields small {
+  color: rgba(255, 255, 255, 0.36);
+  font-size: 0.61rem;
+  font-weight: 500;
+}
+.stancePreference {
+  display: grid;
+  gap: 0.35rem;
+}
+.stancePreference > span {
+  color: rgba(246, 243, 235, 0.62);
+  font-size: 0.65rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+.stancePreference > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+  padding: 0.25rem;
+  border: 2px solid rgba(246, 243, 235, 0.2);
+  background: rgba(0, 0, 0, 0.32);
+}
+.stancePreference button {
+  min-height: 2.75rem;
+  border: 0;
+  background: transparent;
+  color: rgba(246, 243, 235, 0.66);
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+.stancePreference button[aria-pressed="true"] {
+  background: #8a3ffc;
+  color: #fff;
+}
+.identityFields,
+.socialFields {
+  display: grid;
+  gap: 0.8rem;
+}
+.identityFields {
+  grid-template-columns: repeat(2, 1fr);
+}
+.socialFields {
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 1rem;
+}
+.identityFields label,
+.socialFields label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.7rem;
+  background: rgba(0, 0, 0, 0.2);
+}
+.identityFields label > span:last-child,
+.socialFields label > span {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.65rem;
+  font-weight: 850;
+}
+.identityFields input,
+.socialFields input {
+  width: 100%;
+  min-width: 0;
+  height: 2.7rem;
+  padding: 0 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 0.55rem;
+  outline: 0;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 0.72rem;
+}
+.identityFields input:focus,
+.socialFields input:focus {
+  border-color: #984eff;
+  box-shadow: 0 0 0 3px rgba(152, 78, 255, 0.16);
+}
+.platformIcon {
+  display: grid;
+  width: 2.45rem;
+  height: 2.45rem;
+  flex: 0 0 2.45rem;
+  place-items: center;
+  border-radius: 0.55rem;
+  background: rgba(138, 63, 252, 0.18);
+  color: #b89cff;
+}
+.platformIcon svg,
+.socialFields label > svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.platformIcon strong {
+  font-size: 0.72rem;
+  letter-spacing: -0.04em;
+}
+.socialFields label > svg {
+  flex: 0 0 auto;
+  color: #b89cff;
+}
+.formFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  min-height: 3rem;
+}
+.formFooter p {
+  margin: 0 auto 0 0;
+  font-size: 0.7rem;
+}
+.formFooter p svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  vertical-align: middle;
+}
+.success {
+  color: #8ce9b1;
+}
+.error {
+  color: #ff8e9b;
+}
+.formFooter button {
+  min-width: 9rem;
+  padding: 0.8rem 1.1rem;
+}
+.formFooter button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.cropOverlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(5, 5, 8, 0.82);
+  backdrop-filter: blur(10px);
+}
+.cropDialog {
+  width: min(100%, 31rem);
+  padding: 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.15rem;
+  background: #15151a;
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.55);
+}
+.cropDialog > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.cropDialog header span {
+  color: #9580ef;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.cropDialog header h2 {
+  margin: 0.3rem 0;
+  font-size: 1.4rem;
+  letter-spacing: -0.035em;
+}
+.cropDialog header p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.7rem;
+}
+.cropDialog header button {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+}
+.cropDialog header button svg {
+  width: 1rem;
+}
+.cropViewport {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #09090c;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.cropViewport:active {
+  cursor: grabbing;
+}
+.cropViewport img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: none;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+.cropViewport > div {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  box-shadow: 0 0 0 100px rgba(0, 0, 0, 0.42);
+  pointer-events: none;
+}
+.zoomControl {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.7rem;
+  width: 280px;
+  margin: 1rem auto;
+}
+.zoomControl svg {
+  width: 1rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+.zoomControl input {
+  width: 100%;
+  accent-color: #8a3ffc;
+}
+.cropDialog > footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding-top: 0.3rem;
+}
+.cropDialog > footer button {
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+.cancelCrop {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+}
+.applyCrop {
+  border: 0;
+  background: #8a3ffc;
+  color: #fff;
+}
+@media (max-width: 760px) {
+  .page > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .grid article {
+    min-height: 15rem;
+  }
+}
+@media (max-width: 700px) {
+  .fields,
+  .preferences,
+  .identityFields,
+  .socialFields {
+    grid-template-columns: 1fr;
+  }
+  .formFooter {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .formFooter button {
+    width: 100%;
+  }
+}
+@media (max-width: 450px) {
+  .profileIntro {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .avatar {
+    width: 6rem;
+    height: 6rem;
+    flex-basis: 6rem;
+  }
+}

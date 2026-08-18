@@ -13,9 +13,7 @@
       "description": "Push with your back foot to gain speed. Tap to push once, hold to keep pushing and go faster.",
       "detected_description": "fica hold to keep pushing and go faster",
       "context": null,
-      "aliases": [
-        "Back Foot Pushing"
-      ],
+      "aliases": ["Back Foot Pushing"],
       "controls": {
         "version": 2,
         "variants": [
@@ -64,9 +62,7 @@
       "description": "Push with your front foot to gain speed. Tap to push once, hold to keep pushing and go faster.",
       "detected_description": "fica old to kop pushing and go faster",
       "context": null,
-      "aliases": [
-        "Front Foot Pushing"
-      ],
+      "aliases": ["Front Foot Pushing"],
       "controls": [],
       "video_path": "clips/front-foot-pushing.mp4",
       "poster_path": "posters/front-foot-pushing.png",
@@ -276,9 +272,7 @@
       "description": "Get on your board from a Side-Slide.",
       "detected_description": "Get on your board from a Side-Slide",
       "context": null,
-      "aliases": [
-        "SlideMount"
-      ],
+      "aliases": ["SlideMount"],
       "controls": [],
       "video_path": "clips/slide-mount.mp4",
       "poster_path": "posters/slide-mount.png",
@@ -518,9 +512,7 @@
       "description": "While in Trick Setup, twist and hold toward your heelside while popping to spin faster.",
       "detected_description": "Wiehide while popping to spin faster",
       "context": null,
-      "aliases": [
-        "Frontside Prewind"
-      ],
+      "aliases": ["Frontside Prewind"],
       "controls": [],
       "video_path": "clips/fs-prewind.mp4",
       "poster_path": "posters/fs-prewind.png",
@@ -550,9 +542,7 @@
       "description": "Switch stances by rotating the board 180° toward your front.",
       "detected_description": "th stances by rotating the board 180 toward your",
       "context": null,
-      "aliases": [
-        "Frontside Revert"
-      ],
+      "aliases": ["Frontside Revert"],
       "controls": [],
       "video_path": "clips/fs-revert.mp4",
       "poster_path": "posters/fs-revert.png",
@@ -582,11 +572,7 @@
       "description": "Hold Right Stick down slightly to balance on your back wheels. Also known as a Tail Manual.",
       "detected_description": "gheels Also known esaTallManual I",
       "context": null,
-      "aliases": [
-        "Tail Manual",
-        "Wheelie",
-        "manny"
-      ],
+      "aliases": ["Tail Manual", "Wheelie", "manny"],
       "controls": [],
       "video_path": "clips/manual.mp4",
       "poster_path": "tricks/929cf1d6-2f79-437b-a52c-1e851a7957e3/poster-thumbnail-1785874059133.webp",
@@ -616,11 +602,7 @@
       "description": "Hold Right Stick up slightly to balance on your front wheels.",
       "detected_description": "meng Stick up slightly to balance on your front",
       "context": null,
-      "aliases": [
-        "Nose Wheelie",
-        "NoseManual",
-        "nose manny"
-      ],
+      "aliases": ["Nose Wheelie", "NoseManual", "nose manny"],
       "controls": [],
       "video_path": "clips/nose-manual.mp4",
       "poster_path": "tricks/2a4c00c5-8439-434a-91cb-5273bdaa2f05/poster-thumbnail-1785874118773.webp",
@@ -650,9 +632,7 @@
       "description": "Rotate Left Stick quickly during a Manual to perform a Revert.",
       "detected_description": "villa Stick quickly during a Manual to perform a",
       "context": null,
-      "aliases": [
-        "ManualRevert"
-      ],
+      "aliases": ["ManualRevert"],
       "controls": [],
       "video_path": "clips/manual-revert.mp4",
       "poster_path": "posters/manual-revert.png",
@@ -712,11 +692,7 @@
       "description": "Slide toward your toeside to slow down or turn sharply. Great for drifting.",
       "detected_description": "cries to slow down or turn sharply",
       "context": null,
-      "aliases": [
-        "Frontside Powerslide",
-        "FS Power Slide",
-        "FSPowerslide"
-      ],
+      "aliases": ["Frontside Powerslide", "FS Power Slide", "FSPowerslide"],
       "controls": [],
       "video_path": "clips/fs-powerslide.mp4",
       "poster_path": "posters/fs-powerslide.png",
@@ -746,9 +722,7 @@
       "description": "In the air, grab your Board, and then hold Left Stick down to flip backwards.",
       "detected_description": "han eli bien seit and then hold Left Stick",
       "context": null,
-      "aliases": [
-        "Backflip"
-      ],
+      "aliases": ["Backflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -821,9 +795,7 @@
       "description": "In the air, grab your Board, and then hold Left Stick up to flip forwards.",
       "detected_description": "a ent diese Board and then hold Left Stick up",
       "context": null,
-      "aliases": [
-        "Frontflip"
-      ],
+      "aliases": ["Frontflip"],
       "controls": [],
       "video_path": "clips/front-flip.mp4",
       "poster_path": null,
@@ -853,9 +825,7 @@
       "description": "Flick Right Stick down quickly and let go to perform a fast, low Ollie.",
       "detected_description": "Die seal as down quickly and let go to perform a",
       "context": null,
-      "aliases": [
-        "Quick Ollie"
-      ],
+      "aliases": ["Quick Ollie"],
       "controls": [],
       "video_path": "clips/quick-ollie.mp4",
       "poster_path": "posters/quick-ollie.png",
@@ -915,11 +885,7 @@
       "description": "Approach at a frontside angle and do a Ollie or Flip Trick into the wall to ride along it.",
       "detected_description": "ick Inte the walltordeciongit I",
       "context": null,
-      "aliases": [
-        "Frontside Wallride",
-        "FS Wall Ride",
-        "FSWallride"
-      ],
+      "aliases": ["Frontside Wallride", "FS Wall Ride", "FSWallride"],
       "controls": [],
       "video_path": "clips/fs-wallride.mp4",
       "poster_path": "posters/fs-wallride.png",
@@ -979,9 +945,7 @@
       "description": "Get on your Board at the edge of a Ramp, then ride down into it.",
       "detected_description": "om haere at the edge of a Ramp then ride",
       "context": null,
-      "aliases": [
-        "Drop In"
-      ],
+      "aliases": ["Drop In"],
       "controls": [],
       "video_path": "clips/drop-in.mp4",
       "poster_path": "posters/drop-in.png",
@@ -1011,9 +975,7 @@
       "description": "Get some speed and hold up to launch out of the transition and land on flat ground.",
       "detected_description": "daralton and landon flat ground",
       "context": null,
-      "aliases": [
-        "Air to Flat"
-      ],
+      "aliases": ["Air to Flat"],
       "controls": {
         "version": 2,
         "variants": [
@@ -1075,9 +1037,7 @@
       "description": "Push up mid-air before descending to land on the lip. Timing and speed are key.",
       "detected_description": "Sno ete inact 2 to land on the lip",
       "context": null,
-      "aliases": [
-        "Air to Lip"
-      ],
+      "aliases": ["Air to Lip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -1199,9 +1159,7 @@
       "description": "Flick up toward your heelside to flip the Board once toward your backside. Hold to try more rotations.",
       "detected_description": "Perard your bickside Hold to try more rotations",
       "context": null,
-      "aliases": [
-        "Kick Flip"
-      ],
+      "aliases": ["Kick Flip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -1267,9 +1225,7 @@
       "description": "Flick up toward your toeside to flip the board once toward your frontside. Hold to try more rotations.",
       "detected_description": "Perard your frontside Hold to try more rotations",
       "context": null,
-      "aliases": [
-        "Heel Flip"
-      ],
+      "aliases": ["Heel Flip"],
       "controls": [],
       "video_path": "clips/heelflip.mp4",
       "poster_path": "tricks/868b83e8-7bbb-45d2-8755-c5887903b7d0/poster-thumbnail-1785790008888.webp",
@@ -1334,10 +1290,7 @@
       "description": "Start down and toeside. Small scoop heelside, then flick up heelside to combine a Kickflip and Shuvit.",
       "detected_description": "ick up heelside to combine a Kickflip and Shu",
       "context": null,
-      "aliases": [
-        "Varial Kick Flip",
-        "VarialKickflip"
-      ],
+      "aliases": ["Varial Kick Flip", "VarialKickflip"],
       "controls": [],
       "video_path": "clips/varial-kickflip.mp4",
       "poster_path": "posters/varial-kickflip.png",
@@ -1367,10 +1320,7 @@
       "description": "Start down and heelside. Small scoop toeside, then flick up toeside to combine a Heelflip and Shuvit.",
       "detected_description": "ick up toeside to combine a Heelfip and Shuvit",
       "context": null,
-      "aliases": [
-        "Varial Heel Flip",
-        "VarialHeelflip"
-      ],
+      "aliases": ["Varial Heel Flip", "VarialHeelflip"],
       "controls": [],
       "video_path": "clips/varial-heelflip.mp4",
       "poster_path": "posters/varial-heelflip.png",
@@ -1504,9 +1454,7 @@
       "description": "Start heelside and slightly down. Medium scoop toeside, then flick up toeside to Heelflip and 360 Shuvit.",
       "detected_description": "oeside then flick up toeside to Heelfip and 360",
       "context": null,
-      "aliases": [
-        "Laser Flip"
-      ],
+      "aliases": ["Laser Flip"],
       "controls": [],
       "video_path": "clips/laserflip.mp4",
       "poster_path": "posters/laserflip.png",
@@ -1536,9 +1484,7 @@
       "description": "Start down and heelside. Small scoop toeside, then flick back up heelside to FS Pop-Shuvit and Kickflip.",
       "detected_description": "lick back up heelside to FS Pop-Shuvit and Kick",
       "context": null,
-      "aliases": [
-        "Hard Flip"
-      ],
+      "aliases": ["Hard Flip"],
       "controls": [],
       "video_path": "clips/hardflip.mp4",
       "poster_path": "posters/hardflip.png",
@@ -1568,10 +1514,7 @@
       "description": "Start down and toeside. Small scoop heelside, then flick back up toeside to BS Pop-Shuvit and Heelflip.",
       "detected_description": "lick back up toeside to BS Pop-Shuvit and Heel",
       "context": null,
-      "aliases": [
-        "Inward Heel Flip",
-        "InwardHeelflip"
-      ],
+      "aliases": ["Inward Heel Flip", "InwardHeelflip"],
       "controls": [],
       "video_path": "clips/inward-heelflip.mp4",
       "poster_path": "posters/inward-heelflip.png",
@@ -1744,10 +1687,7 @@
       "description": "Start heelside and slightly down. Medium scoop toeside, then flick back up heelside to 360 Shuvit and Kickflip.",
       "detected_description": "vei th en flick back up heelside to 360 Shuv",
       "context": null,
-      "aliases": [
-        "360 Hard Flip",
-        "360Hardflip"
-      ],
+      "aliases": ["360 Hard Flip", "360Hardflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -1857,10 +1797,7 @@
       "description": "Start toeside and slightly down. Medium scoop heelside, then flick back up toeside to 360 Shuvit and Heelflip.",
       "detected_description": "else then flick back up toeside to 360 Shuv",
       "context": null,
-      "aliases": [
-        "360 Inward Heel Flip",
-        "360InwardHeelflip"
-      ],
+      "aliases": ["360 Inward Heel Flip", "360InwardHeelflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -2034,10 +1971,7 @@
       "description": "Flick down toward your heelside to flip the board toward your backside. Hold to try more rotations.",
       "detected_description": "Perard your beickaide Hold to try more rotations",
       "context": null,
-      "aliases": [
-        "Nollie Kick Flip",
-        "NollieKickflip"
-      ],
+      "aliases": ["Nollie Kick Flip", "NollieKickflip"],
       "controls": [],
       "video_path": "clips/nollie-kickflip.mp4",
       "poster_path": "posters/nollie-kickflip.png",
@@ -2067,10 +2001,7 @@
       "description": "Flick down toward your toeside to flip the board toward your frontside. Hold to try more rotations.",
       "detected_description": "ur froritside Held to try more rotations",
       "context": null,
-      "aliases": [
-        "Nollie Heel Flip",
-        "NollieHeelflip"
-      ],
+      "aliases": ["Nollie Heel Flip", "NollieHeelflip"],
       "controls": [],
       "video_path": "clips/nollie-heelflip.mp4",
       "poster_path": "posters/nollie-heelflip.png",
@@ -2135,10 +2066,7 @@
       "description": "Start up and toeside. Small scoop heelside, then flick down heelside to combine a Kickflip and Shuvit.",
       "detected_description": "Jown heelsice to combine a Kickflip and Shuvit",
       "context": null,
-      "aliases": [
-        "Nollie Varial Kick Flip",
-        "NollieVarialKickflip"
-      ],
+      "aliases": ["Nollie Varial Kick Flip", "NollieVarialKickflip"],
       "controls": [],
       "video_path": "clips/nollie-varial-kickflip.mp4",
       "poster_path": "posters/nollie-varial-kickflip.png",
@@ -2168,9 +2096,7 @@
       "description": "Start toeside and slightly up. Medium scoop heelside, then flick down heelside to Kickflip and 360 Shuvit.",
       "detected_description": "nen flick down heelside to Kickflip and 360 Shu",
       "context": null,
-      "aliases": [
-        "Nollie360Flip"
-      ],
+      "aliases": ["Nollie360Flip"],
       "controls": [],
       "video_path": "clips/nollie-360-flip.mp4",
       "poster_path": "posters/nollie-360-flip.png",
@@ -2200,9 +2126,7 @@
       "description": "Start heelside and slightly up. Medium scoop toeside, then flick down toeside to Heelflip and 360 Shuvit.",
       "detected_description": "nen flick down toeside to Heelflip and 360 Shuv",
       "context": null,
-      "aliases": [
-        "NollieLaserflip"
-      ],
+      "aliases": ["NollieLaserflip"],
       "controls": [],
       "video_path": "clips/nollie-laserflip.mp4",
       "poster_path": "posters/nollie-laserflip.png",
@@ -2232,10 +2156,7 @@
       "description": "Start up and toeside. Small scoop heelside, then flick back down toeside to BS Pop-Shuvit and Heelflip.",
       "detected_description": "sack down toeside to BS Pop-Shuvit and Heelfl",
       "context": null,
-      "aliases": [
-        "Nollie Inward Heel Flip",
-        "NollieInwardHeelflip"
-      ],
+      "aliases": ["Nollie Inward Heel Flip", "NollieInwardHeelflip"],
       "controls": [],
       "video_path": "clips/nollie-inward-heelflip.mp4",
       "poster_path": "posters/nollie-inward-heelflip.png",
@@ -2300,10 +2221,7 @@
       "description": "Start heelside and slightly up. Medium scoop toeside, then flick down heelside to 360 Shuvit and Kickflip.",
       "detected_description": "nen flick down heelside to 360 Shuvit and Kickf",
       "context": null,
-      "aliases": [
-        "Nollie 360 Hard Flip",
-        "Nollie360Hardflip"
-      ],
+      "aliases": ["Nollie 360 Hard Flip", "Nollie360Hardflip"],
       "controls": [],
       "video_path": "clips/nollie-360-hardflip.mp4",
       "poster_path": "posters/nollie-360-hardflip.png",
@@ -2363,9 +2281,7 @@
       "description": "Start a Flip Trick after you've already launched into the air.",
       "detected_description": "rp a Flip Trick after you've already launched into the",
       "context": null,
-      "aliases": [
-        "LateFlipTricks"
-      ],
+      "aliases": ["LateFlipTricks"],
       "controls": [],
       "video_path": "clips/late-flip-tricks.mp4",
       "poster_path": "posters/late-flip-tricks.png",
@@ -2469,9 +2385,7 @@
       "description": "Kick your front foot off the Board while popping an Ollie.",
       "detected_description": "Paige front foot off the Board while popping an",
       "context": null,
-      "aliases": [
-        "Front Foot One Foot Ollie"
-      ],
+      "aliases": ["Front Foot One Foot Ollie"],
       "controls": [],
       "video_path": "clips/front-foot-one-foot-ollie.mp4",
       "poster_path": "posters/front-foot-one-foot-ollie.png",
@@ -2501,10 +2415,7 @@
       "description": "Kick your back foot off the Board while popping an Ollie.",
       "detected_description": "aie back foot off the Board while popping an",
       "context": null,
-      "aliases": [
-        "Back Foot One Foot Ollie",
-        "ollie south"
-      ],
+      "aliases": ["Back Foot One Foot Ollie", "ollie south"],
       "controls": {
         "version": 2,
         "variants": [
@@ -2609,9 +2520,7 @@
       "description": "While in a Dark Catch, do a flip trick input to turn the board back over.",
       "detected_description": "as I F a a ee",
       "context": null,
-      "aliases": [
-        "DarkFlip"
-      ],
+      "aliases": ["DarkFlip"],
       "controls": {
         "version": 2,
         "variants": [],
@@ -2645,10 +2554,7 @@
       "description": "Do a Kickflip and catch the board with your feet while it is flipped upside down.",
       "detected_description": "aphasia aati es bis board with your feet while",
       "context": null,
-      "aliases": [
-        "Kick Flip Dark Catch",
-        "KickflipDarkCatch"
-      ],
+      "aliases": ["Kick Flip Dark Catch", "KickflipDarkCatch"],
       "controls": [],
       "video_path": "clips/kickflip-dark-catch.mp4",
       "poster_path": "posters/kickflip-dark-catch.png",
@@ -2678,10 +2584,7 @@
       "description": "Do a Heelflip and catch the board with your feet while it is flipped upside down.",
       "detected_description": "oh gale ae board with your feet while",
       "context": null,
-      "aliases": [
-        "Heel Flip Dark Catch",
-        "HeelflipDarkCatch"
-      ],
+      "aliases": ["Heel Flip Dark Catch", "HeelflipDarkCatch"],
       "controls": [],
       "video_path": "clips/heelflip-dark-catch.mp4",
       "poster_path": "posters/heelflip-dark-catch.png",
@@ -2746,10 +2649,7 @@
       "description": "Do a Varial Kickflip and catch the board with your feet while it is flipped upside down.",
       "detected_description": "giles Mipped upsldedown",
       "context": null,
-      "aliases": [
-        "Varial Kick Flip Dark Catch",
-        "VarialKickflipDarkCatch"
-      ],
+      "aliases": ["Varial Kick Flip Dark Catch", "VarialKickflipDarkCatch"],
       "controls": [],
       "video_path": "clips/varial-kickflip-dark-catch.mp4",
       "poster_path": "posters/varial-kickflip-dark-catch.png",
@@ -2779,9 +2679,7 @@
       "description": "Do a 360 Flip and catch the board with your feet while it is flipped upside down.",
       "detected_description": "te ert hope I board with your feet while",
       "context": null,
-      "aliases": [
-        "360FlipDarkCatch"
-      ],
+      "aliases": ["360FlipDarkCatch"],
       "controls": {
         "version": 2,
         "variants": [
@@ -2884,9 +2782,7 @@
       "description": "Do a Laserflip and catch the board with your feet while it is flipped upside down.",
       "detected_description": "Ks fiispad upside peat poara with your fee",
       "context": null,
-      "aliases": [
-        "LaserflipDarkCatch"
-      ],
+      "aliases": ["LaserflipDarkCatch"],
       "controls": [],
       "video_path": "clips/laserflip-dark-catch.mp4",
       "poster_path": "posters/laserflip-dark-catch.png",
@@ -2916,10 +2812,7 @@
       "description": "Do an Inward Heelflip and catch the board with your feet while it is flipped upside down.",
       "detected_description": "Wet while itis Mipped upeidedown I",
       "context": null,
-      "aliases": [
-        "Inward Heel Flip Dark Catch",
-        "InwardHeelflipDarkCatch"
-      ],
+      "aliases": ["Inward Heel Flip Dark Catch", "InwardHeelflipDarkCatch"],
       "controls": [],
       "video_path": "clips/inward-heelflip-dark-catch.mp4",
       "poster_path": "posters/inward-heelflip-dark-catch.png",
@@ -2984,10 +2877,7 @@
       "description": "Do a 360 Hardflip and catch the board with your feet while it is flipped upside down.",
       "detected_description": "giles Mipped upsidedown",
       "context": null,
-      "aliases": [
-        "360 Hard Flip Dark Catch",
-        "360HardflipDarkCatch"
-      ],
+      "aliases": ["360 Hard Flip Dark Catch", "360HardflipDarkCatch"],
       "controls": {
         "version": 2,
         "variants": [
@@ -3132,10 +3022,7 @@
       "description": "Do a Nollie Kickflip and catch the board with your feet while it is flipped upside down.",
       "detected_description": "giles fipped upsldedowm",
       "context": null,
-      "aliases": [
-        "Nollie Kick Flip Dark Catch",
-        "NollieKickflipDarkCatch"
-      ],
+      "aliases": ["Nollie Kick Flip Dark Catch", "NollieKickflipDarkCatch"],
       "controls": [],
       "video_path": "clips/nollie-kickflip-dark-catch.mp4",
       "poster_path": "posters/nollie-kickflip-dark-catch.png",
@@ -3233,9 +3120,7 @@
       "description": "Do a Nollie 360 Flip and catch the board with your feet while it is flipped upside down.",
       "detected_description": "a Sapeiecalnasity Home thug board with your feet",
       "context": null,
-      "aliases": [
-        "Nollie360FlipDarkCatch"
-      ],
+      "aliases": ["Nollie360FlipDarkCatch"],
       "controls": [],
       "video_path": "clips/nollie-360-flip-dark-catch.mp4",
       "poster_path": "posters/nollie-360-flip-dark-catch.png",
@@ -3396,10 +3281,7 @@
       "description": "While in a Dark Catch do a Kickflip to flip the board back over.",
       "detected_description": "I edeibe pate Catch do a Kickflip to flip the board",
       "context": null,
-      "aliases": [
-        "Dark Kick Flip",
-        "DarkKickflip"
-      ],
+      "aliases": ["Dark Kick Flip", "DarkKickflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -3466,10 +3348,7 @@
       "description": "While in a Dark Catch do a Heelflip to flip the board back over.",
       "detected_description": "2 gllpalaa Catch do a Heelflip to flip the board",
       "context": null,
-      "aliases": [
-        "Dark Heel Flip",
-        "DarkHeelflip"
-      ],
+      "aliases": ["Dark Heel Flip", "DarkHeelflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -3536,10 +3415,7 @@
       "description": "While in a Dark Catch do a FS Pop Shuvit to flip the board back over.",
       "detected_description": "vied plese ehh do a FS Pop Shuvit to flip the",
       "context": null,
-      "aliases": [
-        "Dark Frontside Pop Shuvit",
-        "Dark FS Pop Shove-It"
-      ],
+      "aliases": ["Dark Frontside Pop Shuvit", "Dark FS Pop Shove-It"],
       "controls": {
         "version": 2,
         "variants": [
@@ -3666,10 +3542,7 @@
       "description": "While in a Dark Catch do a Nollie Kickflip to flip the board back over.",
       "detected_description": "vied Ta ane do a Nollie Kickflip to flip the",
       "context": null,
-      "aliases": [
-        "Dark Nollie Kick Flip",
-        "DarkNollieKickflip"
-      ],
+      "aliases": ["Dark Nollie Kick Flip", "DarkNollieKickflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -3736,10 +3609,7 @@
       "description": "While in a Dark Catch do a Nollie Heelflip to flip the board back over.",
       "detected_description": "vied rien ea do a Nollie Heelflip to flip the",
       "context": null,
-      "aliases": [
-        "Dark Nollie Heel Flip",
-        "DarkNollieHeelflip"
-      ],
+      "aliases": ["Dark Nollie Heel Flip", "DarkNollieHeelflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -3806,11 +3676,7 @@
       "description": "Approach frontside, do a Dark Catch, and then rotate your board toeside to slide across the middle of the deck.",
       "detected_description": "our board toes to slide across the middle of",
       "context": null,
-      "aliases": [
-        "Frontside Darkslide",
-        "FS Dark Slide",
-        "FSDarkslide"
-      ],
+      "aliases": ["Frontside Darkslide", "FS Dark Slide", "FSDarkslide"],
       "controls": [],
       "video_path": "clips/fs-darkslide.mp4",
       "poster_path": "posters/fs-darkslide.png",
@@ -3935,12 +3801,7 @@
       "description": "Approach backside and lift the Nose to grind on the back Truck.",
       "detected_description": "arabe aaa and lift the Nose to grind on the",
       "context": null,
-      "aliases": [
-        "Backside 5-0",
-        "BS Five-O",
-        "BS Five Oh",
-        "BS 5 0"
-      ],
+      "aliases": ["Backside 5-0", "BS Five-O", "BS Five Oh", "BS 5 0"],
       "controls": {
         "version": 2,
         "variants": [
@@ -4073,9 +3934,7 @@
       "description": "Approach frontside, dip the Nose toeside to grind on the front Truck with the Tail angled over the Rail.",
       "detected_description": "he front Truck with the Tall angled over the Ral",
       "context": null,
-      "aliases": [
-        "Frontside Overcrook"
-      ],
+      "aliases": ["Frontside Overcrook"],
       "controls": [],
       "video_path": "clips/fs-overcrook.mp4",
       "poster_path": "posters/fs-overcrook.png",
@@ -4105,9 +3964,7 @@
       "description": "Approach frontside, dip the Tail heelside to grind on the back Truck with the Nose angled up and over the Rail.",
       "detected_description": "he back Truck wit the Nose angled up and ov",
       "context": null,
-      "aliases": [
-        "Frontside Salad"
-      ],
+      "aliases": ["Frontside Salad"],
       "controls": [],
       "video_path": "clips/fs-salad.mp4",
       "poster_path": "posters/fs-salad.png",
@@ -4137,9 +3994,7 @@
       "description": "Approach frontside, shift the Nose heelside and dip it down to grind on the back Truck with the Nose under the Rail.",
       "detected_description": "own to grind on the back Truck with the Nose",
       "context": null,
-      "aliases": [
-        "Frontside Smith"
-      ],
+      "aliases": ["Frontside Smith"],
       "controls": [],
       "video_path": "clips/fs-smith.mp4",
       "poster_path": "posters/fs-smith.png",
@@ -4169,9 +4024,7 @@
       "description": "Approach frontside, shift the Nose toeside and dip it down to grind on the back Truck with the Nose under the far side.",
       "detected_description": "own to ind on the back Truck with the Nose",
       "context": null,
-      "aliases": [
-        "Frontside Feeble"
-      ],
+      "aliases": ["Frontside Feeble"],
       "controls": [],
       "video_path": "clips/fs-feeble.mp4",
       "poster_path": "posters/fs-feeble.png",
@@ -4201,9 +4054,7 @@
       "description": "Approach frontside, shift the Tail heelside and dip it down to grind on the front Truck with the Tail under the Rail.",
       "detected_description": "down to grind on the front Truck with the Tall under",
       "context": null,
-      "aliases": [
-        "Frontside Willy"
-      ],
+      "aliases": ["Frontside Willy"],
       "controls": [],
       "video_path": "clips/fs-willy.mp4",
       "poster_path": "posters/fs-willy.png",
@@ -4233,9 +4084,7 @@
       "description": "Approach frontside, shift the Tail toeside and dip it down to grind on the front Truck with the Tail under the far side.",
       "detected_description": "downto ind on the front Truck with the Tall under",
       "context": null,
-      "aliases": [
-        "Frontside Over Willy"
-      ],
+      "aliases": ["Frontside Over Willy"],
       "controls": [],
       "video_path": "clips/fs-over-willy.mp4",
       "poster_path": "posters/fs-over-willy.png",
@@ -4265,11 +4114,7 @@
       "description": "Approach frontside and rotate your board toeside to slide across the middle of the Deck.",
       "detected_description": "fide across the middle of the Deck",
       "context": null,
-      "aliases": [
-        "Frontside Boardslide",
-        "FS Board Slide",
-        "FSBoardslide"
-      ],
+      "aliases": ["Frontside Boardslide", "FS Board Slide", "FSBoardslide"],
       "controls": [],
       "video_path": "clips/fs-boardslide.mp4",
       "poster_path": "posters/fs-boardslide.png",
@@ -4299,11 +4144,7 @@
       "description": "Approach frontside and rotate heelside to swing the back Truck over the Rail, then slide across the middle of the Deck.",
       "detected_description": "ack Tuck over the Rail then slide across the m",
       "context": null,
-      "aliases": [
-        "Frontside Lipslide",
-        "FS Lip Slide",
-        "FSLipslide"
-      ],
+      "aliases": ["Frontside Lipslide", "FS Lip Slide", "FSLipslide"],
       "controls": [],
       "video_path": "clips/fs-lipslide.mp4",
       "poster_path": "posters/fs-lipslide.png",
@@ -4333,11 +4174,7 @@
       "description": "Approach frontside and rotate the Nose toeside to turn your Board sideways and slide on the Nose.",
       "detected_description": "ur Board sideways and slide on the Nowe",
       "context": null,
-      "aliases": [
-        "Frontside Noseslide",
-        "FS Nose Slide",
-        "FSNoseslide"
-      ],
+      "aliases": ["Frontside Noseslide", "FS Nose Slide", "FSNoseslide"],
       "controls": [],
       "video_path": "clips/fs-noseslide.mp4",
       "poster_path": "posters/fs-noseslide.png",
@@ -4367,11 +4204,7 @@
       "description": "Approach frontside and rotate the Tail heelside to turn your Board sideways and slide on the Tail.",
       "detected_description": "ur Board sideways and slide-on the Tall",
       "context": null,
-      "aliases": [
-        "Frontside Tailslide",
-        "FS Tail Slide",
-        "FSTailslide"
-      ],
+      "aliases": ["Frontside Tailslide", "FS Tail Slide", "FSTailslide"],
       "controls": [],
       "video_path": "clips/fs-tailslide.mp4",
       "poster_path": "posters/fs-tailslide.png",
@@ -4401,11 +4234,7 @@
       "description": "Approach frontside, dip the Tail down and rotate heelside to slide with the Nose pointed up over the Rail.",
       "detected_description": "yielaide to slide with the Nose pointed up over",
       "context": null,
-      "aliases": [
-        "Frontside Bluntslide",
-        "FS Blunt Slide",
-        "FSBluntslide"
-      ],
+      "aliases": ["Frontside Bluntslide", "FS Blunt Slide", "FSBluntslide"],
       "controls": [],
       "video_path": "clips/fs-bluntslide.mp4",
       "poster_path": "posters/fs-bluntslide.png",
@@ -4435,9 +4264,7 @@
       "description": "Approach frontside, dip the Nose down and rotate heelside to slide with the Tail pointed up over the Rail.",
       "detected_description": "heelside to slide with the Tall pointed up over the Ral",
       "context": null,
-      "aliases": [
-        "Frontside Nose Blunt"
-      ],
+      "aliases": ["Frontside Nose Blunt"],
       "controls": [],
       "video_path": "clips/fs-nose-blunt.mp4",
       "poster_path": "posters/fs-nose-blunt.png",
@@ -4467,9 +4294,7 @@
       "description": "Hold briefly to exit the rail or ledge you're grinding, either to the left or right.",
       "detected_description": "sill iaphrna oy or ledge you're grinding",
       "context": null,
-      "aliases": [
-        "GrindExit"
-      ],
+      "aliases": ["GrindExit"],
       "controls": [],
       "video_path": "clips/grind-exit.mp4",
       "poster_path": "posters/grind-exit.png",
@@ -4499,9 +4324,7 @@
       "description": "Grab the heelside of your Board with your right hand.",
       "detected_description": "Grab the heelside of your Board with your right hand",
       "context": null,
-      "aliases": [
-        "Backside Grab"
-      ],
+      "aliases": ["Backside Grab"],
       "controls": {
         "version": 2,
         "variants": [
@@ -4551,9 +4374,7 @@
       "description": "Grab the toeside of your board with your left hand.",
       "detected_description": "Grab the toeside of your board with your left hand",
       "context": null,
-      "aliases": [
-        "Frontside Grab"
-      ],
+      "aliases": ["Frontside Grab"],
       "controls": [],
       "video_path": "clips/fs-grab.mp4",
       "poster_path": "posters/fs-grab.png",
@@ -4740,10 +4561,7 @@
       "description": "Turn the Board toeside and grab the middle of the heelside with your left hand.",
       "detected_description": "gbehide with yourlefthand",
       "context": null,
-      "aliases": [
-        "Stalefish",
-        "Stalefish Grab"
-      ],
+      "aliases": ["Stalefish", "Stalefish Grab"],
       "controls": [],
       "video_path": "clips/stale.mp4",
       "poster_path": "posters/stale.png",
@@ -4773,12 +4591,7 @@
       "description": "Turn the Board toeside and grab the middle of the toeside with your right hand.",
       "detected_description": "Jeside with yourrighthand",
       "context": null,
-      "aliases": [
-        "Weddle Grab",
-        "Mute Grab",
-        "Mute Air",
-        "Mute"
-      ],
+      "aliases": ["Weddle Grab", "Mute Grab", "Mute Air", "Mute"],
       "controls": [],
       "video_path": "clips/weddle.mp4",
       "poster_path": "posters/weddle.png",
@@ -4988,9 +4801,7 @@
       "description": "Hold a BS Grab, then tweak the board down behind you.",
       "detected_description": "a BS Grab then tweak the board down behind",
       "context": null,
-      "aliases": [
-        "Backside Tweak"
-      ],
+      "aliases": ["Backside Tweak"],
       "controls": {
         "version": 2,
         "variants": [
@@ -5216,9 +5027,7 @@
       "description": "Hold a Tail Grab, then tweak the Tail toward your heelside.",
       "detected_description": "rates Grab then tweak the Tail toward your",
       "context": null,
-      "aliases": [
-        "Frontside Shifty Tail Grab"
-      ],
+      "aliases": ["Frontside Shifty Tail Grab"],
       "controls": [],
       "video_path": "clips/fs-shifty-tail-grab.mp4",
       "poster_path": "posters/fs-shifty-tail-grab.png",
@@ -5278,9 +5087,7 @@
       "description": "Hold a Nose Grab, then tweak the Nose toward your toeside.",
       "detected_description": "om ee Grab then tweak the Nose toward your",
       "context": null,
-      "aliases": [
-        "Frontside Shifty Nose Grab"
-      ],
+      "aliases": ["Frontside Shifty Nose Grab"],
       "controls": [],
       "video_path": "clips/fs-shifty-nose-grab.mp4",
       "poster_path": "posters/fs-shifty-nose-grab.png",
@@ -5310,9 +5117,7 @@
       "description": "Hold a Stale Grab, then tweak toeside to drop your back knee.",
       "detected_description": "eas ai Grab then tweak toeside to drop your",
       "context": null,
-      "aliases": [
-        "Stale Frontside Tuck Knee"
-      ],
+      "aliases": ["Stale Frontside Tuck Knee"],
       "controls": [],
       "video_path": "clips/stale-fs-tuck-knee.mp4",
       "poster_path": "posters/stale-fs-tuck-knee.png",
@@ -5432,9 +5237,7 @@
       "description": "Hold a Weddle Grab, then push down to tweak the Tail out.",
       "detected_description": "im a Weddle Grab then push down to tweak the Tail",
       "context": null,
-      "aliases": [
-        "Mute"
-      ],
+      "aliases": ["Mute"],
       "controls": [],
       "video_path": "clips/weddle-tailbone.mp4",
       "poster_path": "posters/weddle-tailbone.png",
@@ -5464,9 +5267,7 @@
       "description": "Hold a Weddle Grab, then push up to tweak the Nose forward.",
       "detected_description": "oe Grab then push up to tweak the Nose",
       "context": null,
-      "aliases": [
-        "Mute"
-      ],
+      "aliases": ["Mute"],
       "controls": [],
       "video_path": "clips/weddle-nosebone.mp4",
       "poster_path": "posters/weddle-nosebone.png",
@@ -5496,9 +5297,7 @@
       "description": "Hold a Crail Grab, then tweak the Nose toward your toeside.",
       "detected_description": "om is Grab then tweak the Nose toward your",
       "context": null,
-      "aliases": [
-        "Frontside Shifty Crail"
-      ],
+      "aliases": ["Frontside Shifty Crail"],
       "controls": [],
       "video_path": "clips/fs-shifty-crail.mp4",
       "poster_path": "posters/fs-shifty-crail.png",
@@ -5528,9 +5327,7 @@
       "description": "Hold a Seatbelt Grab, then tweak the board toward your toeside.",
       "detected_description": "Desa Grab then tweak the board toward",
       "context": null,
-      "aliases": [
-        "Frontside Shifty Seatbelt"
-      ],
+      "aliases": ["Frontside Shifty Seatbelt"],
       "controls": [],
       "video_path": "clips/fs-shifty-seatbelt.mp4",
       "poster_path": "posters/fs-shifty-seatbelt.png",
@@ -5727,10 +5524,7 @@
       "description": "Hold a FS Grab, then kick your back foot off the board.",
       "detected_description": "Hold a FS Grab then kick your back foot off the board",
       "context": null,
-      "aliases": [
-        "Frontside One-Foot Air",
-        "FS One Foot Air"
-      ],
+      "aliases": ["Frontside One-Foot Air", "FS One Foot Air"],
       "controls": [],
       "video_path": "clips/fs-one-foot-air.mp4",
       "poster_path": "posters/fs-one-foot-air.png",
@@ -5790,10 +5584,7 @@
       "description": "Hold a BS Grab, then kick your front foot off the Board toward your heelside.",
       "detected_description": "ca bes pipes tire your front foot off the Board",
       "context": null,
-      "aliases": [
-        "Backside One-Foot Air",
-        "BS One Foot Air"
-      ],
+      "aliases": ["Backside One-Foot Air", "BS One Foot Air"],
       "controls": {
         "version": 2,
         "variants": [
@@ -6079,9 +5870,7 @@
       "description": "Hold a Tail Grab, then kick your front foot off the Board.",
       "detected_description": "Hold a Tail Grab then kick your front foot off the Board",
       "context": null,
-      "aliases": [
-        "One Foot Tail Grab"
-      ],
+      "aliases": ["One Foot Tail Grab"],
       "controls": [],
       "video_path": "clips/one-foot-tail-grab.mp4",
       "poster_path": "posters/one-foot-tail-grab.png",
@@ -6111,9 +5900,7 @@
       "description": "Hold a Nose Grab, then kick both feet off the board in opposite directions.",
       "detected_description": "eiaua ca boas he kick both feet off the board in",
       "context": null,
-      "aliases": [
-        "air walk"
-      ],
+      "aliases": ["air walk"],
       "controls": {
         "version": 2,
         "variants": [
@@ -6245,9 +6032,7 @@
       "description": "Hold a FS Grab, then pull the board above your head.",
       "detected_description": "Hold a FS Grab then pull the board above your head",
       "context": null,
-      "aliases": [
-        "No Foot Air"
-      ],
+      "aliases": ["No Foot Air"],
       "controls": [],
       "video_path": "clips/no-foot-air.mp4",
       "poster_path": "posters/no-foot-air.png",
@@ -6307,10 +6092,7 @@
       "description": "Do a BS Grab and then a Kickflip gesture.",
       "detected_description": "Do a BS Grab and then a Kickflip gesture",
       "context": null,
-      "aliases": [
-        "Backside Fingerflip",
-        "BSFingerflip"
-      ],
+      "aliases": ["Backside Fingerflip", "BSFingerflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -6382,9 +6164,7 @@
       "description": "Do a BS Grab and then a Heelflip gesture.",
       "detected_description": "Do a BS Grab and then a Heelflip gesture",
       "context": null,
-      "aliases": [
-        "Backside Fingerheel"
-      ],
+      "aliases": ["Backside Fingerheel"],
       "controls": {
         "version": 2,
         "variants": [
@@ -6456,10 +6236,7 @@
       "description": "Do a FS Grab and then a Kickflip gesture.",
       "detected_description": "Do a FS Grab and then a Kickflip gesture",
       "context": null,
-      "aliases": [
-        "Frontside Fingerflip",
-        "FSFingerflip"
-      ],
+      "aliases": ["Frontside Fingerflip", "FSFingerflip"],
       "controls": [],
       "video_path": "clips/fs-fingerflip.mp4",
       "poster_path": "posters/fs-fingerflip.png",
@@ -6489,9 +6266,7 @@
       "description": "Do a FS Grab and then a Heelflip gesture.",
       "detected_description": "Do a FS Grab and then a Heelflip gesture",
       "context": null,
-      "aliases": [
-        "Frontside Fingerheel"
-      ],
+      "aliases": ["Frontside Fingerheel"],
       "controls": [],
       "video_path": "clips/fs-fingerheel.mp4",
       "poster_path": "posters/fs-fingerheel.png",
@@ -6521,9 +6296,7 @@
       "description": "Do a BS Grab and then a BS Pop-Shuvit gesture.",
       "detected_description": "Do a BS Grab and then a BS Pop-Shuvit gesture",
       "context": null,
-      "aliases": [
-        "Backside Varial"
-      ],
+      "aliases": ["Backside Varial"],
       "controls": {
         "version": 2,
         "variants": [
@@ -6643,10 +6416,7 @@
       "description": "Do a BS Grab and then a FS Pop-Shuvit gesture.",
       "detected_description": "Do a BS Grab and then a FS Pop-Shuvit gesture",
       "context": null,
-      "aliases": [
-        "Backside To Weddle",
-        "Mute"
-      ],
+      "aliases": ["Backside To Weddle", "Mute"],
       "controls": {
         "version": 2,
         "variants": [
@@ -6770,9 +6540,7 @@
       "description": "Do a FS Grab and then a FS Pop-Shuvit gesture.",
       "detected_description": "Do a FS Grab and then a FS Pop-Shuvit gesture",
       "context": null,
-      "aliases": [
-        "Frontside To Stale"
-      ],
+      "aliases": ["Frontside To Stale"],
       "controls": [],
       "video_path": "clips/fs-to-stale.mp4",
       "poster_path": "posters/fs-to-stale.png",
@@ -6862,9 +6630,7 @@
       "description": "Do a Tail Grab and then Kickflip gesture.",
       "detected_description": "Do a Tail Grab and then Kickflip gesture",
       "context": null,
-      "aliases": [
-        "TailFlip"
-      ],
+      "aliases": ["TailFlip"],
       "controls": [],
       "video_path": "clips/tail-flip.mp4",
       "poster_path": "posters/tail-flip.png",
@@ -6924,9 +6690,7 @@
       "description": "Do a Stale Grab and then a Kickflip gesture.",
       "detected_description": "Do a Stale Grab and then a Kickflip gesture",
       "context": null,
-      "aliases": [
-        "StaleFlip"
-      ],
+      "aliases": ["StaleFlip"],
       "controls": [],
       "video_path": "clips/stale-flip.mp4",
       "poster_path": "posters/stale-flip.png",
@@ -6986,9 +6750,7 @@
       "description": "Do a Stale Grab and then a BS Pop-Shuvit gesture.",
       "detected_description": "Do a Stale Grab and then a BS Pop-Shuvit gesture",
       "context": null,
-      "aliases": [
-        "Stale To Frontside"
-      ],
+      "aliases": ["Stale To Frontside"],
       "controls": [],
       "video_path": "clips/stale-to-fs.mp4",
       "poster_path": "posters/stale-to-fs.png",
@@ -7018,10 +6780,7 @@
       "description": "Do a Weddle Grab and then a Kickflip gesture.",
       "detected_description": "Do a Weddle Grab and then a Kickflip gesture",
       "context": null,
-      "aliases": [
-        "WeddleFlip",
-        "Mute"
-      ],
+      "aliases": ["WeddleFlip", "Mute"],
       "controls": [],
       "video_path": "clips/weddle-flip.mp4",
       "poster_path": "posters/weddle-flip.png",
@@ -7051,9 +6810,7 @@
       "description": "Do a Weddle Grab and then a Heelflip gesture.",
       "detected_description": "Do a Weddle Grab and then a Heelflip gesture",
       "context": null,
-      "aliases": [
-        "Mute"
-      ],
+      "aliases": ["Mute"],
       "controls": [],
       "video_path": "clips/weddle-heel.mp4",
       "poster_path": "posters/weddle-heel.png",
@@ -7083,10 +6840,7 @@
       "description": "Do a Weddle Grab and then a BS Pop-Shuvit gesture.",
       "detected_description": "Do a Weddle Grab and then a BS Pop-Shuvit gesture",
       "context": null,
-      "aliases": [
-        "Weddle To Backside",
-        "Mute"
-      ],
+      "aliases": ["Weddle To Backside", "Mute"],
       "controls": [],
       "video_path": "clips/weddle-to-bs.mp4",
       "poster_path": "posters/weddle-to-bs.png",
@@ -7360,9 +7114,7 @@
       "description": "Do a Coffin and then a Kickflip gesture.",
       "detected_description": "Do a Coffin and then a Kickflip gesture",
       "context": null,
-      "aliases": [
-        "CoffinFingerflip"
-      ],
+      "aliases": ["CoffinFingerflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -7449,9 +7201,7 @@
       "description": "While holding all the regular buttons to do a Coffin grab, do a BS Pop-Shuvit gesture.",
       "detected_description": "Do a Coffin and then a BS Pop-Shuvit gesture",
       "context": null,
-      "aliases": [
-        "Coffin Backside Varial"
-      ],
+      "aliases": ["Coffin Backside Varial"],
       "controls": {
         "version": 2,
         "variants": [
@@ -7602,9 +7352,7 @@
       "description": "Do a Double Grab and then a Kickflip gesture.",
       "detected_description": "Do a Double Grab and then a Kickflip gesture",
       "context": null,
-      "aliases": [
-        "DoubleGrabFingerflip"
-      ],
+      "aliases": ["DoubleGrabFingerflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -7681,9 +7429,7 @@
       "description": "Do a Double Grab and then a BS Pop-Shuvit gesture.",
       "detected_description": "Do a Double Grab and then a BS Pop-Shuvit gesture",
       "context": null,
-      "aliases": [
-        "Double Grab Backside Varial"
-      ],
+      "aliases": ["Double Grab Backside Varial"],
       "controls": {
         "version": 2,
         "variants": [
@@ -7933,11 +7679,7 @@
       "description": "Approach a Ramp at a slight angle with the top of the Ramp on your heelside.",
       "detected_description": "heer ie angle with the top of the",
       "context": null,
-      "aliases": [
-        "Backside Handplant",
-        "BS Hand Plant",
-        "BSHandplant"
-      ],
+      "aliases": ["Backside Handplant", "BS Hand Plant", "BSHandplant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -7986,10 +7728,7 @@
       "description": "Hold a FS Handplant and then tweak your board back and extend your back leg.",
       "detected_description": "im ea a as tweak your board back",
       "context": null,
-      "aliases": [
-        "Frontside Tailbone Plant",
-        "FSTailbonePlant"
-      ],
+      "aliases": ["Frontside Tailbone Plant", "FSTailbonePlant"],
       "controls": [],
       "video_path": "clips/fs-tailbone-plant.mp4",
       "poster_path": "posters/fs-tailbone-plant.png",
@@ -8019,10 +7758,7 @@
       "description": "Hold a FS Handplant and then pull your board down to drop your back knee.",
       "detected_description": "yop ae ie eas then pull your board down to",
       "context": null,
-      "aliases": [
-        "Frontside Tuck Knee Plant",
-        "FSTuckKneePlant"
-      ],
+      "aliases": ["Frontside Tuck Knee Plant", "FSTuckKneePlant"],
       "controls": [],
       "video_path": "clips/fs-tuck-knee-plant.mp4",
       "poster_path": "posters/fs-tuck-knee-plant.png",
@@ -8052,10 +7788,7 @@
       "description": "Hold a FS Handplant and then push your board forward and extend your back leg.",
       "detected_description": "dewardandextend yourbockleg",
       "context": null,
-      "aliases": [
-        "Frontside Stiff Plant",
-        "FSStiffPlant"
-      ],
+      "aliases": ["Frontside Stiff Plant", "FSStiffPlant"],
       "controls": [],
       "video_path": "clips/fs-stiff-plant.mp4",
       "poster_path": "posters/fs-stiff-plant.png",
@@ -8085,10 +7818,7 @@
       "description": "Hold a FS Handplant and then tweak your board forward and extend your front leg.",
       "detected_description": "ae eo ee",
       "context": null,
-      "aliases": [
-        "Frontside Boned Plant",
-        "FSBonedPlant"
-      ],
+      "aliases": ["Frontside Boned Plant", "FSBonedPlant"],
       "controls": [],
       "video_path": "clips/fs-boned-plant.mp4",
       "poster_path": "posters/fs-boned-plant.png",
@@ -8118,10 +7848,7 @@
       "description": "Hold a BS Handplant and then pull your board down to drop your back knee.",
       "detected_description": "op pe shee sae ae then pull your board down to",
       "context": null,
-      "aliases": [
-        "Backside Tuck Knee Plant",
-        "BSTuckKneePlant"
-      ],
+      "aliases": ["Backside Tuck Knee Plant", "BSTuckKneePlant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -8188,10 +7915,7 @@
       "description": "Hold a BS Handplant and then push your board forward and extend your back leg.",
       "detected_description": "aaa a",
       "context": null,
-      "aliases": [
-        "Backside Crossbone Plant",
-        "BSCrossbonePlant"
-      ],
+      "aliases": ["Backside Crossbone Plant", "BSCrossbonePlant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -8258,10 +7982,7 @@
       "description": "Hold a BS Handplant and then pull the board down fully behind you.",
       "detected_description": "Ai ep anaa orn and then pull the board down",
       "context": null,
-      "aliases": [
-        "Backside Method Plant",
-        "BSMethodPlant"
-      ],
+      "aliases": ["Backside Method Plant", "BSMethodPlant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -8328,10 +8049,7 @@
       "description": "Hold a BS Handplant and then tweak your board behind you.",
       "detected_description": "inde sat eas and then tweak your board",
       "context": null,
-      "aliases": [
-        "Backside Tweak Plant",
-        "BSTweakPlant"
-      ],
+      "aliases": ["Backside Tweak Plant", "BSTweakPlant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -8456,10 +8174,7 @@
       "description": "Hold a BS Handplant and then kick your front foot off your board toward your toeside.",
       "detected_description": "a a",
       "context": null,
-      "aliases": [
-        "Backside Judo Plant",
-        "BSJudoPlant"
-      ],
+      "aliases": ["Backside Judo Plant", "BSJudoPlant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -8513,10 +8228,7 @@
       "description": "Hold a FS Handplant and then kick your back foot off your board toward your toeside.",
       "detected_description": "ur boerd toward yourtosside",
       "context": null,
-      "aliases": [
-        "Frontside Frigid Plant",
-        "FSFrigidPlant"
-      ],
+      "aliases": ["Frontside Frigid Plant", "FSFrigidPlant"],
       "controls": [],
       "video_path": "clips/fs-frigid-plant.mp4",
       "poster_path": "posters/fs-frigid-plant.png",
@@ -8580,10 +8292,7 @@
       "description": "Hold a BS Handplant and then kick off with both feet.",
       "detected_description": "Hold a BS Handplant and then kick off with both feet",
       "context": null,
-      "aliases": [
-        "Backside Gymnast Plant",
-        "BSGymnastPlant"
-      ],
+      "aliases": ["Backside Gymnast Plant", "BSGymnastPlant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -8637,9 +8346,7 @@
       "description": "While in the air near the ground, hold a BS Grab and land on your front foot with the board behind you.",
       "detected_description": "dnd on your front foot with the board behind",
       "context": null,
-      "aliases": [
-        "JudoFootplant"
-      ],
+      "aliases": ["JudoFootplant"],
       "controls": [],
       "video_path": "clips/judo-footplant.mp4",
       "poster_path": "posters/judo-footplant.png",
@@ -8669,10 +8376,7 @@
       "description": "While in the air near the ground, hold a BS Grab and land on your front foot with the board in front of you.",
       "detected_description": "dnd on your front foot with the beard In front of",
       "context": null,
-      "aliases": [
-        "Backside Footplant",
-        "BSFootplant"
-      ],
+      "aliases": ["Backside Footplant", "BSFootplant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -8726,9 +8430,7 @@
       "description": "While in the air near the ground, hold a FS Grab and land on your back foot.",
       "detected_description": "2h ti dea ae ground hold a FS Grab and",
       "context": null,
-      "aliases": [
-        "Fast Plant"
-      ],
+      "aliases": ["Fast Plant"],
       "controls": [],
       "video_path": "clips/fastplant.mp4",
       "poster_path": "posters/fastplant.png",
@@ -8758,10 +8460,7 @@
       "description": "While rolling, hold a BS Grab, then jump with your front foot.",
       "detected_description": "vig rolling hold a BS Grab then jump with your front",
       "context": null,
-      "aliases": [
-        "Backside Bean Plant",
-        "BSBeanPlant"
-      ],
+      "aliases": ["Backside Bean Plant", "BSBeanPlant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -8815,11 +8514,7 @@
       "description": "While rolling, hold a BS Grab, then jump with your back foot.",
       "detected_description": "ee rolling hold a BS Grab then jump with your back",
       "context": null,
-      "aliases": [
-        "Backside Fastplant",
-        "BS Fast Plant",
-        "BSFastplant"
-      ],
+      "aliases": ["Backside Fastplant", "BS Fast Plant", "BSFastplant"],
       "controls": {
         "version": 2,
         "variants": [
@@ -8873,9 +8568,7 @@
       "description": "While rolling, hold a FS Grab, then jump with your front foot.",
       "detected_description": "re rolling hold a FS Grab then jump with your front",
       "context": null,
-      "aliases": [
-        "Frontside Boneless"
-      ],
+      "aliases": ["Frontside Boneless"],
       "controls": [],
       "video_path": "clips/fs-boneless.mp4",
       "poster_path": "posters/fs-boneless.png",
@@ -8905,11 +8598,7 @@
       "description": "While rolling, hold a FS Grab, then jump with your back foot.",
       "detected_description": "ee rolling hold a FS Grab then jump with your back",
       "context": null,
-      "aliases": [
-        "Frontside Fastplant",
-        "FS Fast Plant",
-        "FSFastplant"
-      ],
+      "aliases": ["Frontside Fastplant", "FS Fast Plant", "FSFastplant"],
       "controls": [],
       "video_path": "clips/fs-fastplant.mp4",
       "poster_path": "posters/fs-fastplant.png",
@@ -8939,10 +8628,7 @@
       "description": "Slide down slopes or under objects—even mid-air. Hold to keep sliding.",
       "detected_description": "re ee te ge or under objects—even mid-air Hold",
       "context": null,
-      "aliases": [
-        "Side Slide",
-        "SideSlide"
-      ],
+      "aliases": ["Side Slide", "SideSlide"],
       "controls": [],
       "video_path": "clips/side-slide.mp4",
       "poster_path": "posters/side-slide.png",
@@ -9002,10 +8688,7 @@
       "description": "Slide on your belly down slopes or under objects. Hold to slide farther.",
       "detected_description": "OL Sspeat oma down slopes or under objects Hold",
       "context": null,
-      "aliases": [
-        "Belly Slide",
-        "BellySlide"
-      ],
+      "aliases": ["Belly Slide", "BellySlide"],
       "controls": {
         "version": 2,
         "variants": [
@@ -9059,9 +8742,7 @@
       "description": "Jump and dive, then release before landing to roll out smoothly.",
       "detected_description": "ies dive then release before landing to roll out",
       "context": null,
-      "aliases": [
-        "Dive Roll"
-      ],
+      "aliases": ["Dive Roll"],
       "controls": {
         "version": 2,
         "variants": [
@@ -9111,10 +8792,7 @@
       "description": "Jump into the air and dive. Keep holding to transition into a slide.",
       "detected_description": "ee Ane air and dive Keep holding to transition",
       "context": null,
-      "aliases": [
-        "Dive Slide",
-        "DiveSlide"
-      ],
+      "aliases": ["Dive Slide", "DiveSlide"],
       "controls": {
         "version": 2,
         "variants": [
@@ -9219,9 +8897,7 @@
       "description": "While in a Cannonball, time a jump when your feet touch the ground to kick off and launch into the air.",
       "detected_description": "uch the ground to kick off and launch into the",
       "context": null,
-      "aliases": [
-        "Cannonball Kick off"
-      ],
+      "aliases": ["Cannonball Kick off"],
       "controls": {
         "version": 2,
         "variants": [
@@ -9281,9 +8957,7 @@
       "description": "While airborne, tuck one or both knees.",
       "detected_description": "While airborne tuck one or both knees",
       "context": null,
-      "aliases": [
-        "In Air Tuck"
-      ],
+      "aliases": ["In Air Tuck"],
       "controls": [],
       "video_path": "clips/in-air-tuck.mp4",
       "poster_path": "posters/in-air-tuck.png",
@@ -9313,9 +8987,7 @@
       "description": "In the air, grab your Board, and then hold Left Stick up to flip forwards.",
       "detected_description": "Se wih ne ea ah forward Release at the",
       "context": null,
-      "aliases": [
-        "Frontflip"
-      ],
+      "aliases": ["Frontflip"],
       "controls": [],
       "video_path": "clips/front-flip-2.mp4",
       "poster_path": "posters/front-flip-2.png",
@@ -9345,9 +9017,7 @@
       "description": "In the air, grab your Board, and then hold Left Stick down to flip backwards.",
       "detected_description": "Weight'time to land on yourfest",
       "context": null,
-      "aliases": [
-        "Backflip"
-      ],
+      "aliases": ["Backflip"],
       "controls": {
         "version": 2,
         "variants": [
@@ -9420,9 +9090,7 @@
       "description": "Tuck your knees and spin left or right. Works mid-flip and during a Hippy Jump.",
       "detected_description": "ims Late eagesnt pois ty or right Works mid-flip",
       "context": null,
-      "aliases": [
-        "In Air Tuck Spin"
-      ],
+      "aliases": ["In Air Tuck Spin"],
       "controls": [],
       "video_path": "clips/in-air-tuck-spin.mp4",
       "poster_path": "posters/in-air-tuck-spin.png",
@@ -9452,9 +9120,7 @@
       "description": "Drop your Board while standing or moving.",
       "detected_description": "Drop your Board while standing or moving",
       "context": null,
-      "aliases": [
-        "Board Drop"
-      ],
+      "aliases": ["Board Drop"],
       "controls": {
         "version": 2,
         "variants": [
@@ -9503,9 +9169,7 @@
       "description": "Call your Board to you when not riding or holding it.",
       "detected_description": "Call your Board to you when not riding or holding it",
       "context": null,
-      "aliases": [
-        "Board Summon"
-      ],
+      "aliases": ["Board Summon"],
       "controls": {
         "version": 2,
         "variants": [
@@ -9644,9 +9308,7 @@
       "description": "Climb up onto the ledge you're hanging from. Also works from a swing bar.",
       "detected_description": "ea ices wetis Bard you re nanging from Al",
       "context": null,
-      "aliases": [
-        "Mantle Up From Hang"
-      ],
+      "aliases": ["Mantle Up From Hang"],
       "controls": [],
       "video_path": "clips/mantle-up-from-hang.mp4",
       "poster_path": "posters/mantle-up-from-hang.png",
@@ -9676,9 +9338,7 @@
       "description": "Stand near and face a ledge to drop and hang. (Skater will look at the ledge if dropping is possible)",
       "detected_description": "il lock at the ledge if dropping is possible",
       "context": null,
-      "aliases": [
-        "Drop To Ledge Hang"
-      ],
+      "aliases": ["Drop To Ledge Hang"],
       "controls": [],
       "video_path": "clips/drop-to-ledge-hang.mp4",
       "poster_path": "posters/drop-to-ledge-hang.png",
@@ -9738,9 +9398,7 @@
       "description": "Use Left Stick to reach out and move from one Ledge to another nearby.",
       "detected_description": "ir hes ts arg reach out and move from one Ledge to",
       "context": null,
-      "aliases": [
-        "Close Dyno"
-      ],
+      "aliases": ["Close Dyno"],
       "controls": {
         "version": 2,
         "variants": [
@@ -9859,9 +9517,7 @@
       "description": "Use Left Stick to reach out, then jump from the Ledge you're hanging on to another.",
       "detected_description": "eS oe oe",
       "context": null,
-      "aliases": [
-        "Far Dyno"
-      ],
+      "aliases": ["Far Dyno"],
       "controls": [],
       "video_path": "clips/far-dyno.mp4",
       "poster_path": null,
@@ -9921,9 +9577,7 @@
       "description": "Use Left Stick to reach out, then jump from the Ledge you're hanging on to another.",
       "detected_description": "urehangingentoanothe I",
       "context": null,
-      "aliases": [
-        "Far Dyno"
-      ],
+      "aliases": ["Far Dyno"],
       "controls": [],
       "video_path": "clips/far-dyno-2.mp4",
       "poster_path": "posters/far-dyno-2.png",
@@ -9983,9 +9637,7 @@
       "description": "Jump while moving Left Stick away from the wall you are climbing up or sliding down.",
       "detected_description": "Jechibing uporsidingdown I",
       "context": null,
-      "aliases": [
-        "Vertical Wall Jump Away"
-      ],
+      "aliases": ["Vertical Wall Jump Away"],
       "controls": [],
       "video_path": "clips/vertical-wall-jump-away.mp4",
       "poster_path": "posters/vertical-wall-jump-away.png",
@@ -10045,9 +9697,7 @@
       "description": "Jump off the wall while doing a horizontal wall run.",
       "detected_description": "Jump off the wall while doing a horizontal wall run",
       "context": null,
-      "aliases": [
-        "Horizontal Wall Jump Away"
-      ],
+      "aliases": ["Horizontal Wall Jump Away"],
       "controls": [],
       "video_path": "clips/horizontal-wall-jump-away.mp4",
       "poster_path": "posters/horizontal-wall-jump-away.png",
@@ -10308,10 +9958,7 @@
       "description": "FS means frontside, BS means backside—refers to how your skater faces when starting a spin or approaching an obstacle.",
       "detected_description": "in opstacie",
       "context": null,
-      "aliases": [
-        "Frontside and BS",
-        "FS and Backside"
-      ],
+      "aliases": ["Frontside and BS", "FS and Backside"],
       "controls": [],
       "video_path": "clips/fs-and-bs.mp4",
       "poster_path": "posters/fs-and-bs.png",
@@ -10619,9 +10266,7 @@
       "description": "A pop up to a higher landing, like up a stair set or Ledge.",
       "detected_description": "ll",
       "context": null,
-      "aliases": [
-        "Step up"
-      ],
+      "aliases": ["Step up"],
       "controls": [],
       "video_path": "clips/step-up.mp4",
       "poster_path": "posters/step-up.png",

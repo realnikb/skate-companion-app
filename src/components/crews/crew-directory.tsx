@@ -1,8 +1,18 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { Clapperboard,ChevronRight,Globe2,Heart,MessageCircle,Plus,UserRoundCheck,Users } from "lucide-react";
-import { useEffect,useMemo,useRef,useState } from "react";
+import {
+  Clapperboard,
+  ChevronRight,
+  Globe2,
+  Heart,
+  MessageCircle,
+  Plus,
+  SquarePen,
+  UserRoundCheck,
+  Users,
+} from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { loadMoreSocialPosts } from "@/app/(site)/social/actions";
 import { CrewLogo } from "./crew-logo";
 import { PostComposer } from "@/components/social/post-composer";
@@ -13,22 +23,331 @@ import type { Crew } from "@/lib/crews/crews";
 import type { SocialPost } from "@/lib/social/get-posts";
 import styles from "./crew-directory.module.scss";
 
-type FeedTab="following"|"all"|"crews";
-const feedTabs=[{value:"following" as const,label:"Following",icon:UserRoundCheck},{value:"all" as const,label:"All",icon:Globe2},{value:"crews" as const,label:"Crews",icon:Users}];
-function TrendingPostPreview({post}:{post:SocialPost}){
-const preview=post.media[0];
-return <span className={styles.trendingPreview}>
-{preview?.type==="image"?<Image src={preview.url} alt="" width={56} height={44} unoptimized/>:preview?.type==="video"?<video src={preview.url} muted playsInline preload="metadata" aria-hidden="true"/>:post.author.avatarUrl?<Image src={post.author.avatarUrl} alt="" width={56} height={44} unoptimized/>:<span>{post.author.initials}</span>}
-</span>
+type FeedTab = "following" | "all" | "crews";
+const feedTabs = [
+  { value: "following" as const, label: "Following", icon: UserRoundCheck },
+  { value: "all" as const, label: "All", icon: Globe2 },
+  { value: "crews" as const, label: "Crews", icon: Users },
+];
+function TrendingPostPreview({ post }: { post: SocialPost }) {
+  const preview = post.media[0];
+  return (
+    <span className={styles.trendingPreview}>
+      {preview?.type === "image" ? (
+        <Image src={preview.url} alt="" width={56} height={44} unoptimized />
+      ) : preview?.type === "video" ? (
+        <video
+          src={preview.url}
+          muted
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        />
+      ) : post.author.avatarUrl ? (
+        <Image
+          src={post.author.avatarUrl}
+          alt=""
+          width={56}
+          height={44}
+          unoptimized
+        />
+      ) : (
+        <span>{post.author.initials}</span>
+      )}
+    </span>
+  );
 }
-export function CrewDirectory({crews,posts:initialPosts,trendingPosts,hasMorePosts:initialHasMore,maps,tagOptions,viewer}:{crews:Crew[];posts:SocialPost[];trendingPosts:SocialPost[];hasMorePosts:boolean;maps:PostMapOption[];tagOptions:PostTagOption[];viewer?:{name:string;avatarUrl?:string;ownedCrews:{id:string;name:string}[]}}){
-const [tab,setTab]=useState<FeedTab>("all"),[posts,setPosts]=useState(initialPosts),[hasMore,setHasMore]=useState(initialHasMore),[loading,setLoading]=useState(false),stories=useRef<HTMLDivElement>(null),loadSentinel=useRef<HTMLDivElement>(null),offset=useRef(initialPosts.length),loadingRef=useRef(false);
-const visible=useMemo(()=>tab==="crews"?posts.filter(post=>Boolean(post.author.crewSlug)):posts,[posts,tab]);
-useEffect(()=>{const target=loadSentinel.current;if(!target||!hasMore)return;const observer=new IntersectionObserver(async entries=>{if(!entries[0]?.isIntersecting||loadingRef.current)return;loadingRef.current=true;setLoading(true);try{const page=await loadMoreSocialPosts(offset.current);setPosts(current=>{const known=new Set(current.map(post=>post.id));const fresh=page.posts.filter(post=>!known.has(post.id));offset.current+=page.posts.length;return [...current,...fresh]});setHasMore(page.hasMore)}finally{loadingRef.current=false;setLoading(false)}},{rootMargin:"800px 0px"});observer.observe(target);return()=>observer.disconnect()},[hasMore]);
-const startPost=()=>{document.getElementById("social-composer")?.scrollIntoView({behavior:"smooth",block:"center"});window.setTimeout(()=>document.querySelector<HTMLTextAreaElement>("#social-composer textarea")?.focus(),450)};
-return <main className={styles.page}>
-<section className={styles.hero}><span className={styles.eyebrow}>The community, connected</span><h1>See what’s<br/><em>happening.</em></h1><p>Posts from skaters and crews across the whole Skate Companion community.</p></section>
-<section className={styles.social}><div className={styles.socialIntro}><div><span className={styles.eyebrow}>Social feed</span><h2>What’s rolling right now.</h2></div></div>
-<div className={styles.socialGrid}><div className={styles.feedColumn}><nav className={styles.feedTabs} aria-label="Filter social feed">{feedTabs.map(item=><button type="button" data-active={tab===item.value} onClick={()=>setTab(item.value)} key={item.value}><item.icon/>{item.label}</button>)}<Link href="/social/footy"><Clapperboard/>Footy</Link></nav><div className={styles.crewStrip}><span className={styles.stripLabel}>Your crews</span><div className={styles.stories} ref={stories}><Link className={styles.createCrewStory} href={viewer?"/account/crews/new":"/account/sign-up?next=/account/crews/new"}><span><Plus/></span><strong>Your crew</strong><small>Create</small></Link>{crews.map(crew=><Link className={styles.crewStory} href={`/social/crew/${crew.slug}`} key={crew.id}><span style={{"--crew-accent":crew.accent} as React.CSSProperties}><CrewLogo initials={crew.initials} accent={crew.accent} imageUrl={crew.logoUrl} size="medium"/></span><strong>{crew.name}</strong><small>{crew.recruitment==="recruiting"?"Recruiting":"View crew"}</small></Link>)}</div>{crews.length>3&&<button className={styles.storyNext} type="button" onClick={()=>stories.current?.scrollBy({left:420,behavior:"smooth"})} aria-label="Show more crews"><ChevronRight/></button>}</div><div className={styles.feed}><div id="social-composer">{viewer?<PostComposer playerName={viewer.name} avatarUrl={viewer.avatarUrl} ownedCrews={viewer.ownedCrews} maps={maps} tagOptions={tagOptions}/>:<PostComposer signedIn={false} maps={maps} tagOptions={tagOptions}/>}</div>{tab==="following"&&<p className={styles.feedContext}>Posts from the people and crews you follow</p>}{visible.map(post=><PostCard post={post} signedIn={Boolean(viewer)} key={post.id}/>)}{!visible.length&&!hasMore&&<div className={styles.emptyFeed}><strong>Nothing here yet.</strong><span>{tab==="crews"?"Crew posts will appear here as they’re published.":"Follow skaters and crews to shape your feed."}</span></div>}<div className={styles.feedLoader} ref={loadSentinel} aria-live="polite">{loading&&<><i aria-hidden="true"/><span>Loading more posts…</span></>}</div></div></div><aside className={styles.rail}><section><div className={styles.railHeading}><h3>Crews to watch</h3><Link href="/social/crews">Discover</Link></div><div className={styles.suggestions}>{crews.slice(0,4).map(crew=><Link href={`/social/crew/${crew.slug}`} key={crew.id}><CrewLogo initials={crew.initials} accent={crew.accent} imageUrl={crew.logoUrl} size="small"/><span><strong>{crew.name}</strong><small>{crew.memberCount} members · {crew.languages[0]?.flag}</small></span><i>{crew.recruitment==="recruiting"?"Join":"View"}</i></Link>)}</div></section>{trendingPosts.length>0&&<section><div className={styles.railHeading}><h3>Trending posts</h3></div><ol className={styles.trending}>{trendingPosts.map((post,index)=><li key={post.id}><b>{String(index+1).padStart(2,"0")}</b><TrendingPostPreview post={post}/><Link href={`#post-${post.id}`}><strong>{post.body}</strong><small><span><Heart/>{post.likes}</span><span><MessageCircle/>{post.comments}</span></small></Link></li>)}</ol></section>}</aside></div></section>
-<button className={styles.newPostButton} type="button" onClick={startPost} aria-label="Create a new post"><Plus/><span>New post</span></button>
-</main>}
+export function CrewDirectory({
+  crews,
+  posts: initialPosts,
+  trendingPosts,
+  hasMorePosts: initialHasMore,
+  maps,
+  tagOptions,
+  viewer,
+}: {
+  crews: Crew[];
+  posts: SocialPost[];
+  trendingPosts: SocialPost[];
+  hasMorePosts: boolean;
+  maps: PostMapOption[];
+  tagOptions: PostTagOption[];
+  viewer?: {
+    name: string;
+    avatarUrl?: string;
+    ownedCrews: { id: string; name: string }[];
+  };
+}) {
+  const [tab, setTab] = useState<FeedTab>("all"),
+    [posts, setPosts] = useState(initialPosts),
+    [hasMore, setHasMore] = useState(initialHasMore),
+    [loading, setLoading] = useState(false),
+    stories = useRef<HTMLDivElement>(null),
+    loadSentinel = useRef<HTMLDivElement>(null),
+    offset = useRef(initialPosts.length),
+    loadingRef = useRef(false);
+  const visible = useMemo(
+    () =>
+      tab === "crews"
+        ? posts.filter((post) => Boolean(post.author.crewSlug))
+        : posts,
+    [posts, tab],
+  );
+  useEffect(() => {
+    const target = loadSentinel.current;
+    if (!target || !hasMore) return;
+    const observer = new IntersectionObserver(
+      async (entries) => {
+        if (!entries[0]?.isIntersecting || loadingRef.current) return;
+        loadingRef.current = true;
+        setLoading(true);
+        try {
+          const page = await loadMoreSocialPosts(offset.current);
+          setPosts((current) => {
+            const known = new Set(current.map((post) => post.id));
+            const fresh = page.posts.filter((post) => !known.has(post.id));
+            offset.current += page.posts.length;
+            return [...current, ...fresh];
+          });
+          setHasMore(page.hasMore);
+        } finally {
+          loadingRef.current = false;
+          setLoading(false);
+        }
+      },
+      { rootMargin: "800px 0px" },
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [hasMore]);
+  const startPost = () => {
+    document
+      .getElementById("social-composer")
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    window.setTimeout(
+      () =>
+        document
+          .querySelector<HTMLTextAreaElement>("#social-composer textarea")
+          ?.focus(),
+      450,
+    );
+  };
+  return (
+    <main className={styles.page}>
+      <section className={styles.hero}>
+        <span className={styles.eyebrow}>The community, connected</span>
+        <h1>
+          See what’s
+          <br />
+          <em>happening.</em>
+        </h1>
+        <p>
+          Posts from skaters and crews across the whole Skate Companion
+          community.
+        </p>
+      </section>
+      <section className={styles.social}>
+        <div className={styles.socialIntro}>
+          <div>
+            <span className={styles.eyebrow}>Social feed</span>
+            <h2>What’s rolling right now.</h2>
+          </div>
+        </div>
+        <div className={styles.socialGrid}>
+          <div className={styles.feedColumn}>
+            <nav className={styles.feedTabs} aria-label="Filter social feed">
+              {feedTabs.map((item) => (
+                <button
+                  type="button"
+                  data-active={tab === item.value}
+                  onClick={() => setTab(item.value)}
+                  key={item.value}
+                >
+                  <item.icon />
+                  {item.label}
+                </button>
+              ))}
+              <Link href="/social/footy">
+                <Clapperboard />
+                Footy
+              </Link>
+            </nav>
+            <div className={styles.crewStrip}>
+              <span className={styles.stripLabel}>Your crews</span>
+              <div className={styles.stories} ref={stories}>
+                <Link
+                  className={styles.createCrewStory}
+                  href={
+                    viewer
+                      ? "/account/crews/new"
+                      : "/account/sign-up?next=/account/crews/new"
+                  }
+                >
+                  <span>
+                    <Plus />
+                  </span>
+                  <strong>Your crew</strong>
+                  <small>Create</small>
+                </Link>
+                {crews.map((crew) => (
+                  <Link
+                    className={styles.crewStory}
+                    href={`/social/crew/${crew.slug}`}
+                    key={crew.id}
+                  >
+                    <span
+                      style={
+                        { "--crew-accent": crew.accent } as React.CSSProperties
+                      }
+                    >
+                      <CrewLogo
+                        initials={crew.initials}
+                        accent={crew.accent}
+                        imageUrl={crew.logoUrl}
+                        size="medium"
+                      />
+                    </span>
+                    <strong>{crew.name}</strong>
+                    <small>
+                      {crew.recruitment === "recruiting"
+                        ? "Recruiting"
+                        : "View crew"}
+                    </small>
+                  </Link>
+                ))}
+              </div>
+              {crews.length > 3 && (
+                <button
+                  className={styles.storyNext}
+                  type="button"
+                  onClick={() =>
+                    stories.current?.scrollBy({ left: 420, behavior: "smooth" })
+                  }
+                  aria-label="Show more crews"
+                >
+                  <ChevronRight />
+                </button>
+              )}
+            </div>
+            <div className={styles.feed}>
+              <div id="social-composer">
+                {viewer ? (
+                  <PostComposer
+                    playerName={viewer.name}
+                    avatarUrl={viewer.avatarUrl}
+                    ownedCrews={viewer.ownedCrews}
+                    maps={maps}
+                    tagOptions={tagOptions}
+                  />
+                ) : (
+                  <PostComposer
+                    signedIn={false}
+                    maps={maps}
+                    tagOptions={tagOptions}
+                  />
+                )}
+              </div>
+              {tab === "following" && (
+                <p className={styles.feedContext}>
+                  Posts from the people and crews you follow
+                </p>
+              )}
+              {visible.map((post) => (
+                <PostCard
+                  post={post}
+                  signedIn={Boolean(viewer)}
+                  key={post.id}
+                />
+              ))}
+              {!visible.length && !hasMore && (
+                <div className={styles.emptyFeed}>
+                  <strong>Nothing here yet.</strong>
+                  <span>
+                    {tab === "crews"
+                      ? "Crew posts will appear here as they’re published."
+                      : "Follow skaters and crews to shape your feed."}
+                  </span>
+                </div>
+              )}
+              <div
+                className={styles.feedLoader}
+                ref={loadSentinel}
+                aria-live="polite"
+              >
+                {loading && (
+                  <>
+                    <i aria-hidden="true" />
+                    <span>Loading more posts…</span>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+          <aside className={styles.rail}>
+            <section>
+              <div className={styles.railHeading}>
+                <h3>Crews to watch</h3>
+                <Link href="/social/crews">Discover</Link>
+              </div>
+              <div className={styles.suggestions}>
+                {crews.slice(0, 4).map((crew) => (
+                  <Link href={`/social/crew/${crew.slug}`} key={crew.id}>
+                    <CrewLogo
+                      initials={crew.initials}
+                      accent={crew.accent}
+                      imageUrl={crew.logoUrl}
+                      size="small"
+                    />
+                    <span>
+                      <strong>{crew.name}</strong>
+                      <small>
+                        {crew.memberCount} members · {crew.languages[0]?.flag}
+                      </small>
+                    </span>
+                    <i>{crew.recruitment === "recruiting" ? "Join" : "View"}</i>
+                  </Link>
+                ))}
+              </div>
+            </section>
+            {trendingPosts.length > 0 && (
+              <section>
+                <div className={styles.railHeading}>
+                  <h3>Trending posts</h3>
+                </div>
+                <ol className={styles.trending}>
+                  {trendingPosts.map((post, index) => (
+                    <li key={post.id}>
+                      <b>{String(index + 1).padStart(2, "0")}</b>
+                      <TrendingPostPreview post={post} />
+                      <Link href={`#post-${post.id}`}>
+                        <strong>{post.body}</strong>
+                        <small>
+                          <span>
+                            <Heart />
+                            {post.likes}
+                          </span>
+                          <span>
+                            <MessageCircle />
+                            {post.comments}
+                          </span>
+                        </small>
+                      </Link>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            )}
+          </aside>
+        </div>
+      </section>
+      <button
+        className={styles.newPostButton}
+        type="button"
+        onClick={startPost}
+        aria-label="Create a new post"
+      >
+        <SquarePen aria-hidden="true" />
+      </button>
+    </main>
+  );
+}

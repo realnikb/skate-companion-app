@@ -15,14 +15,8 @@
     "height": 4320
   },
   "leaflet_bounds": [
-    [
-      -135.0,
-      0
-    ],
-    [
-      0,
-      240.0
-    ]
+    [-135.0, 0],
+    [0, 240.0]
   ],
   "coordinate_conventions": {
     "leaflet": "[lat, lng], origin [0,0] at top-left; latitude becomes negative downward",

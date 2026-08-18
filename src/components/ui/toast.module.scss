@@ -1,5 +1,75 @@
-.viewport{position:fixed;z-index:1000;right:1rem;bottom:1rem;display:grid;width:min(24rem,calc(100vw - 2rem));gap:.65rem;pointer-events:none}
-.toast{display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:.7rem;padding:.85rem;border:1px solid rgba(255,255,255,.14);border-radius:.75rem;background:rgba(19,21,27,.96);color:#fff;box-shadow:0 14px 40px rgba(0,0,0,.45);backdrop-filter:blur(14px);pointer-events:auto;animation:enter .2s ease-out}
-.toast[data-kind="success"]>svg{color:#69dc91}.toast[data-kind="error"]>svg{color:#ff837d}.toast>svg{width:1rem;margin-top:.1rem}.toast div{display:grid;gap:.15rem}.toast strong{font-size:.65rem}.toast p{margin:0;color:rgba(255,255,255,.58);font-size:.56rem;line-height:1.45}.toast button{display:grid;width:1.7rem;height:1.7rem;padding:0;place-items:center;border:0;border-radius:50%;background:rgba(255,255,255,.06);color:rgba(255,255,255,.55)}.toast button svg{width:.75rem}
-@keyframes enter{from{opacity:0;transform:translateY(.5rem) scale(.98)}}
-@media(max-width:600px){.viewport{right:.75rem;bottom:.75rem;width:calc(100vw - 1.5rem)}}
+.viewport {
+  position: fixed;
+  z-index: 1000;
+  right: 1rem;
+  bottom: 1rem;
+  display: grid;
+  width: min(24rem, calc(100vw - 2rem));
+  gap: 0.65rem;
+  pointer-events: none;
+}
+.toast {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 0.7rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.75rem;
+  background: rgba(19, 21, 27, 0.96);
+  color: #fff;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(14px);
+  pointer-events: auto;
+  animation: enter 0.2s ease-out;
+}
+.toast[data-kind="success"] > svg {
+  color: #69dc91;
+}
+.toast[data-kind="error"] > svg {
+  color: #ff837d;
+}
+.toast > svg {
+  width: 1rem;
+  margin-top: 0.1rem;
+}
+.toast div {
+  display: grid;
+  gap: 0.15rem;
+}
+.toast strong {
+  font-size: 0.65rem;
+}
+.toast p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.56rem;
+  line-height: 1.45;
+}
+.toast button {
+  display: grid;
+  width: 1.7rem;
+  height: 1.7rem;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.55);
+}
+.toast button svg {
+  width: 0.75rem;
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+}
+@media (max-width: 600px) {
+  .viewport {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    width: calc(100vw - 1.5rem);
+  }
+}

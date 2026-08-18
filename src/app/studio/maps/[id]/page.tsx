@@ -1,2 +1,83 @@
-import { notFound } from "next/navigation"; import { MapDistrictEditor, type DistrictDraft } from "@/components/studio/map-district-editor"; import { requireStudioUser } from "@/lib/studio/auth"; import { saveMap } from "../actions"; import styles from "../../studio.module.scss";
-export default async function EditMap({params}:{params:Promise<{id:string}>}){const {id}=await params,{supabase}=await requireStudioUser();const [{data:map},{data:districts}]=await Promise.all([supabase.from("skate_maps").select("*").eq("id",id).single(),supabase.from("map_districts").select("*").eq("map_id",id).order("sort_order")]);if(!map)notFound();const drafts=(districts??[]).map(d=>({...d,marker_position:d.marker_position as [number,number],polygon:d.polygon as [number,number][]})) satisfies DistrictDraft[];const action=saveMap.bind(null,id);return <main className={styles.content}><header className={styles.pageHeader}><div><span>Map editor</span><h1>{map.name}</h1><p>Move district markers, redraw boundaries and manage map publishing.</p></div></header><form action={action} className={styles.formGrid}><section className={styles.panel}><h2>Map details</h2><div className={styles.field}><label>Name</label><input name="name" defaultValue={map.name}/></div><div className={styles.field}><label>Slug</label><input name="slug" defaultValue={map.slug}/></div><div className={styles.field}><label>Asset root</label><input name="asset_root" defaultValue={map.asset_root}/></div><div className={styles.field}><label>Description</label><textarea name="description" defaultValue={map.description??""}/></div><div className={styles.field}><label>Publication</label><select name="is_published" defaultValue={String(map.is_published)}><option value="false">Draft</option><option value="true">Published</option></select></div></section><MapDistrictEditor initial={drafts} assetRoot={map.asset_root} tileUrl={map.tile_url} bounds={map.bounds as [[number,number],[number,number]]} minZoom={map.min_zoom} maxZoom={map.max_zoom}/><div className={styles.formActions}><button type="submit">Save map and districts</button></div></form></main>}
+import { notFound } from "next/navigation";
+import {
+  MapDistrictEditor,
+  type DistrictDraft,
+} from "@/components/studio/map-district-editor";
+import { requireStudioUser } from "@/lib/studio/auth";
+import { saveMap } from "../actions";
+import styles from "../../studio.module.scss";
+export default async function EditMap({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params,
+    { supabase } = await requireStudioUser();
+  const [{ data: map }, { data: districts }] = await Promise.all([
+    supabase.from("skate_maps").select("*").eq("id", id).single(),
+    supabase
+      .from("map_districts")
+      .select("*")
+      .eq("map_id", id)
+      .order("sort_order"),
+  ]);
+  if (!map) notFound();
+  const drafts = (districts ?? []).map((d) => ({
+    ...d,
+    marker_position: d.marker_position as [number, number],
+    polygon: d.polygon as [number, number][],
+  })) satisfies DistrictDraft[];
+  const action = saveMap.bind(null, id);
+  return (
+    <main className={styles.content}>
+      <header className={styles.pageHeader}>
+        <div>
+          <span>Map editor</span>
+          <h1>{map.name}</h1>
+          <p>
+            Move district markers, redraw boundaries and manage map publishing.
+          </p>
+        </div>
+      </header>
+      <form action={action} className={styles.formGrid}>
+        <section className={styles.panel}>
+          <h2>Map details</h2>
+          <div className={styles.field}>
+            <label>Name</label>
+            <input name="name" defaultValue={map.name} />
+          </div>
+          <div className={styles.field}>
+            <label>Slug</label>
+            <input name="slug" defaultValue={map.slug} />
+          </div>
+          <div className={styles.field}>
+            <label>Asset root</label>
+            <input name="asset_root" defaultValue={map.asset_root} />
+          </div>
+          <div className={styles.field}>
+            <label>Description</label>
+            <textarea name="description" defaultValue={map.description ?? ""} />
+          </div>
+          <div className={styles.field}>
+            <label>Publication</label>
+            <select name="is_published" defaultValue={String(map.is_published)}>
+              <option value="false">Draft</option>
+              <option value="true">Published</option>
+            </select>
+          </div>
+        </section>
+        <MapDistrictEditor
+          initial={drafts}
+          assetRoot={map.asset_root}
+          tileUrl={map.tile_url}
+          bounds={map.bounds as [[number, number], [number, number]]}
+          minZoom={map.min_zoom}
+          maxZoom={map.max_zoom}
+        />
+        <div className={styles.formActions}>
+          <button type="submit">Save map and districts</button>
+        </div>
+      </form>
+    </main>
+  );
+}

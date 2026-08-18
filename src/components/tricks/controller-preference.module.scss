@@ -1,42 +1,42 @@
 .preference {
-    display: grid;
-    gap: 0.35rem;
+  display: grid;
+  gap: 0.35rem;
 }
 
 .label {
-    color: rgba(246, 243, 235, 0.62);
-    font-size: 0.65rem;
-    font-weight: 950;
-    text-transform: uppercase;
+  color: rgba(246, 243, 235, 0.62);
+  font-size: 0.65rem;
+  font-weight: 950;
+  text-transform: uppercase;
 }
 
 .options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.3rem;
-    padding: 0.25rem;
-    border: 2px solid rgba(246, 243, 235, 0.2);
-    background: rgba(0, 0, 0, 0.32);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+  padding: 0.25rem;
+  border: 2px solid rgba(246, 243, 235, 0.2);
+  background: rgba(0, 0, 0, 0.32);
 }
 
 .option,
 .selectedOption {
-    min-height: 2.75rem;
-    padding-inline: 0.75rem;
-    border: 0;
-    background: transparent;
-    color: rgba(246, 243, 235, 0.66);
-    font-size: 0.72rem;
-    font-weight: 950;
-    text-transform: uppercase;
+  min-height: 2.75rem;
+  padding-inline: 0.75rem;
+  border: 0;
+  background: transparent;
+  color: rgba(246, 243, 235, 0.66);
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
 
-    &:focus-visible {
-        outline: 3px solid var(--electric-blue, #168cf4);
-        outline-offset: 2px;
-    }
+  &:focus-visible {
+    outline: 3px solid var(--electric-blue, #168cf4);
+    outline-offset: 2px;
+  }
 }
 
 .selectedOption {
-    background: var(--electric-blue, #168cf4);
-    color: #ffffff;
+  background: var(--electric-blue, #168cf4);
+  color: #ffffff;
 }
