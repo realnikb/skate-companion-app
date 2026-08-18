@@ -2,7 +2,7 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
-import { CalendarDays, ImagePlus, MapPin, Send, Users, X } from "lucide-react";
+import { CalendarDays, FileVideo, ImagePlus, Images, MapPin, Send, Users, X } from "lucide-react";
 import { createSocialPost, type PostState } from "@/app/(site)/social/actions";
 import { removeSocialMedia, uploadSocialMedia } from "@/lib/social/upload-media";
 import { PostMapPicker, type PostMapOption } from "./post-map-picker";
@@ -58,6 +58,7 @@ export function PostComposer({ playerName, avatarUrl, ownedCrews = [], maps = []
     if (next.status === "success") {
       form.current?.reset(); setExpanded(false); setMode("post"); setMedia([]); setPreviews((urls) => { urls.forEach(URL.revokeObjectURL); return []; }); setShowMap(false); setTagPickerKey((key) => key + 1);
       toast({kind:"success",title:"Post published",description:media.length>1?`${media.length} photos were added to your gallery.`:"Your post is now live."});
+      if(next.postId)window.location.assign(`/social?posted=${next.postId}#post-${next.postId}`);
     } else if(next.message) {
       toast({kind:"error",title:"Couldn’t publish post",description:next.message});
     }
@@ -82,12 +83,12 @@ export function PostComposer({ playerName, avatarUrl, ownedCrews = [], maps = []
   return <form ref={form} action={action} className={styles.composer} data-dragging={dragging} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) setDragging(false); }} onDrop={(event) => { event.preventDefault(); setDragging(false); attach(event.dataTransfer.files); }} onSubmit={(event) => { if (!signedIn) { event.preventDefault(); setGate(true); } }}>
     <header><span>{signedIn && avatarUrl ? <img src={avatarUrl} alt="" /> : signedIn ? name.slice(0, 1).toUpperCase() : "+"}</span><textarea name="body" required maxLength={2000} rows={1} placeholder="What've you been skating?" onFocus={() => setExpanded(true)} onClick={()=>{if(!signedIn)setGate(true)}} onKeyDown={()=>{if(!signedIn)setGate(true)}} /></header>
     <input ref={mediaInput} className={styles.hiddenMediaInput} name="media" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" onChange={(event) => event.target.files&&attach(event.target.files)} />
-    {previews.length>0&&<div className={styles.mediaPreviewGrid} data-count={previews.length}>{previews.map((preview,index)=><div className={styles.mediaPreview} key={preview}>{media[index]?.type.startsWith("video/")?<video src={preview} controls/>:<img src={preview} alt={`Post upload preview ${index+1}`}/>}<button type="button" onClick={()=>{URL.revokeObjectURL(preview);setMedia(files=>files.filter((_,item)=>item!==index));setPreviews(urls=>urls.filter((_,item)=>item!==index));}} aria-label={`Remove ${media[index]?.name??"attachment"}`}><X/></button><span>{index+1} / {previews.length}</span></div>)}</div>}
-    <div className={styles.quickActions}>
+    {previews.length>0&&<div className={styles.mediaPreviewGrid} data-count={previews.length}>{previews.map((preview,index)=><div className={styles.mediaPreview} key={preview}>{media[index]?.type.startsWith("video/")?<video src={preview} controls/>:<img src={preview} alt={`Post upload preview ${index+1}`}/>}<button type="button" onClick={()=>{URL.revokeObjectURL(preview);const remaining=media.filter((_,item)=>item!==index);setMedia(remaining);setPreviews(urls=>urls.filter((_,item)=>item!==index));if(!remaining.length)setMode("post");}} aria-label={`Remove ${media[index]?.name??"attachment"}`}><X/></button><span>{index+1} / {previews.length}</span></div>)}</div>}
+    {media.length?<div className={styles.inferredMedia}><span>{media[0].type.startsWith("video/")?<FileVideo/>:<Images/>}<span><strong>{media[0].type.startsWith("video/")?"Video post":`${media.length} photo${media.length===1?"":"s"}`}</strong><small>Post type detected from your upload</small></span></span><button type="button" onClick={chooseMedia}>{media[0].type.startsWith("video/")?"Replace video":"Change photos"}</button></div>:<div className={styles.quickActions}>
       <button type="button" onClick={chooseMedia} data-active={mode === "media"}><ImagePlus />Photo / Video</button>
       <button type="button" onClick={() => engage("session")} data-active={mode === "session"}><CalendarDays />Session</button>
       <button type="button" onClick={() => engage("spot")} data-active={mode === "spot"}><MapPin />Spot</button>
-    </div>
+    </div>}
     {signedIn && expanded && <>
       <div className={styles.attachmentPanel}>
         {ownedCrews.length > 0 && <label><Users />Post as<select name="identity"><option value="player">{name}</option>{ownedCrews.map((crew) => <option value={`crew:${crew.id}`} key={crew.id}>{crew.name}</option>)}</select></label>}

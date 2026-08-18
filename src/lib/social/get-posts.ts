@@ -22,6 +22,13 @@ export async function getTrendingSocialPosts(limit=10):Promise<SocialPost[]>{
   return rankedIds.flatMap(id=>hydrated.find(post=>post.id===id)??[]);
 }
 
+export async function getFootyPosts(offset=0,limit=10):Promise<SocialPost[]>{
+  const supabase=await createClient();
+  const {data:posts,error}=await supabase.from("social_posts").select("*").eq("is_published",true).eq("media_type","video").order("created_at",{ascending:false}).order("id",{ascending:false}).range(offset,offset+limit-1);
+  if(error||!posts?.length)return [];
+  return hydrateSocialPosts(supabase,posts);
+}
+
 async function hydrateSocialPosts(supabase:SupabaseClient<Database>,posts:Database["public"]["Tables"]["social_posts"]["Row"][]):Promise<SocialPost[]>{
   const postIds=posts.map(post=>post.id);
   const {data:auth}=await supabase.auth.getClaims();const viewerId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;

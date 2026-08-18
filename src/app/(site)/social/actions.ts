@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { getSocialPosts } from "@/lib/social/get-posts";
+import { getFootyPosts, getSocialPosts } from "@/lib/social/get-posts";
 
-export type PostState = { status: "idle" | "error" | "success"; message?: string };
+export type PostState = { status: "idle" | "error" | "success"; message?: string; postId?: string };
 const value = (data: FormData, key: string) => String(data.get(key) ?? "").trim();
 
 const SOCIAL_FEED_PAGE_SIZE = 10;
@@ -13,6 +13,12 @@ export async function loadMoreSocialPosts(offset: number) {
   const safeOffset = Number.isInteger(offset) && offset >= 0 ? offset : 0;
   const posts = await getSocialPosts(safeOffset, SOCIAL_FEED_PAGE_SIZE + 1);
   return { posts: posts.slice(0, SOCIAL_FEED_PAGE_SIZE), hasMore: posts.length > SOCIAL_FEED_PAGE_SIZE };
+}
+
+export async function loadMoreFootyPosts(offset:number){
+  const safeOffset=Number.isInteger(offset)&&offset>=0?offset:0;
+  const posts=await getFootyPosts(safeOffset,SOCIAL_FEED_PAGE_SIZE+1);
+  return {posts:posts.slice(0,SOCIAL_FEED_PAGE_SIZE),hasMore:posts.length>SOCIAL_FEED_PAGE_SIZE};
 }
 
 export async function createSocialPost(_state: PostState, data: FormData): Promise<PostState> {
@@ -86,6 +92,12 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
     return { status: "error", message: inserted.error.message };
   }
   if(directPaths.length){const gallery=await supabase.from("social_post_media").insert(directPaths.map((storage_path,position)=>({post_id:inserted.data.id,storage_path,media_type:directTypes[position],position})));if(gallery.error){await supabase.from("social_posts").delete().eq("id",inserted.data.id);await supabase.storage.from("social-media").remove(directPaths);return {status:"error",message:gallery.error.message};}}
+  const selfLike = await supabase.from("social_post_likes").insert({ post_id: inserted.data.id, user_id: userId });
+  if (selfLike.error) {
+    await supabase.from("social_posts").delete().eq("id", inserted.data.id);
+    if (directPaths.length) await supabase.storage.from("social-media").remove(directPaths);
+    return { status: "error", message: selfLike.error.message };
+  }
   const tagWrites = await Promise.all([
     taggedUserIds.length ? supabase.from("social_post_user_tags").insert(taggedUserIds.map((taggedUserId) => ({ post_id: inserted.data.id, user_id: taggedUserId }))) : Promise.resolve({ error: null }),
     taggedCrewIds.length ? supabase.from("social_post_crew_tags").insert(taggedCrewIds.map((taggedCrewId) => ({ post_id: inserted.data.id, crew_id: taggedCrewId }))) : Promise.resolve({ error: null }),
@@ -97,7 +109,7 @@ export async function createSocialPost(_state: PostState, data: FormData): Promi
     return { status: "error", message: tagError.message };
   }
   revalidatePath("/social");
-  return { status: "success", message: "Posted." };
+  return { status: "success", message: "Posted.", postId: inserted.data.id };
 }
 
 export async function toggleSocialPostLike(postId:string){
