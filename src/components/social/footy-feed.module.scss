@@ -5,6 +5,9 @@
   background: #050608;
   color: #fff;
 }
+.page[data-immersive="true"] {
+  height: 100%;
+}
 .page > header {
   position: absolute;
   z-index: 20;
@@ -13,7 +16,7 @@
   left: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 1rem max(1rem, calc((100vw - 38rem) / 2));
   pointer-events: none;
   transition: padding 0.25s ease;
@@ -22,7 +25,8 @@
   padding-right: max(1rem, calc((100vw - 64rem) / 2 + 26rem));
 }
 .page > header a,
-.page > header > div {
+.page > header > div,
+.page > header button {
   pointer-events: auto;
 }
 .page > header a {
@@ -103,6 +107,49 @@
   background: transparent;
   object-fit: contain;
 }
+.mediaMain,
+.emptyMedia {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #08090c;
+}
+.mediaMain :global(.postGallery) {
+  width: 100%;
+  height: 100%;
+}
+.mediaMain :global(.postGalleryViewport),
+.mediaMain :global(.postGalleryTrack),
+.mediaMain :global(.postGallerySlide) {
+  height: 100%;
+}
+.mediaMain :global(.postGallerySlide) {
+  display: grid;
+  place-items: center;
+}
+.mediaMain :global(.postGallerySlide img),
+.mediaMain :global(.postGallerySlide video) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.back {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(8, 9, 12, 0.5);
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 850;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+}
+.back svg { width: 1rem; }
 .shade {
   position: absolute;
   inset: 0;
@@ -232,6 +279,72 @@
   background: #050608;
   color: rgba(255, 255, 255, 0.55);
   font-size: 0.8rem;
+}
+.endCard {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  place-items: center;
+  isolation: isolate;
+  text-align: center;
+}
+.endCardBackdrop {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 6, 8, 0.26), rgba(5, 6, 8, 0.9)),
+    url("/images/footy-feed-end.png") center / cover;
+}
+.endCardContent {
+  display: grid;
+  width: min(28rem, calc(100% - 2.5rem));
+  justify-items: center;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 1.25rem;
+  background: rgba(8, 9, 12, 0.68);
+  box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
+}
+.endCardContent > span {
+  color: #c5b7ff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.endCardContent h2 {
+  max-width: 16rem;
+  margin: 0.55rem 0;
+  font-size: clamp(1.8rem, 7vw, 2.7rem);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+.endCardContent p {
+  max-width: 21rem;
+  margin: 0.4rem 0 1.25rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.endCardContent a,
+.endCardContent button {
+  padding: 0.78rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: #7957ff;
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 900;
+  box-shadow: 0 0.65rem 1.5rem rgba(80, 44, 220, 0.45);
+  cursor: pointer;
 }
 .loader span {
   padding: 1rem;

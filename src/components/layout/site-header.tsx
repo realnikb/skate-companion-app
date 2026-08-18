@@ -76,7 +76,7 @@ export function SiteHeader({
   };
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${isCrews ? styles.socialHeader : ""}`}>
       <Link
         className={styles.wordmark}
         href="/"

@@ -11,18 +11,27 @@ import styles from "./social.module.scss";
 export function PostCard({
   post,
   signedIn = false,
+  onOpenMobileFeed,
 }: {
   post: SocialPost;
   signedIn?: boolean;
+  onOpenMobileFeed?: () => void;
 }) {
   const [focused, setFocused] = useState(false),
     destination = post.author.crewSlug
       ? `/social/crew/${post.author.crewSlug}`
       : `/social/${post.author.handle}`,
     hasVideo = post.media.some((item) => item.type === "video");
+  const openPost = () => {
+    if (window.matchMedia("(max-width: 760px)").matches && onOpenMobileFeed) {
+      onOpenMobileFeed();
+      return;
+    }
+    setFocused(true);
+  };
   return (
     <article className={styles.post} id={`post-${post.id}`}>
-      <header onClick={() => setFocused(true)}>
+      <header onClick={openPost}>
         {post.author.avatarUrl ? (
           <img
             className={styles.postAvatar}
@@ -45,7 +54,7 @@ export function PostCard({
           </small>
         </div>
       </header>
-      <p className={styles.postBody} onClick={() => setFocused(true)}>
+      <p className={styles.postBody} onClick={openPost}>
         {post.body}
       </p>
       {post.location && (
@@ -79,7 +88,7 @@ export function PostCard({
       )}
       <div
         className={`${styles.galleryFocus} ${hasVideo ? styles.galleryFocusVideo : ""}`}
-        onClick={() => setFocused(true)}
+        onClick={openPost}
       >
         <PostGallery media={post.media} variant="collage" />
       </div>

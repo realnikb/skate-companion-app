@@ -10,8 +10,15 @@ import styles from "./mobile-nav.module.scss";
 export function MobileNav({ avatarUrl }: { avatarUrl?: string }) {
   const pathname = usePathname();
   const isFooty = pathname.startsWith("/social/footy");
+  const [doomFeedOpen, setDoomFeedOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [lastY, setLastY] = useState(0);
+  useEffect(() => {
+    const sync = () => setDoomFeedOpen(document.documentElement.dataset.doomFeed === "open");
+    sync();
+    window.addEventListener("doom-feed-change", sync);
+    return () => window.removeEventListener("doom-feed-change", sync);
+  }, []);
   const active =
     pathname === "/"
       ? "home"
@@ -24,7 +31,7 @@ export function MobileNav({ avatarUrl }: { avatarUrl?: string }) {
             : "home";
 
   useEffect(() => {
-    if (isFooty) return;
+    if (isFooty || doomFeedOpen) return;
     const onScroll = () => {
       const y = window.scrollY;
       if (y > 120 && y > lastY + 8) setCollapsed(true);
@@ -32,15 +39,15 @@ export function MobileNav({ avatarUrl }: { avatarUrl?: string }) {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isFooty, lastY]);
+  }, [isFooty, doomFeedOpen, lastY]);
 
   useEffect(() => {
-    if (isFooty) return;
+    if (isFooty || doomFeedOpen) return;
     document.documentElement.dataset.mobileNav = collapsed ? "collapsed" : "expanded";
     return () => {
       delete document.documentElement.dataset.mobileNav;
     };
-  }, [collapsed, isFooty]);
+  }, [collapsed, isFooty, doomFeedOpen]);
 
   const items = [
     { id: "home", label: "Home", href: "/", icon: Home },
@@ -49,7 +56,7 @@ export function MobileNav({ avatarUrl }: { avatarUrl?: string }) {
     { id: "profile", label: "Profile", href: "/account", icon: UserRound },
   ];
   const current = items.find((item) => item.id === active) ?? items[0];
-  if (isFooty) return null;
+  if (isFooty || doomFeedOpen) return null;
   return (
     <nav
       className={`${styles.mobileNav} ${collapsed ? styles.collapsed : ""}`}

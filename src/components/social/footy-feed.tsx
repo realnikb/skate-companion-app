@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowDown,
   ArrowLeft,
@@ -19,6 +20,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import {
   addSocialPostComment,
+  loadMoreSocialPosts,
   loadMoreFootyPosts,
   toggleSocialPostLike,
 } from "@/app/(site)/social/actions";
@@ -26,6 +28,7 @@ import { AccountGateDialog } from "@/components/account/account-gate-dialog";
 import { useToast } from "@/components/ui/toast";
 import type { SocialPost } from "@/lib/social/get-posts";
 import { PostMapDrawer } from "./post-map-drawer";
+import { PostGallery } from "./post-gallery";
 import styles from "./footy-feed.module.scss";
 
 const clipFor = (post: SocialPost) =>
@@ -264,30 +267,20 @@ function FootyClip({
       ?.querySelectorAll("video")
       .forEach((item) => (target.paused ? void item.play() : item.pause()));
   };
-  if (!video) return null;
   return (
     <article className={styles.clip} data-footy-clip>
-      <video
-        className={styles.videoBackdrop}
-        style={{ zIndex: 0 }}
-        src={video}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-hidden="true"
-        tabIndex={-1}
-      />
-      <video
-        className={styles.videoMain}
-        style={{ zIndex: 1 }}
-        src={video}
-        muted={muted}
-        loop
-        playsInline
-        preload="metadata"
-        onClick={(event) => togglePlayback(event.currentTarget)}
-      />
+      {video ? (
+        <>
+          <video className={styles.videoBackdrop} style={{ zIndex: 0 }} src={video} muted loop playsInline preload="metadata" aria-hidden="true" tabIndex={-1} />
+          <video className={styles.videoMain} style={{ zIndex: 1 }} src={video} muted={muted} loop playsInline preload="metadata" onClick={(event) => togglePlayback(event.currentTarget)} />
+        </>
+      ) : post.media.length ? (
+        <div className={styles.mediaMain} style={{ zIndex: 1 }}>
+          <PostGallery media={post.media} />
+        </div>
+      ) : (
+        <div className={styles.emptyMedia} style={{ zIndex: 1 }} />
+      )}
       <div className={styles.shade} style={{ zIndex: 2 }} />
       <div className={styles.details} style={{ zIndex: 3 }}>
         <Link href={destination} className={styles.author}>
@@ -360,27 +353,50 @@ function FootyClip({
   );
 }
 
-export function FootyFeed({
+export function DoomScrollFeed({
   initialPosts,
   initialHasMore,
   signedIn,
+  mode = "footy",
+  initialIndex = 0,
+  onClose,
+  immersive = Boolean(onClose),
 }: {
   initialPosts: SocialPost[];
   initialHasMore: boolean;
   signedIn: boolean;
+  mode?: "footy" | "social";
+  initialIndex?: number;
+  onClose?: () => void;
+  /** Embedded social viewers deliberately match Footy's chrome-free viewport. */
+  immersive?: boolean;
 }) {
+  const router = useRouter();
   const [posts, setPosts] = useState(initialPosts),
     [hasMore, setHasMore] = useState(initialHasMore),
     [loading, setLoading] = useState(false),
     [muted, setMuted] = useState(true),
     [commentPostId, setCommentPostId] = useState<string>(),
     [composeAccountGate, setComposeAccountGate] = useState(false),
-    [activeIndex, setActiveIndex] = useState(0),
+    [activeIndex, setActiveIndex] = useState(initialIndex),
     feed = useRef<HTMLElement>(null),
     sentinel = useRef<HTMLDivElement>(null),
     offset = useRef(initialPosts.length),
     loadingRef = useRef(false);
   const commentPost = posts.find((post) => post.id === commentPostId);
+  useEffect(() => {
+    if (!immersive) return;
+    document.documentElement.dataset.doomFeed = "open";
+    window.dispatchEvent(new Event("doom-feed-change"));
+    return () => {
+      delete document.documentElement.dataset.doomFeed;
+      window.dispatchEvent(new Event("doom-feed-change"));
+    };
+  }, [immersive]);
+  useEffect(() => {
+    const root = feed.current;
+    if (root && initialIndex) root.scrollTop = initialIndex * root.clientHeight;
+  }, [initialIndex]);
   useEffect(() => {
     const root = feed.current;
     if (!root) return;
@@ -410,7 +426,9 @@ export function FootyFeed({
         loadingRef.current = true;
         setLoading(true);
         try {
-          const page = await loadMoreFootyPosts(offset.current);
+          const page = await (mode === "footy"
+            ? loadMoreFootyPosts(offset.current)
+            : loadMoreSocialPosts(offset.current));
           setPosts((current) => {
             const known = new Set(current.map((post) => post.id)),
               fresh = page.posts.filter((post) => !known.has(post.id));
@@ -427,7 +445,7 @@ export function FootyFeed({
     );
     observer.observe(target);
     return () => observer.disconnect();
-  }, [hasMore]);
+  }, [hasMore, mode]);
   const move = (direction: -1 | 1) => {
     const root = feed.current;
     if (root)
@@ -435,6 +453,25 @@ export function FootyFeed({
         top: (activeIndex + direction) * root.clientHeight,
         behavior: "smooth",
       });
+  };
+  const startPost = () => {
+    if (!signedIn) {
+      setComposeAccountGate(true);
+      return;
+    }
+    if (!onClose) {
+      router.push("/social#social-composer");
+      return;
+    }
+    onClose();
+    window.setTimeout(() => {
+      document
+        .getElementById("social-composer")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      document
+        .querySelector<HTMLTextAreaElement>("#social-composer textarea")
+        ?.focus();
+    }, 100);
   };
   const addComment = (item: SocialPost["commentItems"][number]) =>
     setPosts((current) =>
@@ -462,16 +499,19 @@ export function FootyFeed({
       </main>
     );
   return (
-    <main className={styles.page} data-comments-open={Boolean(commentPost)}>
+    <main
+      className={styles.page}
+      data-comments-open={Boolean(commentPost)}
+      data-immersive={immersive || undefined}
+    >
       <header>
-        <Link href="/social">
-          <ArrowLeft />
-          Social
-        </Link>
-        <div>
-          <strong>Footy</strong>
-          <small>Swipe for the next clip</small>
-        </div>
+        {onClose ? (
+          <button type="button" className={styles.back} onClick={onClose}>
+            <ArrowLeft /> Close
+          </button>
+        ) : (
+          <Link href="/social"><ArrowLeft /> Social</Link>
+        )}
       </header>
       <div className={styles.stage}>
         <section
@@ -503,8 +543,21 @@ export function FootyFeed({
               key={post.id}
             />
           ))}
+          {!hasMore && (
+            <section className={styles.endCard} data-footy-clip>
+              <div className={styles.endCardBackdrop} />
+              <div className={styles.endCardContent}>
+                <span>That’s a wrap</span>
+                <h2>Wow! You&apos;re all caught up!</h2>
+                <p>Got something worth sharing with the community?</p>
+                <button type="button" onClick={startPost}>
+                  Post something
+                </button>
+              </div>
+            </section>
+          )}
           <div className={styles.loader} ref={sentinel} aria-live="polite">
-            {loading && <span>Loading more footy…</span>}
+            {loading && <span>Loading more posts…</span>}
           </div>
         </section>
         {commentPost && (
@@ -544,4 +597,12 @@ export function FootyFeed({
       />
     </main>
   );
+}
+
+export function FootyFeed(props: {
+  initialPosts: SocialPost[];
+  initialHasMore: boolean;
+  signedIn: boolean;
+}) {
+  return <DoomScrollFeed {...props} />;
 }

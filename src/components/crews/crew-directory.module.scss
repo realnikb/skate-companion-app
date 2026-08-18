@@ -1144,6 +1144,14 @@
 .feedTabs > a svg {
   fill: rgba(121, 87, 255, 0.28);
 }
+.mobileDoomFeed {
+  position: fixed;
+  z-index: 100;
+  top: 4.6rem;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
 @media (max-width: 620px) {
   .feedTabs {
     display: grid;

@@ -3,11 +3,39 @@
 
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { SocialVideo } from "./social-video";
 import styles from "./social.module.scss";
 
 type Media = { url: string; type: "image" | "video" };
+
+function formatDuration(seconds: number) {
+  const minutes = Math.floor(seconds / 60);
+  const remainder = Math.floor(seconds % 60);
+  return `${minutes}:${String(remainder).padStart(2, "0")}`;
+}
+
+function VideoThumbnail({ src }: { src: string }) {
+  const [duration, setDuration] = useState<number>();
+  return (
+    <div className={styles.videoThumbnail}>
+      <video
+        src={src}
+        muted
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)}
+      />
+      <span className={styles.videoThumbnailPlay} aria-hidden="true">
+        <Play fill="currentColor" />
+      </span>
+      {duration !== undefined && Number.isFinite(duration) && (
+        <small>{formatDuration(duration)}</small>
+      )}
+    </div>
+  );
+}
 
 export function PostGallery({
   media,
@@ -37,7 +65,19 @@ export function PostGallery({
   const next = useCallback(() => embla?.scrollNext(), [embla]);
 
   if (!media.length) return null;
-  if (variant === "collage" && media.length > 1) {
+  if (variant === "collage") {
+    if (media.length === 1) {
+      const entry = media[0];
+      return entry.type === "video" ? (
+        <VideoThumbnail src={entry.url} />
+      ) : (
+        <img
+          className={styles.singlePostImage}
+          src={entry.url}
+          alt="Post attachment"
+        />
+      );
+    }
     const visible = media.slice(0, 5),
       remaining = media.length - visible.length;
     return (
@@ -45,7 +85,7 @@ export function PostGallery({
         {visible.map((entry, index) => (
           <div className={styles.collageTile} key={`${entry.url}-${index}`}>
             {entry.type === "video" ? (
-              <video src={entry.url} preload="metadata" muted playsInline />
+              <VideoThumbnail src={entry.url} />
             ) : (
               <img
                 src={entry.url}

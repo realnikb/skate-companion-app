@@ -17,6 +17,7 @@ import { loadMoreSocialPosts } from "@/app/(site)/social/actions";
 import { CrewLogo } from "./crew-logo";
 import { PostComposer } from "@/components/social/post-composer";
 import { PostCard } from "@/components/social/post-card";
+import { DoomScrollFeed } from "@/components/social/footy-feed";
 import type { PostMapOption } from "@/components/social/post-map-picker";
 import type { PostTagOption } from "@/components/social/post-tag-picker";
 import type { Crew } from "@/lib/crews/crews";
@@ -82,6 +83,7 @@ export function CrewDirectory({
     [posts, setPosts] = useState(initialPosts),
     [hasMore, setHasMore] = useState(initialHasMore),
     [loading, setLoading] = useState(false),
+    [mobileFeedPostId, setMobileFeedPostId] = useState<string>(),
     stories = useRef<HTMLDivElement>(null),
     loadSentinel = useRef<HTMLDivElement>(null),
     offset = useRef(initialPosts.length),
@@ -93,6 +95,9 @@ export function CrewDirectory({
         : posts,
     [posts, tab],
   );
+  const mobileFeedIndex = mobileFeedPostId
+    ? visible.findIndex((post) => post.id === mobileFeedPostId)
+    : -1;
   useEffect(() => {
     const target = loadSentinel.current;
     if (!target || !hasMore) return;
@@ -256,6 +261,7 @@ export function CrewDirectory({
                 <PostCard
                   post={post}
                   signedIn={Boolean(viewer)}
+                  onOpenMobileFeed={() => setMobileFeedPostId(post.id)}
                   key={post.id}
                 />
               ))}
@@ -348,6 +354,18 @@ export function CrewDirectory({
       >
         <SquarePen aria-hidden="true" />
       </button>
+      {mobileFeedIndex >= 0 && (
+        <div className={styles.mobileDoomFeed}>
+          <DoomScrollFeed
+            initialPosts={visible}
+            initialHasMore={hasMore}
+            initialIndex={mobileFeedIndex}
+            mode="social"
+            signedIn={Boolean(viewer)}
+            onClose={() => setMobileFeedPostId(undefined)}
+          />
+        </div>
+      )}
     </main>
   );
 }

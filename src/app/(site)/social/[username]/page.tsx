@@ -9,7 +9,7 @@ import {
   TiktokIcon,
   YoutubeIcon,
 } from "@hugeicons/core-free-icons";
-import { PostCard } from "@/components/social/post-card";
+import { SocialPostList } from "@/components/social/social-post-list";
 import { getSocialPosts } from "@/lib/social/get-posts";
 import { createClient } from "@/lib/supabase/server";
 import styles from "./profile.module.scss";
@@ -93,7 +93,7 @@ export default async function SkaterProfilePage({
             <h2>From {profile.display_name}</h2>
           </header>
           {profilePosts.length ? (
-            profilePosts.map((post) => <PostCard post={post} key={post.id} />)
+            <SocialPostList posts={profilePosts} />
           ) : (
             <p className={styles.empty}>No posts yet.</p>
           )}
