@@ -1,0 +1,46 @@
+.canvas {
+  position: relative;
+  isolation: isolate;
+  background: radial-gradient(ellipse at 48% 48%, rgba(13, 83, 103, .98) 0%, rgba(7, 52, 73, .98) 34%, #062c47 62%, #041a2f 100%) !important;
+}
+
+.canvas :global(.leaflet-tile-pane) {
+  filter: saturate(.76) brightness(.88) contrast(1.04)
+    drop-shadow(0 0 2px rgba(89, 224, 222, .92))
+    drop-shadow(0 0 10px rgba(33, 177, 192, .48))
+    drop-shadow(0 0 24px rgba(24, 111, 143, .36));
+}
+
+.canvas::after {
+  position: absolute;
+  z-index: 450;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 48% 47%, transparent 0 42%, rgba(5, 30, 49, .08) 62%, rgba(2, 12, 25, .36) 100%);
+  content: "";
+}
+
+.canvas :global(.skate-map-marker) {
+  border: 0;
+  background: none;
+}
+
+.canvas :global(.skate-map-pin) {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 3px solid rgba(8, 10, 14, .92);
+  border-radius: 50% 50% 50% 12%;
+  background: linear-gradient(145deg, #a990ff, #6f4df0);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .55), 0 0 0 3px rgba(121, 87, 255, .2);
+  color: #fff;
+  transform: rotate(-45deg);
+}
+
+.canvas :global(.skate-map-pin svg) {
+  width: 25px;
+  height: 25px;
+  overflow: visible;
+  transform: rotate(45deg);
+}

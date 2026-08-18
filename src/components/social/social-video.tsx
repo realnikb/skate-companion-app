@@ -6,11 +6,11 @@ import "@vidstack/react/player/styles/default/theme.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
 import styles from "./social.module.scss";
 
-type SocialVideoProps = { src: string; title?: string; compact?: boolean };
+type SocialVideoProps = { src: string; compact?: boolean };
 
-export function SocialVideo({ src, title = "Post video", compact = false }: SocialVideoProps) {
+export function SocialVideo({ src, compact = false }: SocialVideoProps) {
   return (
-    <MediaPlayer className={`${styles.socialVideo} ${compact ? styles.socialVideoCompact : ""}`} src={src} title={title} load="visible" preload="metadata" playsInline onClick={(event) => event.stopPropagation()}>
+    <MediaPlayer className={`${styles.socialVideo} ${compact ? styles.socialVideoCompact : ""}`} src={src} load="visible" preload="metadata" playsInline onClick={(event) => event.stopPropagation()}>
       <MediaProvider />
       <DefaultVideoLayout icons={defaultLayoutIcons} />
     </MediaPlayer>

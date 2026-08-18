@@ -2,9 +2,18 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { getSocialPosts } from "@/lib/social/get-posts";
 
 export type PostState = { status: "idle" | "error" | "success"; message?: string };
 const value = (data: FormData, key: string) => String(data.get(key) ?? "").trim();
+
+const SOCIAL_FEED_PAGE_SIZE = 10;
+
+export async function loadMoreSocialPosts(offset: number) {
+  const safeOffset = Number.isInteger(offset) && offset >= 0 ? offset : 0;
+  const posts = await getSocialPosts(safeOffset, SOCIAL_FEED_PAGE_SIZE + 1);
+  return { posts: posts.slice(0, SOCIAL_FEED_PAGE_SIZE), hasMore: posts.length > SOCIAL_FEED_PAGE_SIZE };
+}
 
 export async function createSocialPost(_state: PostState, data: FormData): Promise<PostState> {
   const supabase = await createClient();

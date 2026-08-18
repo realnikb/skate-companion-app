@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- Local object URLs have no stable dimensions. */
 "use client";
 
-import Link from "next/link";
 import { useActionState, useRef, useState } from "react";
 import { CalendarDays, ImagePlus, MapPin, Send, Users, X } from "lucide-react";
 import { createSocialPost, type PostState } from "@/app/(site)/social/actions";
@@ -9,6 +8,7 @@ import { removeSocialMedia, uploadSocialMedia } from "@/lib/social/upload-media"
 import { PostMapPicker, type PostMapOption } from "./post-map-picker";
 import { PostTagPicker, type PostTagOption } from "./post-tag-picker";
 import { useToast } from "@/components/ui/toast";
+import { AccountGateDialog } from "@/components/account/account-gate-dialog";
 import styles from "./social.module.scss";
 
 const initial: PostState = { status: "idle" };
@@ -80,7 +80,7 @@ export function PostComposer({ playerName, avatarUrl, ownedCrews = [], maps = []
   };
 
   return <form ref={form} action={action} className={styles.composer} data-dragging={dragging} onDragOver={(event) => { event.preventDefault(); setDragging(true); }} onDragLeave={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node)) setDragging(false); }} onDrop={(event) => { event.preventDefault(); setDragging(false); attach(event.dataTransfer.files); }} onSubmit={(event) => { if (!signedIn) { event.preventDefault(); setGate(true); } }}>
-    <header><span>{signedIn && avatarUrl ? <img src={avatarUrl} alt="" /> : signedIn ? name.slice(0, 1).toUpperCase() : "+"}</span><textarea name="body" required maxLength={2000} rows={1} placeholder="What've you been skating?" onFocus={() => { setExpanded(true); if (!signedIn) setGate(true); }} /></header>
+    <header><span>{signedIn && avatarUrl ? <img src={avatarUrl} alt="" /> : signedIn ? name.slice(0, 1).toUpperCase() : "+"}</span><textarea name="body" required maxLength={2000} rows={1} placeholder="What've you been skating?" onFocus={() => setExpanded(true)} onClick={()=>{if(!signedIn)setGate(true)}} onKeyDown={()=>{if(!signedIn)setGate(true)}} /></header>
     <input ref={mediaInput} className={styles.hiddenMediaInput} name="media" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/quicktime" onChange={(event) => event.target.files&&attach(event.target.files)} />
     {previews.length>0&&<div className={styles.mediaPreviewGrid} data-count={previews.length}>{previews.map((preview,index)=><div className={styles.mediaPreview} key={preview}>{media[index]?.type.startsWith("video/")?<video src={preview} controls/>:<img src={preview} alt={`Post upload preview ${index+1}`}/>}<button type="button" onClick={()=>{URL.revokeObjectURL(preview);setMedia(files=>files.filter((_,item)=>item!==index));setPreviews(urls=>urls.filter((_,item)=>item!==index));}} aria-label={`Remove ${media[index]?.name??"attachment"}`}><X/></button><span>{index+1} / {previews.length}</span></div>)}</div>}
     <div className={styles.quickActions}>
@@ -102,6 +102,6 @@ export function PostComposer({ playerName, avatarUrl, ownedCrews = [], maps = []
     {dragging && <div className={styles.dropPrompt}><ImagePlus /><strong>Drop up to 10 photos or one video</strong></div>}
     {uploadProgress!==null&&<div className={styles.uploadProgress}><span style={{width:`${uploadProgress}%`}}/><small>Uploading {uploadProgress}%</small></div>}
     {signedIn && expanded && <button className={styles.publish} disabled={pending}><Send />{uploadProgress!==null?`Uploading ${uploadProgress}%`:pending?"Posting...":"Post"}</button>}
-    {gate && <div className={styles.accountGate} role="dialog" aria-modal="true" aria-label="Create an account to post"><button type="button" className={styles.closeGate} onClick={() => setGate(false)} aria-label="Close"><X /></button><span className={styles.gateIcon}><Send /></span><strong>Ready to share it?</strong><p>Create a free account to post photos, videos and updates with the skate community.</p><Link href="/account/sign-up?next=/social">Create free account</Link><Link className={styles.signInLink} href="/account/sign-in?next=/social">I already have an account</Link></div>}
+    <AccountGateDialog open={gate} onOpenChange={setGate} title="Ready to share it?" description="Create a free account to post photos, videos and updates with the skate community." />
   </form>;
 }

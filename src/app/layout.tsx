@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Figtree } from "next/font/google";
 import "./globals.css";
+import "leaflet/dist/leaflet.css";
 import { cn } from "@/lib/utils";
 import { ToastProvider } from "@/components/ui/toast";
 
@@ -17,8 +18,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  applicationName: "Skate Companion",
   title: "Skate Companion App - The Unofficial Resource For Skate",
   description: "Tricks, tutorials, archives, and news for your next session.",
+  appleWebApp: {
+    capable: true,
+    title: "SC+",
+    statusBarStyle: "black-translucent",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default async function RootLayout({

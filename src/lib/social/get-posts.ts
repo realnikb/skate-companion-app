@@ -2,9 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 
 export type SocialPost = { id:string; body:string; type:string; media:{url:string;type:"image"|"video"}[]; imageUrl?:string; videoUrl?:string; uploadedVideo?:boolean; location?:string; mapPin?:{mapName:string;x:number;y:number;assetRoot:string;tileUrl:string;minZoom:number;maxZoom:number;bounds:[[number,number],[number,number]]}; tags:{id:string;name:string;handle?:string;crewSlug?:string;kind:"skater"|"crew"}[]; createdAt:string; likes:number; comments:number; likedByViewer:boolean; commentItems:{id:string;body:string;createdAt:string;media?:{url:string;type:"image"|"video"};author:{name:string;handle:string;avatarUrl?:string}}[]; author:{name:string;handle:string;crewSlug?:string;initials:string;avatarUrl?:string} };
 
-export async function getSocialPosts():Promise<SocialPost[]>{
+export async function getSocialPosts(offset=0,limit=30):Promise<SocialPost[]>{
   const supabase=await createClient();
-  const {data:posts,error}=await supabase.from("social_posts").select("*").eq("is_published",true).order("created_at",{ascending:false}).limit(30);
+  const {data:posts,error}=await supabase.from("social_posts").select("*").eq("is_published",true).order("created_at",{ascending:false}).order("id",{ascending:false}).range(offset,offset+limit-1);
   if(error||!posts?.length)return [];
   const postIds=posts.map(post=>post.id);
   const {data:auth}=await supabase.auth.getClaims();const viewerId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;

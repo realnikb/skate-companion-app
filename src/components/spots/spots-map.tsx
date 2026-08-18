@@ -8,6 +8,8 @@ import { Bookmark, ChevronDown, Clock3, Heart, LocateFixed, MapPin, Maximize2, M
 import { AccountBenefitsPrompt } from "@/components/account/account-benefits-prompt";
 import { addSpotComment, createCommunitySpot, rateSpot, uploadSpotMedia } from "@/app/(site)/spots/actions";
 import styles from "./spots-map.module.scss";
+import mapTheme from "@/components/maps/leaflet-map-theme.module.scss";
+import { cn } from "@/lib/utils";
 
 type Category = "popular" | "city-echo" | "community";
 type LeafletBounds = object;
@@ -196,7 +198,7 @@ export function SpotsMap({presentation,isAuthenticated=false}:{presentation?:Map
                 </div>
 
                 <div className={styles.map} aria-label="Map of community skate spots">
-                    <div ref={mapNode} className={styles.leafletMap} />
+                    <div ref={mapNode} className={cn(styles.leafletMap,mapTheme.canvas)} />
                     <div className={styles.mapTint} />
                     <div className={styles.mapControls}><button aria-label="Zoom in" onClick={() => mapInstance.current?.zoomIn()}><ZoomIn /></button><button aria-label="Zoom out" onClick={() => mapInstance.current?.zoomOut()}><ZoomOut /></button><button aria-label="Reset map view" onClick={() => { if (mapInstance.current && mapBounds.current) mapInstance.current.fitBounds(mapBounds.current); }}><LocateFixed /></button></div>
                     <div className={styles.legend}><span className={styles.popularKey}><Star /> Popular</span><span className={styles.echoKey}><MapPin /> Real-World Inspired</span><span className={styles.communityKey}><Users /> Community</span></div>

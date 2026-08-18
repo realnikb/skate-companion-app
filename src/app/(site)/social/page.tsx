@@ -8,9 +8,12 @@ import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Social | Skate Companion", description: "Share skate posts, discover crews and see what the community is doing." };
 export const dynamic = "force-dynamic";
+const SOCIAL_FEED_PAGE_SIZE = 10;
 
 export default async function SocialPage() {
-  const [crews, posts] = await Promise.all([getCrews(), getSocialPosts()]);
+  const [crews, postPage] = await Promise.all([getCrews(), getSocialPosts(0, SOCIAL_FEED_PAGE_SIZE + 1)]);
+  const posts = postPage.slice(0, SOCIAL_FEED_PAGE_SIZE);
+  const hasMorePosts = postPage.length > SOCIAL_FEED_PAGE_SIZE;
   const supabase = await createClient();
   const [{ data: auth }, { data: mapRows }, { data: profileRows }] = await Promise.all([
     supabase.auth.getClaims(),
@@ -33,5 +36,5 @@ export default async function SocialPage() {
     const avatarUrl = profile?.avatar_path && base ? `${base}/storage/v1/object/public/profile-media/${profile.avatar_path}` : undefined;
     viewer = { name: profile?.display_name ?? (typeof auth?.claims?.email === "string" ? auth.claims.email.split("@")[0] : "Skater"), avatarUrl, ownedCrews: owned ?? [] };
   }
-  return <CrewDirectory crews={crews} posts={posts} maps={maps} tagOptions={tagOptions} viewer={viewer} />;
+  return <CrewDirectory crews={crews} posts={posts} hasMorePosts={hasMorePosts} maps={maps} tagOptions={tagOptions} viewer={viewer} />;
 }
