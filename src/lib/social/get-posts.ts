@@ -1,4 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
+import type { Database } from "@/types/database";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type SocialPost = { id:string; body:string; type:string; media:{url:string;type:"image"|"video"}[]; imageUrl?:string; videoUrl?:string; uploadedVideo?:boolean; location?:string; mapPin?:{mapName:string;x:number;y:number;assetRoot:string;tileUrl:string;minZoom:number;maxZoom:number;bounds:[[number,number],[number,number]]}; tags:{id:string;name:string;handle?:string;crewSlug?:string;kind:"skater"|"crew"}[]; createdAt:string; likes:number; comments:number; likedByViewer:boolean; commentItems:{id:string;body:string;createdAt:string;media?:{url:string;type:"image"|"video"};author:{name:string;handle:string;avatarUrl?:string}}[]; author:{name:string;handle:string;crewSlug?:string;initials:string;avatarUrl?:string} };
 
@@ -6,6 +8,21 @@ export async function getSocialPosts(offset=0,limit=30):Promise<SocialPost[]>{
   const supabase=await createClient();
   const {data:posts,error}=await supabase.from("social_posts").select("*").eq("is_published",true).order("created_at",{ascending:false}).order("id",{ascending:false}).range(offset,offset+limit-1);
   if(error||!posts?.length)return [];
+  return hydrateSocialPosts(supabase,posts);
+}
+
+export async function getTrendingSocialPosts(limit=10):Promise<SocialPost[]>{
+  const supabase=await createClient();
+  const {data:engagement,error}=await supabase.from("social_posts").select("id,likes_count,comments_count").eq("is_published",true).limit(1000);
+  if(error||!engagement?.length)return [];
+  const rankedIds=engagement.sort((a,b)=>(b.likes_count+b.comments_count)-(a.likes_count+a.comments_count)).slice(0,limit).map(post=>post.id);
+  const {data:posts}=await supabase.from("social_posts").select("*").in("id",rankedIds);
+  if(!posts?.length)return [];
+  const hydrated=await hydrateSocialPosts(supabase,posts);
+  return rankedIds.flatMap(id=>hydrated.find(post=>post.id===id)??[]);
+}
+
+async function hydrateSocialPosts(supabase:SupabaseClient<Database>,posts:Database["public"]["Tables"]["social_posts"]["Row"][]):Promise<SocialPost[]>{
   const postIds=posts.map(post=>post.id);
   const {data:auth}=await supabase.auth.getClaims();const viewerId=typeof auth?.claims?.sub==="string"?auth.claims.sub:null;
   const [{data:userTags},{data:crewTags},{data:postMedia},{data:comments},{data:viewerLikes}]=await Promise.all([

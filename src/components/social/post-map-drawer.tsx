@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element -- Map tiles are already-sized raster assets. */
 "use client";
 
 import { useEffect,useState } from "react";
@@ -9,7 +10,7 @@ import mapTheme from "@/components/maps/leaflet-map-theme.module.scss";
 import { cn } from "@/lib/utils";
 import styles from "./social.module.scss";
 
-export function PostMapDrawer({pin}:{pin:NonNullable<SocialPost["mapPin"]>}){
+export function PostMapDrawer({pin,variant="button"}:{pin:NonNullable<SocialPost["mapPin"]>;variant?:"button"|"preview"}){
   const [open,setOpen]=useState(false),[mapNode,setMapNode]=useState<HTMLDivElement|null>(null);
   useEffect(()=>{
     if(!open||!mapNode)return;
@@ -28,5 +29,7 @@ export function PostMapDrawer({pin}:{pin:NonNullable<SocialPost["mapPin"]>}){
     });
     return()=>{disposed=true;cleanup()};
   },[open,pin,mapNode]);
-  return <Drawer open={open} onOpenChange={setOpen} showSwipeHandle><DrawerTrigger className={styles.locationButton} onClick={event=>event.stopPropagation()}><MapPin/>Pinned on {pin.mapName}</DrawerTrigger><DrawerContent className={styles.mapDrawer}><DrawerHeader><div><DrawerTitle>{pin.mapName}</DrawerTitle><DrawerDescription>The exact location pinned to this post.</DrawerDescription></div><DrawerClose aria-label="Close map"><X/></DrawerClose></DrawerHeader><div ref={setMapNode} className={cn(styles.postMapCanvas,mapTheme.canvas)}/></DrawerContent></Drawer>;
+  const zoom=Math.max(pin.minZoom,Math.min(pin.maxZoom,4)),scale=2**zoom,[[,minLng],[maxLat]]=pin.bounds,lng=minLng+(pin.x/100)*(pin.bounds[1][1]-minLng),lat=maxLat-(pin.y/100)*(maxLat-pin.bounds[0][0]),pixelX=lng*scale,pixelY=-lat*scale,tileX=Math.floor(pixelX/256),tileY=Math.floor(pixelY/256),tiles=[-1,0,1].flatMap(row=>[-1,0,1].map(column=>({x:tileX+column,y:tileY+row,column,row})));
+  const trigger=variant==="preview"?<DrawerTrigger className={styles.mapPreview} onClick={event=>event.stopPropagation()}><span className={styles.mapPreviewTiles} style={{transform:`translate(calc(-50% + ${128-(pixelX-tileX*256)}px),calc(-50% + ${128-(pixelY-tileY*256)}px))`}}>{tiles.map(tile=><img src={`${pin.assetRoot}/${pin.tileUrl.replace("{z}",String(zoom)).replace("{x}",String(tile.x)).replace("{y}",String(tile.y))}`} alt="" style={{gridColumn:tile.column+2,gridRow:tile.row+2}} key={`${tile.x}:${tile.y}`}/>)}</span><i><MapPin/></i><strong>{pin.mapName}</strong><small>View pinned spot</small></DrawerTrigger>:<DrawerTrigger className={styles.locationButton} onClick={event=>event.stopPropagation()}><MapPin/>Pinned on {pin.mapName}</DrawerTrigger>;
+  return <Drawer open={open} onOpenChange={setOpen} showSwipeHandle>{trigger}<DrawerContent className={styles.mapDrawer}><DrawerHeader><div><DrawerTitle>{pin.mapName}</DrawerTitle><DrawerDescription>The exact location pinned to this post.</DrawerDescription></div><DrawerClose aria-label="Close map"><X/></DrawerClose></DrawerHeader><div ref={setMapNode} className={cn(styles.postMapCanvas,mapTheme.canvas)}/></DrawerContent></Drawer>;
 }

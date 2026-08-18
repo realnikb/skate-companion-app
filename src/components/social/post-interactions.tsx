@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/toast";
 import { removeSocialMedia,uploadSocialMedia } from "@/lib/social/upload-media";
 import type { SocialPost } from "@/lib/social/get-posts";
 import { PostGallery } from "./post-gallery";
+import { PostMapDrawer } from "./post-map-drawer";
 import { AccountGateDialog } from "@/components/account/account-gate-dialog";
 import styles from "./social.module.scss";
 
@@ -30,6 +31,7 @@ return <>
       <section className={styles.focusDiscussion}><header><strong>Conversation</strong><span>{comments.length}</span></header>
         <div className={styles.commentList}>
           <article className={styles.conversationStarter}>{post.author.avatarUrl?<img src={post.author.avatarUrl} alt=""/>:<span>{post.author.initials}</span>}<div><strong>{post.author.name} <small>@{post.author.handle}</small></strong><p>{post.body}</p><time>{new Date(post.createdAt).toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"})}</time></div></article>
+          {post.mapPin&&<PostMapDrawer pin={post.mapPin} variant="preview"/>}
           {comments.map(item=><article key={item.id}>{item.author.avatarUrl?<img src={item.author.avatarUrl} alt=""/>:<span>{item.author.name.slice(0,1).toUpperCase()}</span>}<div><strong>{item.author.name} <small>@{item.author.handle}</small></strong><p>{item.body}</p>{item.media&&(item.media.type==="video"?<video src={item.media.url} controls preload="metadata"/>:<img className={styles.commentMedia} src={item.media.url} alt="Reply attachment"/>)}<time>{new Date(item.createdAt).toLocaleString("en-GB",{dateStyle:"medium",timeStyle:"short"})}</time></div></article>)}
           {!comments.length&&<p className={styles.emptyComments}>No replies yet. Start the conversation.</p>}
         </div>

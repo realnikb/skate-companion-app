@@ -3,7 +3,7 @@ import { CrewDirectory } from "@/components/crews/crew-directory";
 import type { PostMapOption } from "@/components/social/post-map-picker";
 import type { PostTagOption } from "@/components/social/post-tag-picker";
 import { getCrews } from "@/lib/crews/get-crews";
-import { getSocialPosts } from "@/lib/social/get-posts";
+import { getSocialPosts, getTrendingSocialPosts } from "@/lib/social/get-posts";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = { title: "Social | Skate Companion", description: "Share skate posts, discover crews and see what the community is doing." };
@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 const SOCIAL_FEED_PAGE_SIZE = 10;
 
 export default async function SocialPage() {
-  const [crews, postPage] = await Promise.all([getCrews(), getSocialPosts(0, SOCIAL_FEED_PAGE_SIZE + 1)]);
+  const [crews, postPage, trendingPosts] = await Promise.all([getCrews(), getSocialPosts(0, SOCIAL_FEED_PAGE_SIZE + 1), getTrendingSocialPosts(10)]);
   const posts = postPage.slice(0, SOCIAL_FEED_PAGE_SIZE);
   const hasMorePosts = postPage.length > SOCIAL_FEED_PAGE_SIZE;
   const supabase = await createClient();
@@ -36,5 +36,5 @@ export default async function SocialPage() {
     const avatarUrl = profile?.avatar_path && base ? `${base}/storage/v1/object/public/profile-media/${profile.avatar_path}` : undefined;
     viewer = { name: profile?.display_name ?? (typeof auth?.claims?.email === "string" ? auth.claims.email.split("@")[0] : "Skater"), avatarUrl, ownedCrews: owned ?? [] };
   }
-  return <CrewDirectory crews={crews} posts={posts} hasMorePosts={hasMorePosts} maps={maps} tagOptions={tagOptions} viewer={viewer} />;
+  return <CrewDirectory crews={crews} posts={posts} trendingPosts={trendingPosts} hasMorePosts={hasMorePosts} maps={maps} tagOptions={tagOptions} viewer={viewer} />;
 }
